@@ -1,0 +1,1626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=5.0,user-scalable=yes">
+<meta name="format-detection" content="telephone=no">
+<title>Risk Assessment for Lift by Accredited Risk Assessor — 升降機風險評估記錄表</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold:#D4AF37; --gold-dk:#B8941F; --blue:#4A90E2; --blue-dk:#2E5F8F;
+  --navy:#1E3A5F; --navy-dp:#142840; --bg:#F5F7FA; --surface:#FFFFFF;
+  --border:#DDE3EB; --text:#1E3A5F; --muted:#6B7A8F;
+  --success:#22A06B; --warn:#E89B2A; --danger:#DC3545;
+  --shadow:0 2px 4px rgba(30,58,95,.06),0 8px 24px rgba(30,58,95,.04);
+  --radius:8px;
+  --font-en:'Century Gothic','CenturyGothic','AppleGothic',sans-serif;
+  --font-zh:'Microsoft JhengHei','微軟正黑體','PingFang TC','Heiti TC',sans-serif;
+  --font-h:'Poppins','Century Gothic',sans-serif;
+  --font-b:var(--font-en),var(--font-zh);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{font-size:15px;scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--font-b);min-height:100vh;-webkit-font-smoothing:antialiased}
+
+/* TOPBAR */
+.topbar{background:linear-gradient(135deg,var(--navy-dp) 0%,var(--navy) 100%);color:#fff;padding:8px 14px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(30,58,95,.2);border-bottom:3px solid var(--gold);flex-wrap:wrap}
+/* Company logo — top-left corner. Plain white disc so the official logo shows exactly as supplied. */
+.topbar-logo{flex-shrink:0;width:52px;height:52px;border-radius:50%;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.25);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.topbar-logo svg{width:100%;height:100%;display:block}
+.brand{display:flex;flex-direction:column;line-height:1.05;flex:1;min-width:200px}
+.brand-mark{font-family:var(--font-h);font-weight:700;font-size:0.95rem;letter-spacing:.02em;color:#fff}
+.brand-mark .lift{color:var(--gold)}.brand-mark .hium{color:var(--blue)}
+.brand-tag{font-size:.62rem;color:rgba(255,255,255,.7);text-transform:uppercase;letter-spacing:.08em;margin-top:3px;font-family:var(--font-h)}
+.brand-tag .zh{font-family:var(--font-zh);text-transform:none;letter-spacing:.02em}
+.topbar-scores{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-left:auto}
+.score-pill{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:18px;padding:5px 10px;display:flex;flex-direction:column;align-items:center;min-width:64px}
+.score-pill .lbl{font-size:.55rem;color:rgba(255,255,255,.7);letter-spacing:.08em;text-transform:uppercase;font-family:var(--font-h)}
+.score-pill .val{font-weight:700;font-size:.95rem;color:var(--gold);font-family:var(--font-h)}
+.score-pill .val.warn{color:var(--warn)}.score-pill .val.danger{color:var(--danger)}
+.topbar-right{display:flex;gap:6px;flex-wrap:wrap}
+.btn-icon{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;padding:6px 11px;border-radius:5px;font-family:var(--font-h);font-weight:500;font-size:.74rem;cursor:pointer;letter-spacing:.03em;transition:.15s}
+.btn-icon:hover{background:var(--gold);color:var(--navy-dp);border-color:var(--gold)}
+
+/* PROGRESS */
+.progress-track{height:3px;background:rgba(212,175,55,.15)}
+.progress-fill{height:100%;background:var(--gold);width:0%;transition:width .3s}
+
+/* LAYOUT */
+.main{max-width:920px;margin:0 auto;padding:14px;padding-bottom:80px}
+
+/* TABS */
+.tabs{display:flex;gap:4px;overflow-x:auto;padding:6px 0;margin-bottom:12px;position:sticky;top:64px;z-index:98;background:var(--bg);scrollbar-width:thin}
+.tab{flex-shrink:0;padding:9px 15px;border-radius:6px;background:var(--surface);border:1px solid var(--border);color:var(--muted);font-family:var(--font-h);font-weight:600;font-size:.8rem;cursor:pointer;transition:.15s;white-space:nowrap}
+.tab:hover{color:var(--blue);border-color:var(--blue)}
+.tab.active{background:var(--navy);color:var(--gold);border-color:var(--navy)}
+
+/* PANEL */
+.panel{display:none;flex-direction:column;gap:12px}
+.panel.active{display:flex}
+
+/* CARD */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow)}
+.card-title{font-family:var(--font-h);font-weight:700;font-size:.88rem;letter-spacing:.06em;text-transform:uppercase;color:var(--navy);margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid var(--gold);display:flex;align-items:center;justify-content:space-between;gap:8px}
+.card-title-zh{font-family:var(--font-zh);font-size:.85rem;color:var(--muted);font-weight:600;text-transform:none;letter-spacing:0}
+
+/* FIELDS */
+.info-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.info-grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+@media(max-width:600px){.info-grid,.info-grid-3{grid-template-columns:1fr}}
+.field{display:flex;flex-direction:column;gap:4px}
+.field label{font-size:.7rem;font-weight:600;color:var(--navy);letter-spacing:.03em}
+.field label .zh{font-family:var(--font-zh);color:var(--muted);font-weight:500;margin-left:4px}
+.field input,.field select,.field textarea{background:#fff;border:1px solid var(--border);border-radius:5px;padding:7px 10px;font-family:var(--font-b);font-size:.87rem;color:var(--text);outline:none;transition:border-color .15s;width:100%}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--blue)}
+.field textarea{resize:vertical;min-height:60px}
+
+/* ITEM */
+.item{background:var(--surface);border:1px solid var(--border);border-left:4px solid var(--border);border-radius:var(--radius);padding:12px 14px;margin-bottom:8px;transition:.2s}
+.item.sel-La{border-left-color:var(--success)}
+.item.sel-Lb{border-left-color:var(--warn)}
+.item.sel-Lc{border-left-color:var(--danger)}
+.item-head{display:flex;align-items:center;gap:8px;margin-bottom:4px;flex-wrap:wrap}
+.item-no{font-family:var(--font-h);font-weight:700;color:var(--gold);font-size:.85rem}
+.item-essential{display:inline-block;background:var(--danger);color:#fff;font-size:.58rem;font-weight:700;padding:1px 6px;border-radius:3px;letter-spacing:.05em}
+.item-name-en{font-weight:600;font-size:.9rem;color:var(--navy)}
+.item-name-zh{font-family:var(--font-zh);font-size:.86rem;color:var(--text);margin-bottom:8px}
+.item-note{font-size:.7rem;color:var(--muted);font-style:italic;margin-top:4px;padding-left:8px;border-left:2px solid var(--border)}
+
+/* La/Lb/Lc buttons */
+.lc-buttons{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}
+.lc-btn{flex:1;min-width:140px;padding:10px 10px;border:1.5px solid var(--border);border-radius:6px;background:#fff;font-family:var(--font-h);font-weight:600;font-size:.78rem;cursor:pointer;text-align:left;transition:.15s;color:var(--text);line-height:1.35}
+.lc-btn:hover{border-color:var(--blue)}
+.lc-btn .lc-tag{font-size:.74rem;font-weight:800;letter-spacing:.05em}
+.lc-btn .lc-desc{display:block;font-weight:400;font-size:.7rem;margin-top:4px;color:var(--muted)}
+.lc-btn .lc-desc-zh{font-family:var(--font-zh)}
+.lc-btn.act-La{background:rgba(34,160,107,.08);border-color:var(--success)}
+.lc-btn.act-La .lc-tag{color:var(--success)}
+.lc-btn.act-Lb{background:rgba(232,155,42,.08);border-color:var(--warn)}
+.lc-btn.act-Lb .lc-tag{color:var(--warn)}
+.lc-btn.act-Lc{background:rgba(220,53,69,.08);border-color:var(--danger)}
+.lc-btn.act-Lc .lc-tag{color:var(--danger)}
+
+/* Risk params */
+.risk-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:8px;padding:10px;background:rgba(74,144,226,.04);border-radius:5px;border:1px solid rgba(74,144,226,.15)}
+@media(max-width:500px){.risk-grid{grid-template-columns:repeat(2,1fr)}}
+.risk-field{display:flex;flex-direction:column;gap:3px}
+.risk-field label{font-size:.62rem;font-weight:700;color:var(--blue-dk);letter-spacing:.04em;text-transform:uppercase;font-family:var(--font-h)}
+.risk-field label .zh{font-family:var(--font-zh);display:block;color:var(--muted);font-weight:500;letter-spacing:0;text-transform:none}
+.risk-field select{padding:5px 6px;font-size:.8rem;font-family:var(--font-h);border:1px solid var(--border);border-radius:4px;background:#fff}
+.cat-display{margin-top:8px;padding:8px 12px;border-radius:6px;font-family:var(--font-h);font-weight:700;font-size:.85rem;text-align:center;letter-spacing:.05em}
+.cat-display.cat-I{background:var(--danger);color:#fff}
+.cat-display.cat-II{background:var(--warn);color:#fff}
+.cat-display.cat-III{background:var(--success);color:#fff}
+.cat-display .zh{font-family:var(--font-zh);margin-left:6px;font-weight:500;font-size:.78rem}
+
+.improvement{margin-top:8px;padding:8px 12px;background:rgba(212,175,55,.08);border-left:3px solid var(--gold);border-radius:4px;font-size:.77rem;color:var(--text)}
+.improvement strong{color:var(--gold-dk);display:block;font-size:.68rem;letter-spacing:.05em;text-transform:uppercase;margin-bottom:3px;font-family:var(--font-h)}
+.improvement .zh{font-family:var(--font-zh);display:block;margin-top:2px}
+
+.notes-field{margin-top:8px}
+.notes-field label{font-size:.63rem;font-weight:600;color:var(--muted);display:block;margin-bottom:3px;text-transform:uppercase;letter-spacing:.04em;font-family:var(--font-h)}
+.notes-field textarea{width:100%;border:1px solid var(--border);border-radius:4px;padding:6px 8px;font-family:var(--font-b);font-size:.78rem;resize:vertical;min-height:40px}
+
+.special-flag{display:flex;align-items:center;gap:6px;margin-top:6px;font-size:.76rem;color:var(--muted)}
+.special-flag input{width:14px;height:14px}
+
+/* Annex A YES/NO */
+.ab-options{display:flex;gap:6px}
+.ab-btn{flex:1;padding:10px 8px;border:1.5px solid var(--border);border-radius:6px;background:#fff;cursor:pointer;font-family:var(--font-h);font-weight:600;font-size:.85rem;text-align:center;transition:.15s}
+.ab-btn:hover{border-color:var(--blue)}
+.ab-btn.sel-yes{background:var(--success);color:#fff;border-color:var(--success)}
+.ab-btn.sel-no{background:var(--danger);color:#fff;border-color:var(--danger)}
+.points-tag{display:inline-block;background:rgba(212,175,55,.15);color:var(--gold-dk);font-weight:700;font-size:.7rem;padding:1px 6px;border-radius:3px;margin-left:6px;font-family:var(--font-h)}
+
+/* Annex B */
+.b-options{display:flex;flex-wrap:wrap;gap:6px}
+.b-btn{flex:1;min-width:130px;padding:10px 8px;border:1.5px solid var(--border);border-radius:6px;background:#fff;cursor:pointer;font-family:var(--font-h);font-weight:600;font-size:.78rem;text-align:center;transition:.15s}
+.b-btn:hover{border-color:var(--blue)}
+.b-btn.sel{background:var(--blue);color:#fff;border-color:var(--blue)}
+.b-btn .pts{display:block;font-size:.7rem;font-weight:400;opacity:.85;margin-top:2px}
+
+/* Annex C */
+.c-sub{display:flex;align-items:flex-start;gap:8px;padding:6px 0}
+.c-sub input{margin-top:3px;flex-shrink:0;width:16px;height:16px;cursor:pointer}
+.c-sub label{flex:1;font-size:.85rem;cursor:pointer;line-height:1.35}
+.c-sub label .zh{font-family:var(--font-zh);display:block;color:var(--muted);font-size:.82rem;margin-top:1px}
+.c-sub .pts{font-size:.68rem;color:var(--gold-dk);font-weight:700;padding:1px 6px;background:rgba(212,175,55,.1);border-radius:3px;font-family:var(--font-h);align-self:flex-start;margin-top:2px}
+
+/* D Sub-section accordion */
+details.subsec{margin-bottom:12px}
+details.subsec summary{background:var(--navy);color:var(--gold);padding:12px 16px;border-radius:6px;cursor:pointer;font-family:var(--font-h);font-weight:700;font-size:.9rem;letter-spacing:.04em;list-style:none;display:flex;align-items:center;gap:8px}
+details.subsec summary::-webkit-details-marker{display:none}
+details.subsec summary::before{content:'▶';font-size:.7rem;transition:transform .2s;color:rgba(212,175,55,.7)}
+details.subsec[open] summary::before{transform:rotate(90deg)}
+details.subsec .subsec-body{padding:10px 4px 0}
+details.subsec .subsec-zh{font-family:var(--font-zh);font-weight:500;font-size:.85rem;color:rgba(255,255,255,.8)}
+details.subsec .subsec-count{font-size:.72rem;color:rgba(255,255,255,.7);font-weight:400;margin-left:auto;background:rgba(255,255,255,.08);padding:2px 8px;border-radius:10px}
+
+/* PHOTOS */
+.photo-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:10px 0}
+@media(max-width:600px){.photo-grid{grid-template-columns:repeat(3,1fr)}}
+.photo-slot{aspect-ratio:1;border:2px dashed var(--border);border-radius:6px;display:flex;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;position:relative;background:var(--bg);font-size:.8rem;color:var(--muted)}
+.photo-slot:hover{border-color:var(--gold)}
+.photo-slot img{width:100%;height:100%;object-fit:cover}
+.photo-slot .remove{position:absolute;top:4px;right:4px;background:rgba(0,0,0,.7);color:#fff;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8rem;cursor:pointer}
+
+/* VERDICT */
+.verdict-card{background:linear-gradient(135deg,var(--navy-dp),var(--navy));color:#fff;border-radius:var(--radius);padding:24px;text-align:center}
+.verdict-grade{font-family:var(--font-h);font-size:3rem;font-weight:800;color:var(--gold);line-height:1}
+.verdict-label{font-size:.78rem;color:rgba(255,255,255,.8);text-transform:uppercase;letter-spacing:.1em;margin-top:4px;font-family:var(--font-h)}
+.verdict-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px}
+.verdict-stat{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:6px;padding:12px}
+.verdict-stat .num{font-family:var(--font-h);font-size:1.6rem;font-weight:700;color:var(--gold)}
+.verdict-stat .lbl{font-size:.68rem;color:rgba(255,255,255,.7);text-transform:uppercase;letter-spacing:.05em;font-family:var(--font-h)}
+.verdict-breakdown{background:rgba(0,0,0,.2);border-radius:6px;padding:14px;margin-top:16px;text-align:left}
+.verdict-breakdown h4{color:var(--gold);font-family:var(--font-h);font-size:.85rem;margin-bottom:8px;letter-spacing:.04em}
+.verdict-breakdown table{width:100%;font-size:.78rem}
+.verdict-breakdown td{padding:4px 6px;color:rgba(255,255,255,.85)}
+.verdict-breakdown td:last-child{text-align:right;font-family:var(--font-h);font-weight:600;color:var(--gold)}
+.verdict-rec{background:rgba(212,175,55,.15);border:1px solid var(--gold);border-radius:6px;padding:12px 14px;margin-top:16px;text-align:left;font-size:.82rem;line-height:1.45}
+.verdict-rec strong{color:var(--gold);display:block;margin-bottom:4px;font-family:var(--font-h)}
+.verdict-rec .zh{font-family:var(--font-zh);display:block;margin-top:4px}
+
+/* DECLARATION */
+.decl-text{font-size:.82rem;line-height:1.55;color:var(--text);background:rgba(74,144,226,.04);border-left:3px solid var(--blue);padding:12px 14px;border-radius:4px;margin-bottom:12px}
+.decl-text .zh{font-family:var(--font-zh);display:block;margin-top:6px;color:var(--muted)}
+
+.nav-row{display:flex;justify-content:space-between;gap:8px;margin-top:14px;flex-wrap:wrap}
+.btn-primary{background:var(--gold);color:var(--navy-dp);border:0;padding:11px 22px;border-radius:6px;font-family:var(--font-h);font-weight:700;font-size:.85rem;cursor:pointer;letter-spacing:.04em}
+.btn-primary:hover{background:var(--gold-dk)}
+.btn-secondary{background:var(--surface);color:var(--navy);border:1px solid var(--border);padding:11px 22px;border-radius:6px;font-family:var(--font-h);font-weight:600;font-size:.85rem;cursor:pointer}
+.btn-secondary:hover{border-color:var(--blue);color:var(--blue)}
+.btn-danger{background:var(--danger);color:#fff;border:0;padding:11px 22px;border-radius:6px;font-family:var(--font-h);font-weight:700;font-size:.85rem;cursor:pointer}
+
+/* TOAST */
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--navy);color:var(--gold);padding:12px 22px;border-radius:6px;font-family:var(--font-h);font-weight:600;font-size:.85rem;box-shadow:0 4px 20px rgba(0,0,0,.3);transition:transform .3s;z-index:200;letter-spacing:.04em}
+.toast.show{transform:translateX(-50%) translateY(0)}
+
+/* MODAL (auth + drafts) */
+.modal-overlay{position:fixed;inset:0;background:rgba(20,40,64,.55);backdrop-filter:blur(2px);display:none;align-items:center;justify-content:center;z-index:300;padding:16px}
+.modal-overlay.show{display:flex}
+.modal{background:#fff;border-radius:12px;max-width:480px;width:100%;max-height:88vh;overflow-y:auto;box-shadow:0 12px 48px rgba(0,0,0,.3);border-top:4px solid var(--gold)}
+.modal-head{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.modal-head h3{font-family:var(--font-h);font-size:1rem;font-weight:700;color:var(--navy)}
+.modal-head .zh{font-family:var(--font-zh);font-size:.82rem;color:var(--muted);font-weight:500}
+.modal-close{background:none;border:0;font-size:1.4rem;color:var(--muted);cursor:pointer;line-height:1;padding:0 4px}
+.modal-body{padding:18px 20px}
+.modal-body p{font-size:.84rem;color:var(--text);line-height:1.5;margin-bottom:12px}
+.modal-body p .zh{font-family:var(--font-zh);display:block;color:var(--muted);margin-top:3px}
+.modal-input{width:100%;border:1.5px solid var(--border);border-radius:6px;padding:11px 13px;font-family:var(--font-h);font-size:1rem;letter-spacing:.1em;text-align:center;outline:none}
+.modal-input:focus{border-color:var(--blue)}
+.modal-actions{display:flex;gap:8px;margin-top:16px;justify-content:flex-end;flex-wrap:wrap}
+.modal-err{color:var(--danger);font-size:.8rem;margin-top:8px;min-height:1em;font-weight:600;text-align:center}
+.lock-badge{display:inline-flex;align-items:center;gap:4px;font-size:.6rem;background:rgba(212,175,55,.18);color:var(--gold-dk);padding:2px 7px;border-radius:10px;font-weight:700;font-family:var(--font-h);vertical-align:middle}
+
+/* DRAFT LIST */
+.draft-list{display:flex;flex-direction:column;gap:8px;margin-top:6px}
+.draft-row{border:1px solid var(--border);border-radius:8px;padding:10px 12px;display:flex;align-items:center;gap:10px;transition:.15s}
+.draft-row:hover{border-color:var(--blue);background:rgba(74,144,226,.03)}
+.draft-info{flex:1;min-width:0}
+.draft-name{font-weight:700;font-size:.86rem;color:var(--navy);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.draft-meta{font-size:.7rem;color:var(--muted);margin-top:2px}
+.draft-meta .badge{display:inline-block;background:rgba(74,144,226,.12);color:var(--blue-dk);padding:1px 6px;border-radius:8px;font-weight:600;margin-right:4px}
+.draft-btns{display:flex;gap:4px;flex-shrink:0}
+.draft-btns button{border:0;border-radius:5px;padding:6px 10px;font-family:var(--font-h);font-weight:600;font-size:.72rem;cursor:pointer}
+.draft-open{background:var(--blue);color:#fff}
+.draft-del{background:rgba(220,53,69,.1);color:var(--danger)}
+.draft-empty{text-align:center;color:var(--muted);font-size:.82rem;padding:24px 0}
+
+/* status chip in topbar */
+.auth-chip{display:flex;align-items:center;gap:5px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);border-radius:16px;padding:5px 11px;font-family:var(--font-h);font-weight:600;font-size:.7rem;cursor:pointer;color:#fff;transition:.15s}
+.auth-chip:hover{background:rgba(255,255,255,.16)}
+.auth-chip.unlocked{background:rgba(34,160,107,.22);border-color:rgba(34,160,107,.5);color:#7CE0B5}
+.auth-chip .dot{width:7px;height:7px;border-radius:50%;background:var(--gold)}
+.auth-chip.unlocked .dot{background:var(--success)}
+
+/* Print-only logo (top-left of every printed/PDF page) */
+.print-logo{display:none}
+
+/* PRINT */
+@media print {
+  @page{margin:14mm 12mm}
+  .topbar,.progress-track,.tabs,.nav-row,.btn-icon,.modal-overlay{display:none!important}
+  .panel{display:block!important;page-break-after:always}
+  body{background:#fff}
+  .main{max-width:100%;padding:8px}
+  .card,.item{box-shadow:none;border:1px solid #aaa;page-break-inside:avoid}
+  details.subsec{break-inside:avoid}
+  details.subsec[open] summary,details.subsec summary{background:#f0f0f0;color:#000}
+  /* Company logo fixed to top-left corner — repeats on every printed page */
+  .print-logo{display:block;position:fixed;top:0;left:0;width:60px;height:60px;z-index:9999}
+  .print-logo svg{width:100%;height:100%;display:block}
+}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <div class="topbar-logo" title="Lifthium Consultancy Limited 極樂公證行有限公司"><svg xmlns="http://www.w3.org/2000/svg" viewBox="-50 -50 1100 1100" role="img" aria-label="Lifthium 極樂公證行">
+  <title>Lifthium</title>
+  <circle cx="500" cy="500" r="443.5" fill="none" stroke="#1E3A5F" stroke-width="113"></circle>
+  <circle cx="500" cy="500" r="333" fill="none" stroke="#D4AF37" stroke-width="108"></circle>
+  <circle cx="500" cy="-9" r="36" fill="#000000"></circle>
+  <circle cx="500" cy="120" r="36" fill="#000000"></circle>
+  <circle cx="500" cy="885" r="36" fill="#000000"></circle>
+  <g font-family="'Poppins', 'Century Gothic', 'Inter', sans-serif" font-size="118" font-weight="700" text-anchor="middle" dominant-baseline="middle">
+    <text x="500" y="510"><tspan fill="#D4AF37">Lift</tspan><tspan fill="#4A90E2">hium</tspan></text>
+  </g>
+</svg></div>
+  <div class="brand">
+    <div class="brand-mark">Risk Assessment for Lift by Accredited Risk Assessor</div>
+    <div class="brand-tag">認可風險評估員 <span class="zh">· 升降機風險評估記錄表</span></div>
+  </div>
+  <div class="topbar-scores">
+    <div class="score-pill"><div class="lbl">D Score</div><div class="val" id="dScoreTop">—</div></div>
+    <div class="score-pill"><div class="lbl">O&amp;M</div><div class="val" id="omScoreTop">—</div></div>
+    <div class="score-pill"><div class="lbl">Filled</div><div class="val" id="filledTop">0/178</div></div>
+  </div>
+  <div class="topbar-right">
+    <button class="btn-icon" id="draftsBtn">☰ Drafts 草稿</button>
+    <button class="btn-icon" id="saveBtn">⤓ Export</button>
+    <button class="btn-icon" id="loadBtn">⤒ Import</button>
+    <button class="btn-icon" id="printBtn">⎙ Print</button>
+    <button class="btn-icon" id="resetBtn">↻ Reset</button>
+    <div class="auth-chip" id="authChip" title="Owner authorization 老闆授權"><span class="dot"></span><span id="authChipTxt">Locked 鎖定</span></div>
+  </div>
+</header>
+<div class="print-logo"><svg xmlns="http://www.w3.org/2000/svg" viewBox="-50 -50 1100 1100" role="img" aria-label="Lifthium 極樂公證行">
+  <title>Lifthium</title>
+  <circle cx="500" cy="500" r="443.5" fill="none" stroke="#1E3A5F" stroke-width="113"></circle>
+  <circle cx="500" cy="500" r="333" fill="none" stroke="#D4AF37" stroke-width="108"></circle>
+  <circle cx="500" cy="-9" r="36" fill="#000000"></circle>
+  <circle cx="500" cy="120" r="36" fill="#000000"></circle>
+  <circle cx="500" cy="885" r="36" fill="#000000"></circle>
+  <g font-family="'Poppins', 'Century Gothic', 'Inter', sans-serif" font-size="118" font-weight="700" text-anchor="middle" dominant-baseline="middle">
+    <text x="500" y="510"><tspan fill="#D4AF37">Lift</tspan><tspan fill="#4A90E2">hium</tspan></text>
+  </g>
+</svg></div>
+<div class="progress-track"><div class="progress-fill" id="progressBar"></div></div>
+
+<main class="main">
+
+  <!-- TABS -->
+  <nav class="tabs">
+    <button class="tab active" data-tab="info">Project · 項目</button>
+    <button class="tab" data-tab="A">Annex A · 優化水平</button>
+    <button class="tab" data-tab="B">Annex B · 運作記錄</button>
+    <button class="tab" data-tab="C">Annex C · 管理記錄</button>
+    <button class="tab" data-tab="D">Annex D · 設備風險</button>
+    <button class="tab" data-tab="photos">Photos · 相片</button>
+    <button class="tab" data-tab="decl">Declaration · 聲明</button>
+    <button class="tab" data-tab="verdict">Verdict · 評估結果</button>
+  </nav>
+
+  <!-- PANEL: PROJECT INFO -->
+  <section class="panel active" id="panel-info">
+    <div class="card">
+      <div class="card-title">Project &amp; Lift Information <span class="card-title-zh">項目及升降機資料</span></div>
+      <div class="info-grid">
+        <div class="field"><label>Project / Site Name <span class="zh">項目／場地名稱</span></label><input type="text" id="f_site" placeholder="e.g. Mei Foo Sun Chuen Stage 8 Tower 12"></div>
+        <div class="field"><label>Site Address <span class="zh">場地地址</span></label><input type="text" id="f_address" placeholder="Address"></div>
+        <div class="field"><label>Responsible Person <span class="zh">升降機負責人</span></label><input type="text" id="f_rp" placeholder="Owner / Management Company"></div>
+        <div class="field"><label>Maintenance Contractor <span class="zh">維修承辦商</span></label><input type="text" id="f_contractor" placeholder="Contractor name"></div>
+      </div>
+      <div class="info-grid-3" style="margin-top:10px">
+        <div class="field"><label>Lift No. / ID <span class="zh">升降機編號</span></label><input type="text" id="f_liftno" placeholder="e.g. L-01"></div>
+        <div class="field"><label>EMSD Lift Reg. No. <span class="zh">機電署註冊編號</span></label><input type="text" id="f_emsdno" placeholder="EMSD reg. no."></div>
+        <div class="field"><label>Manufacturer <span class="zh">製造商</span></label><input type="text" id="f_mfr" placeholder="OEM"></div>
+      </div>
+      <div class="info-grid-3" style="margin-top:10px">
+        <div class="field"><label>Lift Type <span class="zh">升降機類型</span></label>
+          <select id="f_type"><option value="">Select…</option><option>Passenger 載客</option><option>Service 服務</option><option>Goods 載貨</option><option>Fireman's 消防</option><option>Disabled 殘疾人士</option></select></div>
+        <div class="field"><label>Rated Speed (m/s) <span class="zh">額定速度</span></label><input type="text" id="f_speed" placeholder="e.g. 1.75"></div>
+        <div class="field"><label>Rated Load (kg) <span class="zh">額定載重</span></label><input type="text" id="f_load" placeholder="e.g. 1000"></div>
+      </div>
+      <div class="info-grid-3" style="margin-top:10px">
+        <div class="field"><label>Year of Manufacture <span class="zh">出廠年份</span></label><input type="number" id="f_year" placeholder="YYYY" min="1900" max="2099"></div>
+        <div class="field"><label>Year of Commissioning <span class="zh">投入服務年份</span></label><input type="number" id="f_commyear" placeholder="YYYY" min="1900" max="2099"></div>
+        <div class="field"><label>No. of Floors Served <span class="zh">服務樓層數目</span></label><input type="number" id="f_floors" placeholder="e.g. 32"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">ARA (Accredited Risk Assessor) Details <span class="card-title-zh">認可風險評估員資料</span></div>
+      <div class="info-grid">
+        <div class="field"><label>ARA Name <span class="zh">評估員姓名</span></label><input type="text" id="f_araname" placeholder="Risk Assessor name"></div>
+        <div class="field"><label>ARA Registration No. <span class="zh">註冊編號</span></label><input type="text" id="f_arareg" placeholder="EMSD ARA reg. no."></div>
+        <div class="field"><label>ARA Company <span class="zh">評估機構</span></label><input type="text" id="f_aracompany" value="Lifthium Consultancy Limited 極樂公證行有限公司"></div>
+        <div class="field"><label>ARA Reg. Expiry Date <span class="zh">註冊屆滿日期</span></label><input type="date" id="f_araexpiry"></div>
+      </div>
+      <div class="info-grid-3" style="margin-top:10px">
+        <div class="field"><label>Date of Inspection <span class="zh">檢查日期</span></label><input type="date" id="f_inspdate"></div>
+        <div class="field"><label>Time of Inspection <span class="zh">檢查時間</span></label><input type="text" id="f_insptime" placeholder="e.g. 0930–1230"></div>
+        <div class="field"><label>Weather <span class="zh">天氣</span></label><input type="text" id="f_weather" placeholder="e.g. Cloudy 22°C"></div>
+      </div>
+      <div class="info-grid" style="margin-top:10px">
+        <div class="field"><label>Registered Lift Engineer Present <span class="zh">在場註冊升降機工程師</span></label><input type="text" id="f_rle" placeholder="RLE name + reg. no."></div>
+        <div class="field"><label>Registered Lift Engineering Worker Present <span class="zh">在場註冊升降機工程人員</span></label><input type="text" id="f_rlw" placeholder="RLW name + reg. no."></div>
+      </div>
+    </div>
+
+    <div class="nav-row">
+      <span></span>
+      <button class="btn-primary" data-goto="A">Next: Annex A →</button>
+    </div>
+  </section>
+
+  <!-- PANEL: ANNEX A -->
+  <section class="panel" id="panel-A">
+    <div class="card">
+      <div class="card-title">Annex A — Lift Optimisation Level <span class="card-title-zh">附件 A · 升降機優化水平</span></div>
+      <p style="font-size:.8rem;color:var(--muted);margin-bottom:10px">Maximum score: 50 points (+10 bonus). For each item, select <strong>YES</strong> if installed &amp; functional, <strong>NO</strong> if absent or non-functional. <span class="zh" style="font-family:var(--font-zh)">總分最高 50 分（+10 加分）。每項按裝置存在且功能正常選 YES，否則選 NO。</span></p>
+      <div id="annexA-items"></div>
+      <div style="margin-top:14px;padding:12px;background:rgba(212,175,55,.08);border-radius:6px;font-family:var(--font-h);font-weight:700;text-align:center">
+        Annex A Subtotal <span class="zh" style="font-family:var(--font-zh);font-weight:500;color:var(--muted)">小計</span>: <span id="aSum" style="color:var(--gold-dk)">0</span> / 50 (+10)
+      </div>
+    </div>
+    <div class="nav-row">
+      <button class="btn-secondary" data-goto="info">← Back</button>
+      <button class="btn-primary" data-goto="B">Next: Annex B →</button>
+    </div>
+  </section>
+
+  <!-- PANEL: ANNEX B -->
+  <section class="panel" id="panel-B">
+    <div class="card">
+      <div class="card-title">Annex B — Lift Operating Records <span class="card-title-zh">附件 B · 升降機運作記錄</span></div>
+      <p style="font-size:.8rem;color:var(--muted);margin-bottom:10px">Maximum 50 points. Obtain data from maintenance contractor &amp; logbook (past 24 months). <span class="zh" style="font-family:var(--font-zh)">最高 50 分。由維修承辦商及日誌取得過去 24 個月數據。</span></p>
+      <div id="annexB-items"></div>
+      <div style="margin-top:14px;padding:12px;background:rgba(212,175,55,.08);border-radius:6px;font-family:var(--font-h);font-weight:700;text-align:center">
+        Annex B Subtotal <span class="zh" style="font-family:var(--font-zh);font-weight:500;color:var(--muted)">小計</span>: <span id="bSum" style="color:var(--gold-dk)">0</span> / 50
+      </div>
+    </div>
+    <div class="nav-row">
+      <button class="btn-secondary" data-goto="A">← Back</button>
+      <button class="btn-primary" data-goto="C">Next: Annex C →</button>
+    </div>
+  </section>
+
+  <!-- PANEL: ANNEX C -->
+  <section class="panel" id="panel-C">
+    <div class="card">
+      <div class="card-title">Annex C — Lift Management Records <span class="card-title-zh">附件 C · 升降機管理記錄</span></div>
+      <p style="font-size:.8rem;color:var(--muted);margin-bottom:10px">Maximum 50 points. Tick each item that is satisfied. <span class="zh" style="font-family:var(--font-zh)">最高 50 分。逐項勾選符合者。</span></p>
+      <div id="annexC-items"></div>
+      <div style="margin-top:14px;padding:12px;background:rgba(212,175,55,.08);border-radius:6px;font-family:var(--font-h);font-weight:700;text-align:center">
+        Annex C Subtotal <span class="zh" style="font-family:var(--font-zh);font-weight:500;color:var(--muted)">小計</span>: <span id="cSum" style="color:var(--gold-dk)">0</span> / 50
+      </div>
+    </div>
+    <div class="nav-row">
+      <button class="btn-secondary" data-goto="B">← Back</button>
+      <button class="btn-primary" data-goto="D">Next: Annex D →</button>
+    </div>
+  </section>
+
+  <!-- PANEL: ANNEX D -->
+  <section class="panel" id="panel-D">
+    <div class="card">
+      <div class="card-title">Annex D — Lift, Associated Equipment &amp; Machinery <span class="card-title-zh">附件 D · 升降機、相聯設備或機械</span></div>
+      <p style="font-size:.8rem;color:var(--muted);margin-bottom:10px">
+        Select <strong style="color:var(--success)">La</strong> (good), <strong style="color:var(--warn)">Lb</strong> (borderline) or <strong style="color:var(--danger)">Lc</strong> (unsafe) per item. EMSD default risk parameters auto-populate; adjust if site reality differs.
+        <span class="zh" style="font-family:var(--font-zh);display:block;margin-top:4px">每項選 La（良好）／Lb（極限）／Lc（不安全）。EMSD 預設風險參數自動帶出，可按現場實況調整。</span>
+      </p>
+      <div id="annexD-sections"></div>
+      <div style="margin-top:14px;padding:12px;background:rgba(212,175,55,.08);border-radius:6px;font-family:var(--font-h);font-weight:700;text-align:center">
+        Annex D — Items Rated <span class="zh" style="font-family:var(--font-zh);font-weight:500;color:var(--muted)">已評項目</span>: <span id="dFilled" style="color:var(--gold-dk)">0</span> / 157
+        &nbsp;·&nbsp; Cat I: <span id="dCatI" style="color:var(--danger)">0</span>
+        &nbsp;·&nbsp; Cat II: <span id="dCatII" style="color:var(--warn)">0</span>
+        &nbsp;·&nbsp; Cat III: <span id="dCatIII" style="color:var(--success)">0</span>
+      </div>
+    </div>
+    <div class="nav-row">
+      <button class="btn-secondary" data-goto="C">← Back</button>
+      <button class="btn-primary" data-goto="photos">Next: Photos →</button>
+    </div>
+  </section>
+
+  <!-- PANEL: PHOTOS -->
+  <section class="panel" id="panel-photos">
+    <div class="card">
+      <div class="card-title">Site Photos <span class="card-title-zh">場地相片</span></div>
+      <p style="font-size:.8rem;color:var(--muted);margin-bottom:10px">Tap any slot to upload. Stored locally as base64; export with the JSON backup. Max 24 photos. <span class="zh" style="font-family:var(--font-zh)">點任意空格上傳。相片以 base64 儲存本機，可隨 JSON 一同匯出。最多 24 張。</span></p>
+      <div class="photo-grid" id="photoGrid"></div>
+      <input type="file" id="fileInput" accept="image/*" multiple style="display:none">
+      <div class="field" style="margin-top:14px">
+        <label>Overall Site Remarks <span class="zh">場地整體備註</span></label>
+        <textarea id="f_remarks" rows="4" placeholder="General observations, environment, notable conditions…"></textarea>
+      </div>
+      <div class="field" style="margin-top:10px">
+        <label>Urgent Items Requiring Immediate Attention <span class="zh">須即時處理之事項</span></label>
+        <textarea id="f_urgent" rows="3" placeholder="List urgent safety items here…"></textarea>
+      </div>
+    </div>
+    <div class="nav-row">
+      <button class="btn-secondary" data-goto="D">← Back</button>
+      <button class="btn-primary" data-goto="decl">Next: Declaration →</button>
+    </div>
+  </section>
+
+  <!-- PANEL: DECLARATION -->
+  <section class="panel" id="panel-decl">
+    <div class="card">
+      <div class="card-title">Risk Assessor's Declaration <span class="card-title-zh">風險評估員聲明</span></div>
+      <div class="decl-text">
+        I, the undersigned, hereby declare that I am a duly Accredited Risk Assessor (ARA) recognised by EMSD; that the lift listed above was not under my periodic inspection in the two (2) years preceding this risk assessment; that this risk assessment has been carried out independently, fairly and in accordance with the EMSD Guideline on Risk Assessment for Traction Lifts (December 2025); and that all observations, findings and recommendations herein reflect the actual condition observed on site to the best of my knowledge.
+        <span class="zh">本人為機電工程署認可之認可風險評估員（ARA）；本人在進行本風險評估前兩年內，並未負責本升降機之定期檢驗工作；本風險評估已按照《曳引式升降機風險評估指引》（2025年12月版）以獨立、公平之方式進行；本報告所有觀察、結論及建議均屬本人於現場實地視察所得之真實意見。</span>
+      </div>
+      <div class="info-grid" style="margin-top:14px">
+        <div class="field"><label>ARA Signature (typed) <span class="zh">評估員簽署（鍵入）</span></label><input type="text" id="f_sig_ara" placeholder="Type full name"></div>
+        <div class="field"><label>Signature Date <span class="zh">簽署日期</span></label><input type="date" id="f_sig_date"></div>
+      </div>
+      <div class="info-grid" style="margin-top:10px">
+        <div class="field"><label>Prepared by <span class="zh">編製</span></label><input type="text" id="f_prep" placeholder="Name + title"></div>
+        <div class="field"><label>Reviewed by <span class="zh">審核</span></label><input type="text" id="f_review" placeholder="Name + title"></div>
+      </div>
+      <div class="info-grid" style="margin-top:10px">
+        <div class="field"><label>Approved by <span class="zh">核准</span></label><input type="text" id="f_approve" placeholder="Name + title"></div>
+        <div class="field"><label>Official Seal Reference <span class="zh">公司印章編號</span></label><input type="text" id="f_seal" placeholder="Seal ref. (physical seal on PDF copy)"></div>
+      </div>
+      <div style="margin-top:14px;padding:10px;background:rgba(74,144,226,.08);border:1px dashed var(--blue);border-radius:6px;font-size:.78rem;color:var(--muted)">
+        <strong style="color:var(--navy);display:block;margin-bottom:3px">⚠ Submission Reminder · 提交提示</strong>
+        After completion, this report must be uploaded to the <strong>EMSD Digital Work Log System Management Platform</strong> by the ARA.
+        <span class="zh" style="font-family:var(--font-zh);display:block;margin-top:3px">本報告完成後，評估員須將其上載至機電署之 <strong>數碼工作日誌系統管理平台</strong>。</span>
+        Report shall be issued in <strong>triplicate</strong> (1 copy to Responsible Person, 1 to Contractor, 1 ARA archive).
+        <span class="zh" style="font-family:var(--font-zh)">報告須一式三份（負責人 1 份、承辦商 1 份、評估員存檔 1 份）。</span>
+      </div>
+    </div>
+    <div class="nav-row">
+      <button class="btn-secondary" data-goto="photos">← Back</button>
+      <button class="btn-primary" data-goto="verdict">Next: Verdict →</button>
+    </div>
+  </section>
+
+  <!-- PANEL: VERDICT -->
+  <section class="panel" id="panel-verdict">
+    <div id="verdictContainer"></div>
+    <div class="nav-row">
+      <button class="btn-secondary" data-goto="decl">← Back</button>
+      <button class="btn-secondary" id="saveDraftBtn2">💾 Save Draft 儲存草稿</button>
+      <button class="btn-secondary" id="saveAsNewBtn2">⎘ Save as New 另存新檔</button>
+      <button class="btn-primary" id="finalSaveBtn">↓ Export JSON 匯出</button>
+      <button class="btn-danger" id="newAssessBtn">⌫ New 新評估</button>
+    </div>
+  </section>
+
+</main>
+
+<!-- AUTH MODAL -->
+<div class="modal-overlay" id="authModal">
+  <div class="modal">
+    <div class="modal-head">
+      <div><h3>Owner Authorization</h3><div class="zh">老闆授權碼</div></div>
+      <button class="modal-close" data-close="authModal">×</button>
+    </div>
+    <div class="modal-body">
+      <p>Saving, exporting and submitting require the Owner Authorization Code set by Lifthium management.
+      <span class="zh">儲存、匯出及提交需要由極樂管理層設定的授權碼。</span></p>
+      <input type="password" inputmode="numeric" class="modal-input" id="authInput" placeholder="••••••••" autocomplete="off">
+      <div class="modal-err" id="authErr"></div>
+      <div class="modal-actions">
+        <button class="btn-secondary" data-close="authModal">Cancel 取消</button>
+        <button class="btn-primary" id="authSubmit">Unlock 解鎖</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DRAFTS MODAL -->
+<div class="modal-overlay" id="draftsModal">
+  <div class="modal">
+    <div class="modal-head">
+      <div><h3>Saved Drafts</h3><div class="zh">已儲存草稿</div></div>
+      <button class="modal-close" data-close="draftsModal">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-actions" style="justify-content:flex-start;margin-top:0;margin-bottom:12px">
+        <button class="btn-primary" id="saveDraftBtn">💾 Save Current 儲存目前</button>
+        <button class="btn-secondary" id="saveAsNewBtn">⎘ Save as New 另存新檔</button>
+      </div>
+      <div class="draft-list" id="draftList"></div>
+    </div>
+  </div>
+</div>
+
+<!-- NAME PROMPT MODAL -->
+<div class="modal-overlay" id="nameModal">
+  <div class="modal">
+    <div class="modal-head">
+      <div><h3>Name this draft</h3><div class="zh">為草稿命名</div></div>
+      <button class="modal-close" data-close="nameModal">×</button>
+    </div>
+    <div class="modal-body">
+      <p>Give this draft a name so you can find it later (e.g. site + lift no.).
+      <span class="zh">為此草稿命名以便日後尋找（例如：場地 + 升降機編號）。</span></p>
+      <input type="text" class="modal-input" id="nameInput" style="letter-spacing:normal;text-align:left" placeholder="e.g. Mei Foo T12 — L-01">
+      <div class="modal-actions">
+        <button class="btn-secondary" data-close="nameModal">Cancel 取消</button>
+        <button class="btn-primary" id="nameSubmit">Save 儲存</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+'use strict';
+const DATA = {"annexA": [{"id": "A.1.1", "no": "1.1", "max": 8, "name_en": "Double Brake System installed", "name_zh": "安裝雙重制動系統", "essential": true}, {"id": "A.1.2", "no": "1.2", "max": 8, "name_en": "UCMP (Unintended Car Movement Protection) installed", "name_zh": "安裝防止機廂不正常移動的裝置", "essential": true}, {"id": "A.1.3", "no": "1.3", "max": 8, "name_en": "ACOP (Ascending Car Overspeed Protection) installed", "name_zh": "安裝防止機廂向上超速的裝置", "essential": true}, {"id": "A.1.4", "no": "1.4", "max": 8, "name_en": "Car Door Lock & Door Vane installed", "name_zh": "安裝機廂門鎖及門刀", "essential": true}, {"id": "A.1.5", "no": "1.5", "max": 6, "name_en": "Intercom & CCTV system installed", "name_zh": "安裝對講機及閉路電視系統", "essential": false}, {"id": "A.1.6", "no": "1.6", "max": 6, "name_en": "Obstruction switch protecting suspension ropes installed", "name_zh": "安裝障礙開關掣保護懸吊纜索", "essential": false}, {"id": "A.1.7", "no": "1.7", "max": 6, "name_en": "ARD (Automatic Rescue Device) installed", "name_zh": "安裝自動拯救裝置", "essential": false}, {"id": "A.1.8", "no": "1.8", "max": 10, "name_en": "Remote monitoring equipment installed (BONUS)", "name_zh": "安裝遠端監控設備（額外加分）", "essential": false, "bonus": true}], "annexB": [{"id": "B.1.1", "no": "1.1", "max": 25, "name_en": "Avg. hours of service suspension due to breakdown (past 24 months, per month)", "name_zh": "因故障導致服務暫停的平均時數（過去24個月平均每月時數）", "note_en": "Hours include equipment failure, emergency repair etc. Exclude routine maintenance, annual inspection, scheduled repairs, major modifications.", "note_zh": "包括設備故障、緊急維修等。不包括日常維護、年度檢驗、定期維修、重大更改。", "options": [{"label_en": "0 – 20 hours", "label_zh": "0 ~ 20 小時", "points": 25}, {"label_en": "21 – 40 hours", "label_zh": "21 ~ 40 小時", "points": 18}, {"label_en": "41 – 60 hours", "label_zh": "41 ~ 60 小時", "points": 13}, {"label_en": "61 – 80 hours", "label_zh": "61 ~ 80 小時", "points": 8}, {"label_en": "Over 80 hours", "label_zh": "超過 80 小時", "points": 0}]}, {"id": "B.1.2", "no": "1.2", "max": 15, "name_en": "Avg. arrival time for passenger entrapment breakdown (past 24 months, per case)", "name_zh": "乘客受困故障平均到達時間（過去24個月內平均每次分鐘）", "options": [{"label_en": "0 – 30 minutes", "label_zh": "0 ~ 30 分鐘", "points": 15}, {"label_en": "31 – 40 minutes", "label_zh": "31 ~ 40 分鐘", "points": 10}, {"label_en": "41 – 50 minutes", "label_zh": "41 ~ 50 分鐘", "points": 7}, {"label_en": "51 – 60 minutes", "label_zh": "51 ~ 60 分鐘", "points": 4}, {"label_en": "Over 60 minutes", "label_zh": "超過 60 分鐘", "points": 0}]}, {"id": "B.1.3", "no": "1.3", "max": 10, "name_en": "Avg. arrival time for non-entrapment breakdown (past 24 months, per case)", "name_zh": "與乘客受困無關的故障平均到達時間（過去24個月內每次的時數）", "options": [{"label_en": "0 – 1 hour", "label_zh": "0 ~ 1 小時", "points": 10}, {"label_en": "1 – 1.5 hours", "label_zh": "1 ~ 1.5 小時", "points": 7}, {"label_en": "1.5 – 2 hours", "label_zh": "1.5 ~ 2 小時", "points": 5}, {"label_en": "2 – 3 hours", "label_zh": "2 ~ 3 小時", "points": 3}, {"label_en": "Over 3 hours", "label_zh": "超過 3 小時", "points": 0}]}], "annexC": [{"id": "C.1.1", "no": "1.1", "max": 7, "name_en": "Maintenance & inspection comply with statutory requirements", "name_zh": "確保升降機的保養及檢驗符合法例要求", "subs": [{"text_en": "Registered contractor periodic maintenance (≤1 month interval)", "text_zh": "註冊承辦商已為升降機進行定期保養，時隔不超過一個月", "points": 2}, {"text_en": "Registered engineer periodic inspection (≤12 months interval)", "text_zh": "註冊工程師已對升降機進行定期檢查，時隔不超過12個月", "points": 2}, {"text_en": "Load test (≤5 years interval)", "text_zh": "時隔不超過五年進行一次負載檢查", "points": 2}, {"text_en": "All three above completed", "text_zh": "以上三項維修檢查項目均已完成", "points": 1}]}, {"id": "C.1.2", "no": "1.2", "max": 7, "name_en": "Frequent inspection & monitoring of lift condition", "name_zh": "經常檢查，監督升降機狀況", "subs": [{"text_en": "Check lift operation", "text_zh": "檢查升降機運作狀況", "points": 1}, {"text_en": "Check landing indicator condition", "text_zh": "檢查地面展示的狀況", "points": 1}, {"text_en": "Check landing & car button condition", "text_zh": "檢查各樓層及機廂按鈕狀況", "points": 1}, {"text_en": "Check landing levelling", "text_zh": "檢查升降機的平水", "points": 1}, {"text_en": "Check car ventilation & lighting", "text_zh": "檢查升降機機廂的通風及照明", "points": 1}, {"text_en": "CCTV performance test", "text_zh": "對閉路電視進行性能測試", "points": 1}, {"text_en": "Alarm test", "text_zh": "對警報進行測試", "points": 1}]}, {"id": "C.1.3", "no": "1.3", "max": 5, "name_en": "Proper management of contractor's work", "name_zh": "妥善管理承包商的工作", "subs": [{"text_en": "Maintenance work performed as scheduled", "text_zh": "保養工作已按計劃進行", "points": 1}, {"text_en": "Notice issued for routine/annual inspection suspension; engineering staff identity verification mechanism established", "text_zh": "已發出暫停升降機進行例行檢查、年度檢驗等的通知，並已建立工程人員身分核查機制", "points": 1}, {"text_en": "Storage space provided for contractor", "text_zh": "為升降機承辦商提供儲存空間", "points": 1}, {"text_en": "Required contractor to submit emergency repair documents", "text_zh": "已要求升降機承辦商提交緊急維修相關文件", "points": 1}, {"text_en": "Follow-up action / written reply to contractor's comments & quotations; spare-part list archived", "text_zh": "已就承辦商的意見及報價採取跟進行動或作出書面回覆，並已將維修備件清單存檔", "points": 1}]}, {"id": "C.1.4", "no": "1.4", "max": 5, "name_en": "Verification of log records", "name_zh": "核實日誌記錄", "subs": [{"text_en": "All dated entries signed by responsible person's representative; maintenance plan established; maintenance performed per plan", "text_zh": "確定日誌紀錄中所有日期的記錄是否有負責人代表的簽名；制定保養計劃；按計劃進行保養", "points": 5}]}, {"id": "C.1.5", "no": "1.5", "max": 2, "name_en": "Regular meetings with contractor", "name_zh": "與承辦商定期舉行會議", "subs": [{"text_en": "Met contractor at least once every 6 months in past 24 months", "text_zh": "過去 24 個月內，每 6 個月至少與承辦商會面一次", "points": 2}]}, {"id": "C.1.6", "no": "1.6", "max": 4, "name_en": "Appointed lift consultant / RLE / resident engineer to oversee contractor", "name_zh": "委任專業升降機顧問、註冊升降機工程師或物業管理公司聘用的駐場工程師，檢查升降機承辦商的工作", "subs": [{"text_en": "Appointment of consultant/RLE/resident engineer", "text_zh": "委任專業升降機顧問、註冊升降機工程師或物業管理公司聘用的駐場工程師", "points": 1}, {"text_en": "Review of contractor's report jointly with consultant", "text_zh": "檢查完承辦商的工作後，與其一起檢視檢查報告和結果", "points": 1}, {"text_en": "Follow-up on report findings", "text_zh": "檢查承辦商的工作後，跟進報告中提到的工作的進展", "points": 2}]}, {"id": "C.1.7", "no": "1.7", "max": 5, "name_en": "Cleanliness of machine room, well and pit", "name_zh": "確保升降機機房、井道、底坑的清潔", "subs": [{"text_en": "Machine room cleanliness", "text_zh": "機房潔淨度", "points": 1}, {"text_en": "Lift car cleanliness", "text_zh": "升降機機廂的清潔度", "points": 1}, {"text_en": "Lift well cleanliness", "text_zh": "升降機井的清潔度", "points": 1}, {"text_en": "Car-top cleanliness", "text_zh": "機廂頂清潔", "points": 1}, {"text_en": "Pit cleanliness", "text_zh": "升降機底坑的清潔度", "points": 1}]}, {"id": "C.1.8", "no": "1.8", "max": 5, "name_en": "Immediate assistance to trapped passengers", "name_zh": "立即協助受困升降機乘客", "subs": [{"text_en": "Trapped-passenger assistance guide displayed in machine room", "text_zh": "升降機機房內展示協助受困升降機乘客的指南", "points": 1}, {"text_en": "Conversation documentation kept for reassuring trapped passengers", "text_zh": "保留安撫受困乘客時的對話文件", "points": 1}, {"text_en": "Drill records kept", "text_zh": "保存演習記錄", "points": 1}, {"text_en": "Training provided for assisting trapped passengers", "text_zh": "提供協助受困升降機乘客的培訓", "points": 1}, {"text_en": "Log records of entrapment & rescue events", "text_zh": "了解日誌中關於被困事件和解救受困乘客的記錄", "points": 1}]}, {"id": "C.1.9", "no": "1.9", "max": 5, "name_en": "Proper handling of user complaints", "name_zh": "妥善處理用戶投訴", "subs": [{"text_en": "Complaint-handling service indicators established", "text_zh": "制定申訴處理服務指標", "points": 1}, {"text_en": "Training on complaint handling provided", "text_zh": "提供處理用戶投訴的培訓", "points": 1}, {"text_en": "Complaint-handling drill conducted", "text_zh": "進行用戶投訴處理演練", "points": 1}, {"text_en": "Complete complaint records kept", "text_zh": "保留完整的投訴記錄", "points": 1}, {"text_en": "Complaint follow-up records kept", "text_zh": "保留投訴跟進記錄", "points": 1}]}, {"id": "C.1.10", "no": "1.10", "max": 5, "name_en": "Passenger comfort & cabin environmental quality", "name_zh": "升降機乘客的舒適度及機廂的環境品質（包括通風系統、清潔度、照明等）", "subs": [{"text_en": "No odour in cabin", "text_zh": "升降機廂內未發現任何異味", "points": 1}, {"text_en": "Good ventilation in cabin", "text_zh": "升降機機廂內通風良好", "points": 1}, {"text_en": "Good lighting in cabin", "text_zh": "升降機機廂內照明良好", "points": 1}, {"text_en": "Stable cabin operation", "text_zh": "升降機機廂穩定運行", "points": 1}, {"text_en": "Cabin cleanliness", "text_zh": "升降機機廂的清潔", "points": 1}]}], "annexD": {"D.1": {"title_en": "Lift Well, Machine Room and Pulley Room", "title_zh": "升降機井道、機房及滑輪室", "items": [{"id": "D.1.1", "no": "1.1", "name_en": "Dedicated lift well, machine room and pulley room", "name_zh": "專用井道、機房及滑輪室", "La": {"desc_en": "Lift and associated equipment installed in designated machine room only.", "desc_zh": "升降機及其相關設備安裝在指定機房。", "d": 1, "s": 3, "l": "E", "c": "III"}, "Lc": {"desc_en": "Machine room or pulley room contains cable trays, cables or other equipment unrelated to the lift.", "desc_zh": "升降機機房、滑輪室內有電纜槽、電纜等與升降機無關的設備。", "d": 1, "s": 3, "l": "D", "c": "II"}, "improvement_en": "Machine room and pulley room shall only store lift-related parts & tools.", "improvement_zh": "升降機機房、滑輪房應僅在指定區域存放升降機相關零件及工具。", "essential": false, "Lb": null}, {"id": "D.1.2", "no": "1.2", "name_en": "Lighting and power socket outlets", "name_zh": "照明和電源插座", "La": {"desc_en": "Machine room floor illuminance ≥200 lux; car-top and pit floor illuminance (1m above) ≥50 lux; power socket outlets in good condition.", "desc_zh": "升降機機房地面照度不低於 200 勒克斯，機頂和底坑地面以上 1m 處照度不低於 50 勒克斯，機房和滑輪室內設置的電源插座狀況良好。", "d": 2, "s": 3, "l": "E", "c": "III"}, "Lc": {"desc_en": "Illuminance below thresholds, or power outlets damaged.", "desc_zh": "機房地面照度低於 200 勒克斯，或機頂和底坑 1m 處照度低於 50 勒克斯，或電源插座損壞。", "d": 2, "s": 3, "l": "D", "c": "II"}, "improvement_en": "Enhance lighting and install power outlets to meet requirements.", "improvement_zh": "加強照明強度並安裝電源插座以符合要求。", "essential": false, "Lb": null}, {"id": "D.1.3", "no": "1.3", "name_en": "Metal bracket or hook installation", "name_zh": "金屬支架或掛鉤安裝", "La": {"desc_en": "Brackets/hooks on ceiling or beam intact; safe working load (SWL) marking legible.", "desc_zh": "機房頂板或橫樑的金屬支架或吊鉤完好，其安全工作載重標示完好。", "d": 1, "s": 3, "l": "E", "c": "III"}, "Lc": {"desc_en": "Brackets/hooks damaged, or SWL marking illegible.", "desc_zh": "機房頂板或橫樑的金屬支架或吊鉤損壞，或其安全工作載重標示難以識別。", "d": 1, "s": 3, "l": "D", "c": "II"}, "improvement_en": "Periodic test/inspection and visible SWL display.", "improvement_zh": "定期測試和檢查金屬支架或掛鉤並顯示附近的安全工作載重。", "essential": false, "Lb": null}, {"id": "D.1.4", "no": "1.4", "name_en": "Fixed pit ladder", "name_zh": "底坑的固定攀梯", "La": {"desc_en": "Fixed pit ladder intact (where no other pit access exists).", "desc_zh": "底坑的固定攀梯（沒有其他通道進入底坑時設置）完好無損。", "d": 1, "s": 3, "l": "E", "c": "III"}, "Lc": {"desc_en": "No pit ladder and no alternative access; or ladder obstructs lift operation zone.", "desc_zh": "無底坑的固定攀梯，且沒有其他通往底坑的通道；或攀梯妨礙了升降機的運作。", "d": 1, "s": 3, "l": "D", "c": "II"}, "improvement_en": "Provide compliant pit ladder; ensure it does not obstruct lift operation zone.", "improvement_zh": "提供完整的底坑的固定攀梯作為進入升降機底坑的通道，並保證攀梯不會妨礙升降機運行區域。", "essential": false, "Lb": null}, {"id": "D.1.5", "no": "1.5", "name_en": "Temperature control & ventilation", "name_zh": "溫度控制和通風", "La": {"desc_en": "Machine room ambient 5°C–40°C; well-ventilated; foul air from other building areas does not discharge directly into machine room.", "desc_zh": "機房內環境溫度保持在 5~40℃ 之間；機房通風良好，從建築物其他地方抽出的污濁空氣不會直接排放到機房。", "d": 2, "s": 3, "l": "E", "c": "III"}, "Lc": {"desc_en": "Ambient <5°C or >40°C; or foul air discharged directly into machine room.", "desc_zh": "機房內環境溫度低於 5℃ 或高於 40℃；或從建築物其他地方抽出的污濁空氣直接排入機房。", "d": 2, "s": 3, "l": "D", "c": "II"}, "improvement_en": "Install adequate ventilation; maintain 5°C–40°C.", "improvement_zh": "安裝適當通風設備，保持機房環境溫度維持在 5~40℃ 之間。", "essential": false, "Lb": null}, {"id": "D.1.6", "no": "1.6", "name_en": "Access to well, machine room and pulley room", "name_zh": "進入井道、機房和滑輪室", "La": {"desc_en": "Access to machine/pulley rooms, emergency operations area, and landing doors unobstructed; no need to pass through private space.", "desc_zh": "通往機房和滑輪間、到達緊急操作處和層站門的通道通暢，無需經過私人空間。", "d": 1, "s": 3, "l": "E", "c": "III"}, "Lc": {"desc_en": "Access obstructed, or must pass through private space.", "desc_zh": "通往上述位置的通道不通暢，或需要經過私人空間。", "d": 1, "s": 3, "l": "D", "c": "II"}, "improvement_en": "Ensure unobstructed access to machine room / pulley room / emergency operations area / landing doors.", "improvement_zh": "確保機房、滑輪室或緊急操作處及層站門可通行。", "essential": false, "Lb": null}, {"id": "D.1.7", "no": "1.7", "name_en": "Well-pit door, emergency door, trap door and inspection door", "name_zh": "井道坑底門、緊急門、活板門和檢查門", "La": {"desc_en": "All three: (a) emergency door does not open into shaft; (b) key-lock; closable & lockable without key once open; openable from inside without key; (c) electrical safety device confirms door closed.", "desc_zh": "同時滿足：(a) 緊急門沒有朝井道內部打開；(b) 門上裝設用鑰匙開啟的鎖，當門開啟後不用鑰匙能夠將其關閉和鎖住，在門鎖住後，不用鑰匙能夠從井道內將門打開；(c) 設置電氣安全裝置確保門的關閉狀態。", "d": 2, "s": 1, "l": "E", "c": "III"}, "Lc": {"desc_en": "Any one of the three requirements not met.", "desc_zh": "存在(a)/(b)/(c) 任一情形之違反。", "d": 2, "s": 1, "l": "D", "c": "II"}, "improvement_en": "Modify well-pit/emergency/trap/inspection doors to comply.", "improvement_zh": "依需求修改井道坑底門、緊急門、活板門和檢查門。", "essential": false, "Lb": null}, {"id": "D.1.8", "no": "1.8", "name_en": "Condition of well-pit, emergency, trap and inspection doors", "name_zh": "井道坑底門、緊急門、活板門和檢查門的狀況", "La": {"desc_en": "Door panel intact: no rust, perforation, deformation; lock & surroundings in good order; lock firmly fixed.", "desc_zh": "門板外觀完好，無鏽蝕、穿孔、變形；門鎖及周邊外觀良好，門鎖安裝牢固。", "d": 2, "s": 3, "l": "E", "c": "III"}, "Lc": {"desc_en": "Severe rust/perforation/deformation of door panel; or lock/surrounding rust; or insecure lock fixing.", "desc_zh": "門板嚴重鏽蝕、穿孔；或嚴重變形；或門鎖及周圍生鏽；或安裝不牢固。", "d": 2, "s": 3, "l": "D", "c": "II"}, "improvement_en": "Refurbish doors to comply.", "improvement_zh": "重新修整井道坑底門、緊急門、活板門和檢查門以符合要求。", "essential": false, "Lb": {"desc_en": "Some rust/deformation present but door still functions.", "desc_zh": "局部鏽蝕、變形，但仍可使用。", "d": 2, "s": 3, "l": "D", "c": "II"}}, {"id": "D.1.9", "no": "1.9", "name_en": "Machine room / pulley room warning notice", "name_zh": "機房、滑輪室警告告示", "La": {"desc_en": "Warning notice outside machine room door intact & legible.", "desc_zh": "機房門外側的警示告示完好、清晰。", "d": 2, "s": 3, "l": "E", "c": "III"}, "Lc": {"desc_en": "Warning notice damaged or illegible.", "desc_zh": "機房門外側的警示告示損壞或難以辨認。", "d": 2, "s": 3, "l": "D", "c": "II"}, "improvement_en": "Provide clear, complete warning notice on machine room door.", "improvement_zh": "機房門應設定清晰、完整的警告告示。", "essential": false, "Lb": null}, {"id": "D.1.10", "no": "1.10", "name_en": "Distance between car door & well wall", "name_zh": "機廂門與井道壁之間的距離", "La": {"desc_en": "Car door lock present & functional; or horizontal distance from well inner surface to nearest edge of car sill/door frame/sliding door ≤0.15 m throughout the well height.", "desc_zh": "設有機廂門鎖且機廂門鎖功能正常；或者在整個井道高度，井道內表面與機廂地坎、機廂門框或機廂滑動門的最近門口邊緣的水準距離不大於 0.15 m。", "d": 1, "s": 1, "l": "F", "c": "III"}, "Lc": {"desc_en": "No car door lock or car door lock failed; AND horizontal distance >0.15 m anywhere in well height.", "desc_zh": "沒有設置機廂門鎖，或機廂門鎖失效，且水準距離大於 0.15 m。", "d": 1, "s": 1, "l": "D", "c": "I"}, "improvement_en": "Install car door lock; if unavailable, perform door-lock functional test at all landings.", "improvement_zh": "機廂門鎖的安裝；如未安裝，則應在所有層站進行門鎖的功能測試。", "essential": true, "Lb": null}, {"id": "D.1.11", "no": "1.11", "name_en": "Refuge space in well pit", "name_zh": "井道底坑內的庇護空間", "La": {"desc_en": "Counterweight buffer mounted on solid pier extending to firm ground; or counterweight equipped with safety gear.", "desc_zh": "對重緩衝器安裝於一直延伸到堅固地面上的實心樁墩上；或對重上裝設安全鉗。", "d": 1, "s": 1, "l": "F", "c": "III"}, "Lc": {"desc_en": "Neither solid pier nor safety gear on counterweight.", "desc_zh": "對重緩衝器未安裝於堅固地面實心樁墩上，且未在對重上裝設安全鉗。", "d": 1, "s": 1, "l": "D", "c": "II"}, "improvement_en": "If counterweight buffer not on solid pier, install safety gear on counterweight.", "improvement_zh": "若對重緩衝器未安裝在實心樁上，則需在對重上安裝安全鉗。", "essential": false, "Lb": null}, {"id": "D.1.12", "no": "1.12", "name_en": "Well enclosure and protection", "name_zh": "井道的封閉與保護", "La": {"desc_en": "Well fully enclosed except necessary openings.", "desc_zh": "除必要的開口外，井道是完全封閉的。", "d": 1, "s": 2, "l": "F", "c": "III"}, "Lc": {"desc_en": "Other openings present besides necessary ones.", "desc_zh": "除必要的開口外，井道出現其他開口。", "d": 1, "s": 2, "l": "C", "c": "I"}, "improvement_en": "Ensure lift well fully enclosed except necessary openings.", "improvement_zh": "確定升降機井道除必要的開口外部完全封閉。", "essential": false, "Lb": null}, {"id": "D.1.13", "no": "1.13", "name_en": "Railing for machine room with floor-level difference", "name_zh": "地面高度不同的機房的圍欄", "La": {"desc_en": "Where floor level difference >0.50 m, proper stair or step railing provided.", "desc_zh": "機房樓面高度差超過 0.50 m 時，設定完整的踏步或樓梯護欄。", "d": 1, "s": 3, "l": "E", "c": "III"}, "Lc": {"desc_en": "Floor level difference >0.50 m but no/damaged stair railing.", "desc_zh": "機房樓面高度差超過 0.50 m 時，沒有設定或損壞踏步或樓梯的護欄。", "d": 1, "s": 3, "l": "D", "c": "II"}, "improvement_en": "Provide stair or step railing per requirement.", "improvement_zh": "根據要求提供階梯或樓梯的護欄。", "essential": false, "Lb": null}, {"id": "D.1.14", "no": "1.14", "name_en": "Machine room floor recess cover", "name_zh": "機房地板凹槽蓋", "La": {"desc_en": "Floor recesses >0.05 m deep and 0.05–0.50 m wide have intact covers.", "desc_zh": "機房地面深度大於 0.05 m、寬度介於 0.05 m 和 0.50 m 之間的凹坑或槽坑的封蓋完好。", "d": 1, "s": 3, "l": "E", "c": "III"}, "Lc": {"desc_en": "No cover or cover damaged.", "desc_zh": "封蓋缺失或破損。", "d": 1, "s": 3, "l": "D", "c": "II"}, "improvement_en": "Provide suitable covers for machine room floor recesses.", "improvement_zh": "為機房地面凹處提供合適的蓋板。", "essential": false, "Lb": null}, {"id": "D.1.15", "no": "1.15", "name_en": "Openings in machine room floor", "name_zh": "機房地板上的開口", "La": {"desc_en": "Floor openings have upstand projecting ≥50 mm above slab/finished floor.", "desc_zh": "機房地面開口採用凸緣，且該凸緣應凸出樓板或完工地面至少 50 mm。", "d": 1, "s": 2, "l": "F", "c": "III"}, "Lc": {"desc_en": "No upstand, or upstand <50 mm.", "desc_zh": "機房地面開口未採用凸緣，或凸緣凸出小於 50 mm。", "d": 1, "s": 2, "l": "D", "c": "II"}, "improvement_en": "Provide compliant upstand to machine room openings.", "improvement_zh": "為機房地面凹處提供合適的蓋板。", "essential": false, "Lb": null}, {"id": "D.1.16", "no": "1.16", "name_en": "Machine room noise", "name_zh": "機房噪音", "La": {"desc_en": "Average noise <70 dB for rated speed ≤2.5 m/s; <75 dB for >2.5 m/s.", "desc_zh": "額定速度 ≤2.5 m/s 時機房平均雜訊 <70 dB；額定速度 >2.5 m/s 時 <75 dB。", "d": 2, "s": 4, "l": "D", "c": "III"}, "Lc": {"desc_en": "Noise >80 dB (≤2.5 m/s) or >85 dB (>2.5 m/s).", "desc_zh": "噪音 >80 dB (≤2.5 m/s) 或 >85 dB (>2.5 m/s)。", "d": 2, "s": 4, "l": "A", "c": "II"}, "improvement_en": "Inspect moving parts in machine room and rectify.", "improvement_zh": "檢查機房內移動部件並進行必要的整改。", "essential": false, "Lb": {"desc_en": "Noise 70–80 dB (≤2.5 m/s) or 75–85 dB (>2.5 m/s).", "desc_zh": "噪音 70~80 dB (≤2.5 m/s) 或 75~85 dB (>2.5 m/s)。", "d": 2, "s": 4, "l": "B", "c": "II"}}, {"id": "D.1.17", "no": "1.17", "name_en": "Guard for rotating parts", "name_zh": "轉動部件的保護罩", "La": {"desc_en": "Effective guarding provided for accessible rotating parts that may pose risk.", "desc_zh": "對可能產生危險並可能接近的旋轉部件提供有效的防護。", "d": 2, "s": 3, "l": "E", "c": "III"}, "Lc": {"desc_en": "No effective guarding, or guarding damaged.", "desc_zh": "未提供有效的防護，或防護裝置有破損。", "d": 2, "s": 3, "l": "B", "c": "I"}, "improvement_en": "Provide proper guards for rotating parts.", "improvement_zh": "為旋轉部件提供適當的防護裝置。", "essential": false, "Lb": null}, {"id": "D.1.18", "no": "1.18", "name_en": "Emergency & test operation devices for technicians in well", "name_zh": "工程人員在井道內時的緊急和測試操作裝置", "La": {"desc_en": "Illuminance on emergency operation panel ≥200 lux; intercom, dynamic test device, car direction indicator, unlocking zone indicator, car speed display all functional.", "desc_zh": "緊急操作屏照度 ≥200 lux；對講系統、動態測試裝置、機廂方向顯示、開鎖區域到達顯示、機廂運轉速度顯示功能正常。", "d": 2, "s": 2, "l": "F", "c": "III"}, "Lc": {"desc_en": "Intercom, dynamic detection, car direction display, unlocking zone display, or speed display malfunctioning.", "desc_zh": "對講系統、動態偵測裝置、機廂行駛方向顯示、是否到達開鎖區域顯示及機廂行駛速度顯示工作異常。", "d": 2, "s": 2, "l": "C", "c": "I"}, "improvement_en": "Provide proper lighting, intercom and related equipment for technician emergency & test ops in well.", "improvement_zh": "為工程人員在井道內時的緊急操作和測試操作提供適當的照明、對講系統和相關設備。", "essential": false, "Lb": {"desc_en": "Illuminance on emergency operation panel <200 lux.", "desc_zh": "緊急操作屏上的照度小於 200 lux。", "d": 2, "s": 2, "l": "E", "c": "II"}}]}, "D.2": {"title_en": "Landing Door and Car Door", "title_zh": "層站門與機廂門", "items": [{"id": "D.2.1", "no": "2.1", "name_en": "Gap between landing door & car door panels", "name_zh": "層站門與機廂門門板之間的間距", "La": {"desc_en": "Gap ≤6 mm.", "desc_zh": "門板之間的間隙不大於 6 mm。", "d": 2, "s": 3, "l": "E", "c": "III"}, "Lc": {"desc_en": "Gap >10 mm.", "desc_zh": "門板之間的間隙大於 10 mm。", "d": 2, "s": 3, "l": "B", "c": "I"}, "improvement_en": "Adjust gap between landing & car door panels.", "improvement_zh": "調整層站門與機廂門板之間的間隙，以符合要求。", "essential": false, "Lb": {"desc_en": "Gap ≤10 mm.", "desc_zh": "門板之間的間隙不大於 10 mm。", "d": 2, "s": 3, "l": "C", "c": "II"}}, {"id": "D.2.2", "no": "2.2", "name_en": "Horizontal distance between car sill & landing sill", "name_zh": "機廂地坎與層站門地坎之間的水平距離", "La": {"desc_en": "Horizontal distance ≤35 mm.", "desc_zh": "水平距離不超過 35 mm。", "d": 2, "s": 3, "l": "E", "c": "III"}, "Lc": {"desc_en": "Horizontal distance >35 mm.", "desc_zh": "水平距離超過 35 mm。", "d": 2, "s": 3, "l": "C", "c": "II"}, "improvement_en": "Adjust horizontal distance between car sill & landing sill.", "improvement_zh": "調整機廂地坎與層站門地坎之間的水平距離。", "essential": false, "Lb": null}, {"id": "D.2.3", "no": "2.3", "name_en": "Corrosion of landing & car doors", "name_zh": "層站門和機廂門的鏽蝕", "La": {"desc_en": "Total rust area <40 cm²; local pitting/'rust crater' <15 cm².", "desc_zh": "層站門或機廂門鏽蝕總面積小於 40 cm²；或局部點蝕或「鏽坑」面積小於 15 cm²。", "d": 2, "s": 1, "l": "F", "c": "III"}, "Lc": {"desc_en": "Total rust area >100 cm²; local pitting/'rust crater' >30 cm².", "desc_zh": "總鏽蝕面積大於 100 cm²；或局部點蝕或「鏽坑」面積大於 30 cm²。", "d": 2, "s": 1, "l": "D", "c": "I"}, "improvement_en": "Refurbish landing or car doors to comply.", "improvement_zh": "重新整修層站門或機廂門以符合要求。", "essential": false, "Lb": {"desc_en": "Total rust area 40–100 cm²; local pitting 15–30 cm².", "desc_zh": "總鏽蝕面積 40~100 cm²；或局部麻點面積 15~30 cm²。", "d": 2, "s": 1, "l": "E", "c": "II"}}, {"id": "D.2.4", "no": "2.4", "name_en": "Mechanical strength of landing & car doors", "name_zh": "層站門和機廂門的機械強度", "La": {"desc_en": "When locked, 300 N vertical force applied over 5 cm² anywhere on panel → elastic deformation ≤15 mm, no permanent deformation, no impact on opening/closing.", "desc_zh": "門在鎖住位置時，用 300 N 的力垂直作用在門扇任意位置且作用力均布在 5 cm² 範圍內，門扇彈性變形不大於 15 mm，無永久變形，且不影響門的啟閉。", "d": 2, "s": 1, "l": "F", "c": "III"}, "Lc": {"desc_en": "Severe deformation; or strength test failed.", "desc_zh": "發生嚴重變形或強度試驗不合格。", "d": 2, "s": 1, "l": "C", "c": "I"}, "improvement_en": "Replace / repair landing & car doors.", "improvement_zh": "更換／修理層站門和機廂門以符合要求。", "essential": false, "Lb": null}, {"id": "D.2.5", "no": "2.5", "name_en": "Operating stability of landing & car doors", "name_zh": "層站門、機廂門運轉穩定性", "La": {"desc_en": "Doors open/close smoothly.", "desc_zh": "層站門、機廂門開關順暢。", "d": 2, "s": 3, "l": "E", "c": "III"}, "Lc": {"desc_en": "Severe shake during opening/closing; unstable speed; unrepairable.", "desc_zh": "開關時抖動嚴重，運轉速度不穩定，無法修復。", "d": 2, "s": 3, "l": "B", "c": "I"}, "improvement_en": "Adjust door operating mechanism.", "improvement_zh": "調整門操作機構以符合要求。", "essential": false, "Lb": {"desc_en": "Doors wobble during opening/closing.", "desc_zh": "層站門或機廂門開關時晃動。", "d": 2, "s": 3, "l": "C", "c": "II"}}, {"id": "D.2.6", "no": "2.6", "name_en": "Noise of landing & car door operation", "name_zh": "層站門、機廂門運轉噪音", "La": {"desc_en": "Noise ≤65 dB.", "desc_zh": "噪音等級不大於 65 dB。", "d": 2, "s": 4, "l": "D", "c": "III"}, "Lc": {"desc_en": "Noise >65 dB.", "desc_zh": "雜訊等級大於 65 dB。", "d": 2, "s": 4, "l": "C", "c": "II"}, "improvement_en": "Adjust door operating mechanism.", "improvement_zh": "調整門操作機構以符合要求。", "essential": false, "Lb": null}, {"id": "D.2.7", "no": "2.7", "name_en": "Car door drive performance", "name_zh": "機廂門驅動性能", "La": {"desc_en": "Car door drive operating reliably.", "desc_zh": "機廂門驅動器工作可靠。", "d": 1, "s": 4, "l": "E", "c": "III"}, "Lc": {"desc_en": "Car door drive malfunctioning.", "desc_zh": "機廂門驅動器工作異常。", "d": 1, "s": 4, "l": "C", "c": "II"}, "improvement_en": "Replace / repair door drive if necessary.", "improvement_zh": "如有必要，更換/修理門驅動裝置。", "essential": false, "Lb": null, "note_en": "Detection ① if drive monitored; ② if not.", "note_zh": "註：①表示有相應的自行監測；②表示無相應的自行監測。"}, {"id": "D.2.8", "no": "2.8", "name_en": "Engagement depth of car door & sill", "name_zh": "機廂門和地坎的嚙合深度", "La": {"desc_en": "Engagement depth ≥manufacturer design value, or ≥75% sill groove depth.", "desc_zh": "嚙合深度不小於製造商設計值，或不小於地坎槽深度的 75%。", "d": 2, "s": 1, "l": "F", "c": "III"}, "Lc": {"desc_en": "Engagement depth <manufacturer design value or <75% sill groove depth.", "desc_zh": "嚙合深度小於製造商設計值，或地坎槽深度的 75%。", "d": 2, "s": 1, "l": "B", "c": "I"}, "improvement_en": "Adjust / replace door frame.", "improvement_zh": "調整/更換門框以符合要求。", "essential": false, "Lb": null}, {"id": "D.2.9", "no": "2.9", "name_en": "Landing door sill", "name_zh": "層站門地坎", "La": {"desc_en": "Sill free from breakage, weld cracks, severe wear, rust; sill groove not deformed.", "desc_zh": "層站門地坎無斷裂、焊接裂痕、嚴重磨損、鏽蝕；地坎槽未見明顯變形。", "d": 2, "s": 1, "l": "F", "c": "III"}, "Lc": {"desc_en": "Sill broken, weld-cracked, severely worn or rusted; or sill groove deformed affecting door operation or door frame derailment.", "desc_zh": "層站門地坎發生斷裂、焊接裂縫、嚴重磨損、鏽蝕；或地坎槽變形，影響門的正常運作或導致門框脫軌。", "d": 2, "s": 1, "l": "C", "c": "I"}, "improvement_en": "Replace / repair landing door sill.", "improvement_zh": "更換/修理門廳設施以符合要求。", "essential": false, "Lb": null}, {"id": "D.2.10", "no": "2.10", "name_en": "Door slider wear & fixing", "name_zh": "門滑塊磨損和固定", "La": {"desc_en": "Door slider firmly fixed; no obvious deformation, wear, rust.", "desc_zh": "門滑塊應固定可靠，未出現明顯變形、磨損、鏽蝕等缺陷。", "d": 2, "s": 3, "l": "D", "c": "III"}, "Lc": {"desc_en": "Door slider insecurely fixed; severe deformation, wear, rust.", "desc_zh": "門滑塊固定不可靠，出現嚴重變形、磨損、鏽蝕。", "d": 2, "s": 3, "l": "E", "c": "II"}, "improvement_en": "Replace / repair door slider.", "improvement_zh": "更換/修理門滑塊以符合要求。", "essential": false, "Lb": null}, {"id": "D.2.11", "no": "2.11", "name_en": "Sill bracket support", "name_zh": "地坎的支撐", "La": {"desc_en": "Sill bracket free from severe deformation or rust.", "desc_zh": "地坎支架未出現嚴重變形或鏽蝕。", "d": 2, "s": 1, "l": "F", "c": "III"}, "Lc": {"desc_en": "Sill bracket severely deformed or rusted.", "desc_zh": "地坎支架出現嚴重變形或鏽蝕。", "d": 2, "s": 1, "l": "E", "c": "II"}, "improvement_en": "Replace / repair sill support.", "improvement_zh": "更換/修理地坎的支撐以符合要求。", "essential": false, "Lb": null}, {"id": "D.2.12", "no": "2.12", "name_en": "Landing door auto-closing device", "name_zh": "層站門自動關閉裝置", "La": {"desc_en": "Auto-closing device reliable & effective.", "desc_zh": "自動關閉裝置功能可靠、有效。", "d": 2, "s": 1, "l": "F", "c": "III"}, "Lc": {"desc_en": "Auto-closing device unreliable or ineffective.", "desc_zh": "自動關閉裝置功能不可靠或無效。", "d": 2, "s": 1, "l": "C", "c": "I"}, "improvement_en": "Replace / repair landing door auto-closing device.", "improvement_zh": "更換/修理層站門自動關閉裝置，以符合要求。", "essential": false, "Lb": null}, {"id": "D.2.13", "no": "2.13", "name_en": "Engagement depth of landing & car door lock latches", "name_zh": "層站門和機廂門鎖定裝置的鎖止件嚙合深度", "La": {"desc_en": "Engagement depth ≥7 mm.", "desc_zh": "嚙合深度不小於 7 mm。", "d": 2, "s": 1, "l": "F", "c": "III"}, "Lc": {"desc_en": "Engagement depth <7 mm.", "desc_zh": "嚙合深度小於 7 mm。", "d": 2, "s": 1, "l": "C", "c": "I"}, "improvement_en": "Replace / repair landing & car door lock devices.", "improvement_zh": "更換/修理層站門和機廂門鎖定裝置以符合要求。", "essential": false, "Lb": null}, {"id": "D.2.14", "no": "2.14", "name_en": "Electrical safety device for door lock verification", "name_zh": "用於驗證層站門和機廂門關閉和鎖定的電動安全裝置", "La": {"desc_en": "Electrical safety device intact and functional.", "desc_zh": "電氣安全裝置完好、功能有效。", "d": 1, "s": 1, "l": "F", "c": "III"}, "Lc": {"desc_en": "Electrical safety device failed; or damaged affecting function.", "desc_zh": "電氣安全裝置失效；或損壞影響功能。", "d": 1, "s": 1, "l": "A", "c": "I"}, "improvement_en": "Replace / repair electrical safety device for door lock.", "improvement_zh": "更換/修理電氣安全裝置，確保層站門和機廂門鎖定裝置正常運作。", "essential": false, "Lb": null, "note_en": "Detection ① if device monitored; ② if not.", "note_zh": "註：①表示有自行監測；②表示無自行監測。"}, {"id": "D.2.15", "no": "2.15", "name_en": "Door vane (safety) of automatic door", "name_zh": "自動門的安全門刀", "La": {"desc_en": "Door vane functional.", "desc_zh": "門刀功能有效。", "d": 2, "s": 3, "l": "E", "c": "III"}, "Lc": {"desc_en": "Door vane failed.", "desc_zh": "門刀失效。", "d": 2, "s": 3, "l": "B", "c": "II"}, "improvement_en": "Replace / repair door vane.", "improvement_zh": "更換/修理門刀以符合要求。", "essential": false, "Lb": null}, {"id": "D.2.16", "no": "2.16", "name_en": "Force to open car door in unlocking zone", "name_zh": "打開開鎖區的機門的力", "La": {"desc_en": "Force to open ≤300 N.", "desc_zh": "打開機門的力量不大於 300 N。", "d": 2, "s": 3, "l": "E", "c": "III"}, "Lc": {"desc_en": "Force to open >300 N.", "desc_zh": "打開機門的力量大於 300 N。", "d": 2, "s": 3, "l": "C", "c": "I"}, "improvement_en": "Adjust door operating mechanism.", "improvement_zh": "調整門操作結構以符合要求。", "essential": false, "Lb": null}, {"id": "D.2.17", "no": "2.17", "name_en": "Car door limit device structure", "name_zh": "機廂門限位裝置的結構", "La": {"desc_en": "Car door limit device functional.", "desc_zh": "機廂門限制裝置功能有效。", "d": 2, "s": 1, "l": "F", "c": "III"}, "Lc": {"desc_en": "Car door limit device failed, or not installed.", "desc_zh": "機廂門限制裝置功能失效或未設置。", "d": 2, "s": 1, "l": "D", "c": "I"}, "improvement_en": "Provide suitable car door limit device.", "improvement_zh": "提供合適的機門限制裝置以符合要求。", "essential": false, "Lb": null}]}, "D.3": {"title_en": "Car and Counterweight", "title_zh": "機廂與對重", "items": [{"id": "D.3.1", "no": "3.1", "name_en": "Emergency alarm device", "name_zh": "緊急警報裝置", "La": {"desc_en": "Emergency alarm device intact and functional.", "desc_zh": "緊急警報裝置完好，功能有效。", "d": 2, "s": 3, "l": "E", "c": "III"}, "Lc": {"desc_en": "Emergency alarm device failed.", "desc_zh": "緊急警報裝置失效。", "d": 2, "s": 3, "l": "C", "c": "II"}, "improvement_en": "Replace / repair emergency alarm device.", "improvement_zh": "更換/修理緊急警報裝置以符合要求。", "essential": false, "Lb": null}, {"id": "D.3.2", "no": "3.2", "name_en": "CCTV in car", "name_zh": "機廂閉路電視", "La": {"desc_en": "CCTV in car working normally.", "desc_zh": "機廂閉路電視工作正常。", "d": 2, "s": 4, "l": "E", "c": "III"}, "Lc": {"desc_en": "No in-car CCTV or CCTV not working normally.", "desc_zh": "無機廂閉路電視或機廂閉路電視工作不正常。", "d": 2, "s": 4, "l": "C", "c": "II"}, "improvement_en": "Install / replace / repair CCTV system.", "improvement_zh": "安裝/更換/修理閉路電視系統以符合要求。", "essential": false, "Lb": null}, {"id": "D.3.3", "no": "3.3", "name_en": "Car lighting", "name_zh": "機廂照明", "La": {"desc_en": "Illuminance on car operation box and 1 m above car floor ≥100 lux.", "desc_zh": "機廂操作箱上和機廂地面以上 1 m 處的照度不低於 100 勒克斯。", "d": 2, "s": 3, "l": "E", "c": "III"}, "Lc": {"desc_en": "Illuminance <100 lux at either location.", "desc_zh": "機廂操作箱上或機廂地面以上 1 m 處的照度低於 100 勒克斯。", "d": 2, "s": 3, "l": "C", "c": "II"}, "improvement_en": "Repair car lighting.", "improvement_zh": "修理機廂照明以符合要求。", "essential": false, "Lb": null}, {"id": "D.3.4", "no": "3.4", "name_en": "Car-top railing", "name_zh": "機頂圍欄", "La": {"desc_en": "Car-top railing intact; warning sign or notice clearly visible.", "desc_zh": "機頂圍欄完好；俯伏或斜靠護欄危險的警示符號或須知清晰可見。", "d": 2, "s": 1, "l": "F", "c": "III"}, "Lc": {"desc_en": "Car-top railing missing/damaged; or warning sign missing/damaged.", "desc_zh": "機頂圍欄缺失或損壞；警示符號或須知缺損。", "d": 2, "s": 1, "l": "B", "c": "I"}, "improvement_en": "Install / repair car-top railing and warning signs.", "improvement_zh": "安裝/修理機廂頂欄桿並提供適當的警告標誌。", "essential": false, "Lb": null}, {"id": "D.3.5", "no": "3.5", "name_en": "Car-top inspection device", "name_zh": "機頂檢測裝置", "La": {"desc_en": "Car-top inspection device complete and functional.", "desc_zh": "機頂檢測裝置功能齊全且正常有效。", "d": 2, "s": 1, "l": "F", "c": "III"}, "Lc": {"desc_en": "Car-top inspection device missing or non-functional.", "desc_zh": "機頂檢測裝置功能缺失或無效。", "d": 2, "s": 1, "l": "A", "c": "I"}, "improvement_en": "Replace / repair car-top inspection device.", "improvement_zh": "更換/修理機頂檢查裝置以符合要求。", "essential": false, "Lb": null}, {"id": "D.3.6", "no": "3.6", "name_en": "Car suspension yoke corrosion", "name_zh": "機廂吊架鏽蝕", "La": {"desc_en": "No obvious rust.", "desc_zh": "無明顯鏽蝕。", "d": 2, "s": 1, "l": "F", "c": "III"}, "Lc": {"desc_en": "Rust >1 mm, weld-seam cracks, severe corrosion.", "desc_zh": "鏽蝕超過 1 mm、焊縫裂痕、嚴重鏽蝕。", "d": 2, "s": 1, "l": "E", "c": "II"}, "improvement_en": "Repair / refurbish car suspension yoke.", "improvement_zh": "修理/翻新機廂吊索以符合要求。", "essential": false, "Lb": null}, {"id": "D.3.7", "no": "3.7", "name_en": "Car suspension yoke deformation", "name_zh": "機廂吊架變形", "La": {"desc_en": "Car yoke no obvious deformation.", "desc_zh": "機廂吊架未見明顯變形。", "d": 2, "s": 2, "l": "F", "c": "III"}, "Lc": {"desc_en": "Yoke top, bottom or cross-beam deformed or multiple local deformations.", "desc_zh": "機廂吊架上樑、下樑、橫樑有變形或多處局部變形。", "d": 2, "s": 2, "l": "E", "c": "II"}, "improvement_en": "Replace / repair car suspension yoke.", "improvement_zh": "更換/修理機廂吊架以符合要求。", "essential": false, "Lb": null}, {"id": "D.3.8", "no": "3.8", "name_en": "Car-yoke connection fixing & buffer rubber ageing", "name_zh": "機廂吊架連接件的固定及機廂緩衝橡膠老化", "La": {"desc_en": "Bolts firmly tightened; sling welds free from cracks; buffer rubber little aged; no obvious deformation.", "desc_zh": "連接螺栓連接牢固；機廂吊帶焊接處無開裂；緩衝橡膠老化程度低；無明顯變形。", "d": 2, "s": 2, "l": "F", "c": "III"}, "Lc": {"desc_en": "Connections obviously loose, cracked; obvious ageing, deformation.", "desc_zh": "連接部位有明顯鬆動、龜裂；明顯老化、變形。", "d": 2, "s": 2, "l": "C", "c": "I"}, "improvement_en": "Repair connection points & replace aged rubber as necessary.", "improvement_zh": "必要時對吊車吊索連接部位進行修復，並更換老化的橡膠故障。", "essential": false, "Lb": {"desc_en": "Local connection loose or slight cracks.", "desc_zh": "局部連接鬆脫或有輕微裂痕。", "d": 2, "s": 2, "l": "E", "c": "II"}}, {"id": "D.3.9", "no": "3.9", "name_en": "Car-body suspension corrosion", "name_zh": "機身吊架鏽蝕", "La": {"desc_en": "No obvious rust.", "desc_zh": "無明顯鏽蝕。", "d": 2, "s": 2, "l": "F", "c": "III"}, "Lc": {"desc_en": "Car body / car-top severely rust-perforated; perforation diameter >10 mm.", "desc_zh": "機身、機頂嚴重鏽蝕穿孔，穿孔直徑大於 10 mm。", "d": 2, "s": 2, "l": "C", "c": "I"}, "improvement_en": "Replace / repair car body.", "improvement_zh": "更換/修理機身以符合要求。", "essential": false, "Lb": null}, {"id": "D.3.10", "no": "3.10", "name_en": "Deformation of car wall, top, floor", "name_zh": "機廂壁、機廂頂、機廂底部變形", "La": {"desc_en": "Floor free from obvious deformation, breakage, rust, perforation; glass walls/top no obvious crack.", "desc_zh": "機廂底部未出現明顯變形、斷裂、鏽蝕、穿孔；玻璃轎壁、機頂未出現明顯裂痕。", "d": 2, "s": 2, "l": "F", "c": "III"}, "Lc": {"desc_en": "Severe deformation/breakage/rust/perforation of floor; obvious cracks on glass.", "desc_zh": "機廂底部嚴重變形、斷裂、鏽蝕或穿孔；玻璃轎壁、機頂出現明顯裂痕。", "d": 2, "s": 2, "l": "C", "c": "I"}, "improvement_en": "Replace / repair car wall/top/floor.", "improvement_zh": "更換/修理機廂壁、機廂頂棚、機廂底部以符合要求。", "essential": false, "Lb": null}, {"id": "D.3.11", "no": "3.11", "name_en": "Car ceiling fixing", "name_zh": "機廂天花板固定", "La": {"desc_en": "Ceiling decoration firmly fixed.", "desc_zh": "機廂天花板的裝飾固定良好。", "d": 2, "s": 2, "l": "F", "c": "III"}, "Lc": {"desc_en": "Ceiling decoration fixing damaged, fall hazard.", "desc_zh": "機廂天花板裝飾固定結構損壞，有墜落危險。", "d": 2, "s": 2, "l": "C", "c": "I"}, "improvement_en": "Properly secure ceiling decorations.", "improvement_zh": "機廂天花板的裝飾固定到位。", "essential": false, "Lb": null}, {"id": "D.3.12", "no": "3.12", "name_en": "Car toe-guard", "name_zh": "機廂護腳板", "La": {"desc_en": "Car toe-guard firmly fixed; no obvious rust.", "desc_zh": "機廂護腳板固定牢固；未出現明顯鏽蝕。", "d": 2, "s": 1, "l": "F", "c": "III"}, "Lc": {"desc_en": "Car toe-guard loose or severely rusted.", "desc_zh": "機廂護腳板固定不牢或鏽蝕嚴重。", "d": 2, "s": 1, "l": "E", "c": "II"}, "improvement_en": "Replace / repair car toe-guard.", "improvement_zh": "更換/修理機廂護腳板以符合要求。", "essential": false, "Lb": null}, {"id": "D.3.13", "no": "3.13", "name_en": "Balance coefficient", "name_zh": "平衡系數", "La": {"desc_en": "Balance coefficient between 0.4 and 0.5.", "desc_zh": "平衡系數在 0.4~0.5 之間。", "d": 2, "s": 1, "l": "F", "c": "III"}, "Lc": {"desc_en": "Balance coefficient <0.4 or >0.5.", "desc_zh": "平衡系數小於 0.4 或大於 0.5。", "d": 2, "s": 1, "l": "B", "c": "I"}, "improvement_en": "Rebalance the lifting system.", "improvement_zh": "重新平衡升降系統以符合要求。", "essential": false, "Lb": null, "note_en": "② if recently tested; ③ if no record.", "note_zh": "註：② 指有測試記錄；③ 指無測試記錄。"}, {"id": "D.3.14", "no": "3.14", "name_en": "Counterweight frame structural integrity", "name_zh": "對重吊架的結構完整性", "La": {"desc_en": "Counterweight structure intact and in good condition.", "desc_zh": "對重結構完好，狀況良好。", "d": 2, "s": 1, "l": "F", "c": "III"}, "Lc": {"desc_en": "Severe deformation preventing guide-shoe or safety-gear operation; vertical/bottom beams deformed; cannot reliably secure counterweight blocks.", "desc_zh": "對重吊架發生嚴重變形，導致導靴或對重安全鉗無法正常運作；直樑和底樑變形，無法保證對重塊在對重架內可靠固定。", "d": 2, "s": 1, "l": "B", "c": "I"}, "improvement_en": "Replace / repair counterweight frame.", "improvement_zh": "更換/修理對重吊架以符合要求。", "essential": false, "Lb": null}, {"id": "D.3.15", "no": "3.15", "name_en": "Counterweight frame corrosion", "name_zh": "對重吊架鏽蝕", "La": {"desc_en": "Counterweight frame no obvious rust.", "desc_zh": "對重吊架未見明顯鏽蝕。", "d": 2, "s": 1, "l": "F", "c": "III"}, "Lc": {"desc_en": "Counterweight frame severely rusted; primary load-bearing section thickness rust loss >10% of design thickness.", "desc_zh": "對重吊架嚴重鏽蝕，主要受力結構截面厚度鏽蝕超過設計厚度的 10%。", "d": 2, "s": 1, "l": "B", "c": "I"}, "improvement_en": "Replace / repair counterweight frame.", "improvement_zh": "更換/修理對重吊架以符合要求。", "essential": false, "Lb": null}, {"id": "D.3.16", "no": "3.16", "name_en": "Counterweight blocks", "name_zh": "負載錘重鐵塊", "La": {"desc_en": "Blocks no obvious deformation/cracks; coating intact.", "desc_zh": "負載錘重鐵塊未出現明顯變形、開裂，對重塗層材質無損壞。", "d": 2, "s": 3, "l": "F", "c": "III"}, "Lc": {"desc_en": "Blocks obviously deformed or cracked; coating broken, internal material may leak.", "desc_zh": "負載錘重鐵塊出現明顯嚴重變形或開裂；對重塗層破裂，內部材料可能漏出。", "d": 2, "s": 3, "l": "D", "c": "II"}, "improvement_en": "Replace / repair counterweight blocks.", "improvement_zh": "更換/修理負載錘重鐵塊以符合要求。", "essential": false, "Lb": null}, {"id": "D.3.17", "no": "3.17", "name_en": "Pit counterweight guard", "name_zh": "底坑對重防護罩", "La": {"desc_en": "Counterweight guard in pit intact.", "desc_zh": "底坑內的對重防護罩完好。", "d": 2, "s": 1, "l": "F", "c": "III"}, "Lc": {"desc_en": "Counterweight guard missing or damaged.", "desc_zh": "底坑內的對重防護罩缺失或破損。", "d": 2, "s": 1, "l": "D", "c": "I"}, "improvement_en": "Provide / repair pit counterweight guard.", "improvement_zh": "提供/修理底坑對重防護罩以符合要求。", "essential": false, "Lb": null}, {"id": "D.3.18", "no": "3.18", "name_en": "Counterweight guide shoe", "name_zh": "對重導靴", "La": {"desc_en": "Counterweight guide shoe no obvious deformation/cracks; wear within design allowable value.", "desc_zh": "對重導靴未出現明顯變形、開裂，磨損量不超過設計允許值。", "d": 2, "s": 3, "l": "F", "c": "III"}, "Lc": {"desc_en": "Counterweight guide shoe obviously deformed/cracked or worn beyond design value.", "desc_zh": "對重導靴出現明顯變形、開裂，或磨損程度超過設計允許值。", "d": 2, "s": 3, "l": "D", "c": "II"}, "improvement_en": "Replace / repair counterweight guide shoe.", "improvement_zh": "更換/修理對重導靴以符合要求。", "essential": false, "Lb": null}]}, "D.4": {"title_en": "Suspension and Compensation Devices", "title_zh": "懸掛裝置及補償裝置", "items": [{"id": "D.4.1", "no": "4.1", "name_en": "Rope wear", "name_zh": "纜索磨損", "La": {"desc_en": "Rope diameter ≥94% nominal.", "desc_zh": "纜索直徑不小於公稱值的 94%。", "d": 2, "s": 1, "l": "F", "c": "III"}, "Lc": {"desc_en": "Rope diameter <90% nominal.", "desc_zh": "纜索直徑小於公稱值的 90%。", "d": 2, "s": 1, "l": "D", "c": "I"}, "improvement_en": "Replace rope to meet requirement.", "improvement_zh": "更換纜索以符合要求。", "essential": false, "Lb": {"desc_en": "Rope diameter ≥90% nominal.", "desc_zh": "纜索直徑不小於公稱值的 90%。", "d": 2, "s": 1, "l": "E", "c": "II"}}, {"id": "D.4.2", "no": "4.2", "name_en": "Rope deformation or damage", "name_zh": "纜索變形或損壞", "La": {"desc_en": "No cage twist, strand crush, kink, flattening, bend.", "desc_zh": "纜索未出現籠狀扭曲、股線擠壓、扭結、部分壓扁、彎曲等現象。", "d": 2, "s": 1, "l": "F", "c": "III"}, "Lc": {"desc_en": "Rope shows cage twist, strand crush, kink, flattening or bend.", "desc_zh": "纜索出現籠狀扭曲、股線擠壓、扭結、部分壓扁或彎曲。", "d": 2, "s": 1, "l": "D", "c": "I"}, "improvement_en": "Replace rope to meet requirement.", "improvement_zh": "更換纜索以符合要求。", "essential": false, "Lb": null}, {"id": "D.4.3", "no": "4.3", "name_en": "Rope corrosion", "name_zh": "纜索鏽蝕", "La": {"desc_en": "No obvious corrosion.", "desc_zh": "纜索未發現明顯鏽蝕。", "d": 2, "s": 1, "l": "F", "c": "III"}, "Lc": {"desc_en": "Severe rust, rust filling gaps between strands.", "desc_zh": "纜索鏽蝕嚴重，股間縫隙充滿鐵鏽。", "d": 2, "s": 1, "l": "D", "c": "I"}, "improvement_en": "Replace rope.", "improvement_zh": "更換纜索以符合要求。", "essential": false, "Lb": null}, {"id": "D.4.4", "no": "4.4", "name_en": "Rope broken-wire condition", "name_zh": "纜索斷絲狀況", "La": {"desc_en": "Within EMSD allowable limits (see reference table).", "desc_zh": "在 EMSD 規定的允許範圍內（見參考表）。", "d": 2, "s": 1, "l": "F", "c": "III"}, "Lc": {"desc_en": "Broken-wire count exceeds limits.", "desc_zh": "斷絲根數超過規定上限。", "d": 2, "s": 1, "l": "D", "c": "I"}, "improvement_en": "Replace rope.", "improvement_zh": "更換纜索以符合要求。", "essential": false, "Lb": {"desc_en": "Broken-wire count between La & Lc limits.", "desc_zh": "斷絲根數介於 La 與 Lc 之間。", "d": 2, "s": 1, "l": "E", "c": "II"}, "note_en": "② if no internal-strand break detection; ③ if no broken-wire detection requirement during maintenance.", "note_zh": "註：② 維修時有斷絲檢測要求；③ 維修時無斷絲檢測要求。"}, {"id": "D.4.5", "no": "4.5", "name_en": "Coated steel belt coating damage", "name_zh": "塗層鋼帶的塗層損壞", "La": {"desc_en": "No deformation (bulge, crack, dent, fold) on coating; no protrusion or exposure of carrier.", "desc_zh": "塗層中未觀察到變形（如凸起、破裂、壓痕、摺痕、凹陷），載體中未觀察到突出或暴露。", "d": 2, "s": 2, "l": "F", "c": "III"}, "Lc": {"desc_en": "Coating deformed (bulge, crack, etc.) or carrier protruding/exposed.", "desc_zh": "塗層變形或載體破裂、凸出、露出。", "d": 2, "s": 2, "l": "C", "c": "I"}, "improvement_en": "Replace coated steel belt.", "improvement_zh": "更換塗層鋼帶符合要求。", "essential": false, "Lb": null}, {"id": "D.4.6", "no": "4.6", "name_en": "Coated steel belt diameter / thickness reduction", "name_zh": "塗層鋼帶的塗層直徑或厚度的減小", "La": {"desc_en": "Measured diameter/thickness ≥ manufacturer's minimum allowable.", "desc_zh": "實測直徑（厚度）相對於標稱直徑（厚度）未減小到製造商提供的最小允許值。", "d": 2, "s": 1, "l": "F", "c": "III"}, "Lc": {"desc_en": "Measured diameter/thickness < manufacturer's minimum.", "desc_zh": "實測直徑（厚度）減小到小於製造商提供的最小允許值。", "d": 2, "s": 1, "l": "D", "c": "I"}, "improvement_en": "Replace coated steel belt.", "improvement_zh": "更換塗層鋼帶以符合要求。", "essential": false, "Lb": null}, {"id": "D.4.7", "no": "4.7", "name_en": "Rope termination fixing", "name_zh": "纜索終端裝置的固定", "La": {"desc_en": "Termination firmly fixed, no looseness; double nuts, bolts secure; or babbitt-alloy casting well connected.", "desc_zh": "纜索或帶固定牢固，無鬆動，雙螺母、螺栓等固定牢固，或巴氏合金鑄件連接良好。", "d": 2, "s": 1, "l": "F", "c": "III"}, "Lc": {"desc_en": "Termination not firmly fixed; babbitt casting loose.", "desc_zh": "纜索或帶固定不牢，巴氏合金鑄件鬆脫。", "d": 2, "s": 1, "l": "D", "c": "I"}, "improvement_en": "Tighten rope termination device.", "improvement_zh": "緊固纜索終端裝置符合要求。", "essential": false, "Lb": null}, {"id": "D.4.8", "no": "4.8", "name_en": "Rope termination corrosion", "name_zh": "纜索終端裝置的鏽蝕情況", "La": {"desc_en": "Rope termination no rust or only slight surface rust.", "desc_zh": "纜索終端無鏽蝕或表面輕微鏽蝕。", "d": 2, "s": 1, "l": "F", "c": "III"}, "Lc": {"desc_en": "Rope termination severely rusted, affecting load-bearing capacity.", "desc_zh": "纜索終端嚴重鏽蝕，影響承載能力。", "d": 2, "s": 1, "l": "D", "c": "I"}, "improvement_en": "Replace / repair rope termination device.", "improvement_zh": "更換/修理纜索終端裝置以符合要求。", "essential": false, "Lb": {"desc_en": "Larger surface rust area, or local deep rust.", "desc_zh": "纜索終端表面鏽蝕面積較大，或局部鏽蝕較深。", "d": 2, "s": 1, "l": "E", "c": "II"}}, {"id": "D.4.9", "no": "4.9", "name_en": "Spring of rope termination device — deformation/crack", "name_zh": "纜索終端裝置的彈簧是否變形、破裂", "La": {"desc_en": "Spring no obvious permanent deformation, no cracks.", "desc_zh": "彈簧未出現明顯永久變形、裂痕。", "d": 2, "s": 1, "l": "F", "c": "III"}, "Lc": {"desc_en": "Spring obviously deformed or cracked.", "desc_zh": "彈簧有明顯變形或裂紋缺陷。", "d": 2, "s": 1, "l": "E", "c": "II"}, "improvement_en": "Replace damaged spring.", "improvement_zh": "更換損壞的彈簧以符合要求。", "essential": false, "Lb": null}, {"id": "D.4.10", "no": "4.10", "name_en": "Termination support", "name_zh": "終端裝置的支撐", "La": {"desc_en": "Termination support no obvious deformation, no rust.", "desc_zh": "終端裝置的支架無明顯變形、鏽蝕。", "d": 2, "s": 1, "l": "F", "c": "III"}, "Lc": {"desc_en": "Termination support severely deformed or rusted.", "desc_zh": "終端裝置的支架出現嚴重變形或鏽蝕。", "d": 2, "s": 1, "l": "D", "c": "I"}, "improvement_en": "Replace / repair termination support.", "improvement_zh": "更換/修理終端裝置的支撐以符合要求。", "essential": false, "Lb": null}, {"id": "D.4.11", "no": "4.11", "name_en": "Pulleys & supports", "name_zh": "滑輪及其支撐裝置", "La": {"desc_en": "Pulleys and supports intact.", "desc_zh": "滑輪及其支撐裝置完好無損。", "d": 2, "s": 1, "l": "F", "c": "III"}, "Lc": {"desc_en": "Pulleys/supports severely deformed or visibly cracked; plastic guide pulley grooves broken.", "desc_zh": "滑輪及其支撐裝置嚴重變形或有明顯裂紋，塑膠導流滑輪的輪槽斷裂。", "d": 2, "s": 1, "l": "D", "c": "I"}, "improvement_en": "Replace / repair pulleys and supports.", "improvement_zh": "更換/修理滑輪及其支撐裝置以符合要求。", "essential": false, "Lb": null}, {"id": "D.4.12", "no": "4.12", "name_en": "Compensation chain / rope", "name_zh": "補償鏈（繩）", "La": {"desc_en": "Coating intact; no severe cracks/wear; uncoated links no severe rust or weld failure.", "desc_zh": "補償鏈（繩）塗層材料無脫落、嚴重開裂、磨損；無塗層補償鏈環處無嚴重鏽蝕、焊接脫落。", "d": 2, "s": 1, "l": "F", "c": "III"}, "Lc": {"desc_en": "Coating detached/cracked/worn; uncoated link severely rusted or weld failed.", "desc_zh": "補償鏈（繩）出現塗層脫落、嚴重開裂、磨損；或無塗層補償鏈出現鏈環嚴重鏽蝕、焊接脫落。", "d": 2, "s": 1, "l": "D", "c": "I"}, "improvement_en": "Replace compensation chain/rope as necessary.", "improvement_zh": "必要時更換補償鏈（繩）以符合要求。", "essential": false, "Lb": null}, {"id": "D.4.13", "no": "4.13", "name_en": "Compensation chain/rope guide", "name_zh": "補償鏈（繩）導向裝置", "La": {"desc_en": "Guide device no obvious deformation, no defects.", "desc_zh": "導向裝置無明顯變形、缺陷。", "d": 2, "s": 1, "l": "F", "c": "III"}, "Lc": {"desc_en": "Guide deformed, defective, severely worn or blocked.", "desc_zh": "導向裝置變形、缺陷、嚴重磨損或阻塞。", "d": 2, "s": 1, "l": "E", "c": "II"}, "improvement_en": "Replace / repair compensation rope guide if necessary.", "improvement_zh": "如有必要，更換/修理補償鏈（繩）導向裝置以符合要求。", "essential": false, "Lb": null}]}, "D.5": {"title_en": "Basic Safety Devices", "title_zh": "基本安全裝置", "items": [{"id": "D.5.1", "no": "5.1", "name_en": "Reliability of safety gear action", "name_zh": "安全鉗的動作可靠性", "La": {"desc_en": "Operation smooth & reliable; passes overspeed governor–safety gear interlocking test.", "desc_zh": "動作平穩可靠；能通過限速器-安全鉗連動測試。", "d": 2, "s": 1, "l": "F", "c": "III"}, "Lc": {"desc_en": "Operation unreliable; overspeed governor–safety gear test failed.", "desc_zh": "動作不可靠；限速器-安全鉗連動測試失敗。", "d": 2, "s": 1, "l": "D", "c": "I"}, "improvement_en": "Re-adjust / repair safety gear and linkage.", "improvement_zh": "重新調整/修理安全鉗和相關連桿以符合要求。", "essential": false, "Lb": null}, {"id": "D.5.2", "no": "5.2", "name_en": "Safety gear braking capacity & deceleration", "name_zh": "安全鉗制動能力和減速度", "La": {"desc_en": "Tested per HK Code of Practice; safety gear stops car/counterweight at governor tripping speed; progressive safety gear deceleration 0.2gn to 1.0gn.", "desc_zh": "依《升降機工程及自動梯工程實務守則》測試合格；安全鉗能在限速器動作速度下停止下行機廂或對重；漸進式減速度 0.2gn 至 1.0gn。", "d": 2, "s": 1, "l": "C", "c": "III"}, "Lc": {"desc_en": "Safety gear cannot stop car at governor tripping speed; or deceleration <0.2gn or >1.0gn.", "desc_zh": "安全鉗無法在規定速度下停止下行機廂；或減速度小於 0.2gn 或大於 1.0gn。", "d": 2, "s": 1, "l": "D", "c": "I"}, "improvement_en": "Re-adjust / repair safety gear and linkage.", "improvement_zh": "重新調整/修理安全鉗和相關連桿以符合要求。", "essential": false, "Lb": null, "note_en": "② if load test done within 5 yrs; ③ if not.", "note_zh": "註：② 表示最近 5 年內進行過負荷試驗；③ 表示未進行。"}, {"id": "D.5.3", "no": "5.3", "name_en": "Safety gear flexibility", "name_zh": "安全鉗的靈活性", "La": {"desc_en": "Components operate smoothly.", "desc_zh": "組件運作順暢。", "d": 2, "s": 1, "l": "F", "c": "III"}, "Lc": {"desc_en": "Components face severe resistance.", "desc_zh": "組件運作時受到嚴重抵抗。", "d": 2, "s": 1, "l": "D", "c": "I"}, "improvement_en": "Re-adjust / repair safety gear and linkage.", "improvement_zh": "重新調整/修理安全鉗和相關連桿以符合要求。", "essential": false, "Lb": {"desc_en": "Components face slight resistance.", "desc_zh": "組件運作時受到輕微阻力。", "d": 2, "s": 1, "l": "E", "c": "II"}}, {"id": "D.5.4", "no": "5.4", "name_en": "Car levelness after safety gear actuation", "name_zh": "安全鉗啟動後機廂的水平度", "La": {"desc_en": "After actuation, car returns to level, no obvious tilt.", "desc_zh": "安全裝置啟動後，機廂恢復水平，無明顯傾斜。", "d": 2, "s": 2, "l": "E", "c": "III"}, "Lc": {"desc_en": "After actuation, car tilted.", "desc_zh": "安全裝置啟動後，機廂傾斜。", "d": 2, "s": 2, "l": "D", "c": "II"}, "improvement_en": "Re-adjust / repair safety gear and linkage.", "improvement_zh": "重新調整/修理安全鉗和相關連桿以符合要求。", "essential": false, "Lb": null}, {"id": "D.5.5", "no": "5.5", "name_en": "Consistency of clearance between safety wedge & guide rail working surface", "name_zh": "安全鉗楔塊與導軌工作面間隙一致性", "La": {"desc_en": "Clearance consistent.", "desc_zh": "間隙一致性佳。", "d": 2, "s": 2, "l": "E", "c": "III"}, "Lc": {"desc_en": "Clearance shows obvious deviation.", "desc_zh": "間隙有明顯偏差。", "d": 2, "s": 2, "l": "D", "c": "II"}, "improvement_en": "Re-adjust / repair safety gear and linkage.", "improvement_zh": "重新調整/修理安全鉗和相關連桿以符合要求。", "essential": false, "Lb": null}, {"id": "D.5.6", "no": "5.6", "name_en": "Reliability of governor action", "name_zh": "限速器動作的可靠性", "La": {"desc_en": "(1) Governor grip clamps rope; (2) clearance between grip & rope ≤3 mm (or design value); (3) governor trip speed compliant; (4) governor safety switch effective.", "desc_zh": "(1) 夾鉗能壓緊纜索；(2) 夾鉗與纜索間隙 ≤3 mm（或設計值）；(3) 動作速度符合要求；(4) 安全開關有效。", "d": 2, "s": 1, "l": "F", "c": "III"}, "Lc": {"desc_en": "Any of the four requirements not met.", "desc_zh": "上述任一項不滿足。", "d": 2, "s": 1, "l": "D", "c": "I"}, "improvement_en": "Re-adjust / repair governor.", "improvement_zh": "重新調整/修復限速器以符合要求。", "essential": false, "Lb": null}, {"id": "D.5.7", "no": "5.7", "name_en": "Lubrication of governor moving parts", "name_zh": "限速器轉動部份的潤滑", "La": {"desc_en": "Moving parts well lubricated.", "desc_zh": "轉動部份潤滑良好。", "d": 2, "s": 1, "l": "F", "c": "III"}, "Lc": {"desc_en": "Severe blockage in moving parts.", "desc_zh": "轉動部份出現嚴重堵塞。", "d": 2, "s": 1, "l": "D", "c": "I"}, "improvement_en": "Lubricate governor parts.", "improvement_zh": "對限速器各參與零件進行潤滑，以符合要求。", "essential": false, "Lb": null}, {"id": "D.5.8", "no": "5.8", "name_en": "Governor protection device", "name_zh": "限速器保護裝置", "La": {"desc_en": "Protection device complete.", "desc_zh": "保護裝置齊全。", "d": 2, "s": 2, "l": "E", "c": "III"}, "Lc": {"desc_en": "Protection device missing or damaged.", "desc_zh": "保護裝置缺失或損壞。", "d": 2, "s": 2, "l": "D", "c": "II"}, "improvement_en": "Provide proper governor protection.", "improvement_zh": "為限速器提供適當的保護裝置，以符合要求。", "essential": false, "Lb": null}, {"id": "D.5.9", "no": "5.9", "name_en": "Governor rope wear", "name_zh": "限速器纜索的磨損", "La": {"desc_en": "Rope diameter ≥94% nominal.", "desc_zh": "纜索直徑不小於公稱值的 94%。", "d": 2, "s": 1, "l": "F", "c": "III"}, "Lc": {"desc_en": "Rope diameter <90% nominal.", "desc_zh": "纜索直徑小於公稱值的 90%。", "d": 2, "s": 1, "l": "D", "c": "I"}, "improvement_en": "Replace governor rope.", "improvement_zh": "更換限速器纜索以符合要求。", "essential": false, "Lb": {"desc_en": "Rope diameter ≥90% nominal.", "desc_zh": "纜索直徑不小於公稱值的 90%。", "d": 2, "s": 1, "l": "E", "c": "II"}}, {"id": "D.5.10", "no": "5.10", "name_en": "Governor rope tension device", "name_zh": "限速器纜索張緊裝置", "La": {"desc_en": "Tension device intact; tension-check switch intact and effective.", "desc_zh": "張緊裝置完好；張力檢查開關完好且有效。", "d": 2, "s": 1, "l": "F", "c": "III"}, "Lc": {"desc_en": "(1) tension sheave deformed/cracked; (2) bearing fractured; (3) groove defective/severely worn; (4) tension device mechanical structure severely deformed; (5) tension-check switch damaged/malfunctioning.", "desc_zh": "存在以下任一情況：張緊輪變形、裂痕；軸承斷裂；繩槽缺陷或嚴重磨損；機械結構嚴重變形；張力檢查開關損壞或功能失常。", "d": 2, "s": 1, "l": "D", "c": "I"}, "improvement_en": "Replace / repair governor tension device.", "improvement_zh": "更換/修理限速器張緊裝置，以符合要求。", "essential": false, "Lb": null}, {"id": "D.5.11", "no": "5.11", "name_en": "Ascending car overspeed protection device — installation", "name_zh": "設有上行機廂超速保護裝置", "La": {"desc_en": "ACOP installed and complete.", "desc_zh": "上行超速保護裝置齊全。", "d": 2, "s": 1, "l": "F", "c": "III"}, "Lc": {"desc_en": "ACOP not installed.", "desc_zh": "未設置上行超速保護裝置。", "d": 2, "s": 1, "l": "D", "c": "I"}, "improvement_en": "Install ACOP.", "improvement_zh": "安裝上行機廂超速保護裝置以符合要求。", "essential": true, "Lb": null}, {"id": "D.5.12", "no": "5.12", "name_en": "Reliability of ACOP", "name_zh": "上行機廂超速保護裝置的可靠性", "La": {"desc_en": "Smooth & reliable; effectively prevents empty car ascending at rated speed.", "desc_zh": "動作平穩可靠，能有效阻止空車在額定速度下上升。", "d": 2, "s": 1, "l": "F", "c": "III"}, "Lc": {"desc_en": "Action unstable or ineffective.", "desc_zh": "動作不平穩或無效。", "d": 2, "s": 1, "l": "D", "c": "I"}, "improvement_en": "Inspect & ensure ACOP functions normally.", "improvement_zh": "檢查、確保測試上行機廂超速保護裝置功能正常。", "essential": false, "Lb": null}, {"id": "D.5.13", "no": "5.13", "name_en": "UCMP — installation", "name_zh": "設有機廂不正常移動保護裝置", "La": {"desc_en": "UCMP installed and complete.", "desc_zh": "機廂意外移動保護裝置齊全。", "d": 2, "s": 1, "l": "F", "c": "III"}, "Lc": {"desc_en": "UCMP not installed.", "desc_zh": "未配備機廂意外移動保護裝置。", "d": 2, "s": 1, "l": "D", "c": "I"}, "improvement_en": "Install UCMP.", "improvement_zh": "加裝機廂意外移動保護裝置以符合要求。", "essential": true, "Lb": null}, {"id": "D.5.14", "no": "5.14", "name_en": "Reliability of UCMP action", "name_zh": "機廂不正常移動保護裝置的動作可靠性", "La": {"desc_en": "Smooth and reliable; travel distance at test speed ≤ design allowable.", "desc_zh": "動作平穩可靠，試驗速度下行程距離不大於設計允許值。", "d": 2, "s": 1, "l": "F", "c": "III"}, "Lc": {"desc_en": "Action erratic or ineffective; travel distance > design allowable.", "desc_zh": "動作不順暢或無效；試驗速度下行進距離大於允許設計值。", "d": 2, "s": 1, "l": "D", "c": "I"}, "improvement_en": "Inspect & ensure UCMP functions normally.", "improvement_zh": "檢查並確保測試機廂意外移動保護裝置功能正常。", "essential": false, "Lb": null}, {"id": "D.5.15", "no": "5.15", "name_en": "Brake wedge wear", "name_zh": "制動楔塊的磨損", "La": {"desc_en": "Wear within design manual limit.", "desc_zh": "制動楔塊的磨損不超過設計手冊的極限值。", "d": 2, "s": 1, "l": "F", "c": "III"}, "Lc": {"desc_en": "Wear exceeds design manual limit.", "desc_zh": "磨損量超過設計手冊限定值。", "d": 2, "s": 1, "l": "D", "c": "I"}, "improvement_en": "Inspect / test brake wedge and replace if necessary.", "improvement_zh": "檢查/測試並更換（如必要）制動楔塊。", "essential": false, "Lb": null}, {"id": "D.5.16", "no": "5.16", "name_en": "\"Star-delta start\" protection (if applicable)", "name_zh": "「星角起動」保護功能（如有）", "La": {"desc_en": "Star-delta start protection effective.", "desc_zh": "『星角起動』保護功能有效。", "d": 2, "s": 2, "l": "F", "c": "III"}, "Lc": {"desc_en": "Star-delta start protection ineffective.", "desc_zh": "『星角起動』保護功能無效。", "d": 2, "s": 2, "l": "E", "c": "II"}, "improvement_en": "Provide star-delta start protection.", "improvement_zh": "配備星型密封保護功能，以符合要求。", "essential": false, "Lb": null}]}, "D.6": {"title_en": "Guide Rails", "title_zh": "導軌", "items": [{"id": "D.6.1", "no": "6.1", "name_en": "Guide rail damage", "name_zh": "導軌損壞", "La": {"desc_en": "Rail surface no obvious damage.", "desc_zh": "導軌表面無明顯損傷。", "d": 2, "s": 3, "l": "E", "c": "III"}, "Lc": {"desc_en": "Severe mechanical damage to rail surface.", "desc_zh": "導軌表面嚴重機械損傷。", "d": 2, "s": 3, "l": "B", "c": "I"}, "improvement_en": "Repair / replace guide rails.", "improvement_zh": "修理/更換導軌以符合要求。", "essential": false, "Lb": {"desc_en": "Local rust on rail.", "desc_zh": "導軌局部鏽蝕。", "d": 2, "s": 3, "l": "D", "c": "II"}}, {"id": "D.6.2", "no": "6.2", "name_en": "Guide rail straightness & deformation", "name_zh": "導軌的直線度與變形", "La": {"desc_en": "Good straightness.", "desc_zh": "導軌直線度良好。", "d": 2, "s": 3, "l": "F", "c": "III"}, "Lc": {"desc_en": "Overall or local deformation.", "desc_zh": "導軌整體或局部發生變形。", "d": 2, "s": 3, "l": "D", "c": "II"}, "improvement_en": "Repair / replace guide rails.", "improvement_zh": "修理/更換導軌以符合要求。", "essential": false, "Lb": null}, {"id": "D.6.3", "no": "6.3", "name_en": "Guide rail working surface cleanliness", "name_zh": "導軌工作表面的清潔度", "La": {"desc_en": "Working surface free of dust and grime.", "desc_zh": "導軌工作面無灰塵、污垢。", "d": 2, "s": 3, "l": "F", "c": "III"}, "Lc": {"desc_en": "Working surface dirty/grimy, affecting guide-shoe operation.", "desc_zh": "工作表面積聚油污、灰塵，影響導靴運作。", "d": 2, "s": 3, "l": "D", "c": "II"}, "improvement_en": "Clean working surface.", "improvement_zh": "清潔導軌的工作表面以符合要求。", "essential": false, "Lb": null}, {"id": "D.6.4", "no": "6.4", "name_en": "Guide rail fasteners", "name_zh": "導軌上的固定件", "La": {"desc_en": "Rail clips firmly tightened; brackets intact.", "desc_zh": "導軌卡扣緊固，導軌支架完好。", "d": 2, "s": 3, "l": "F", "c": "III"}, "Lc": {"desc_en": "Pressure-plate bolts loose, or brackets severely deformed, weld-failed or cracked.", "desc_zh": "導軌壓板緊固螺栓鬆動，或導軌支架嚴重變形、焊接脫落、裂痕。", "d": 2, "s": 3, "l": "D", "c": "II"}, "improvement_en": "Inspect bracket fixings and rectify.", "improvement_zh": "檢查支架支架是否支架以及支架接地是否固定在支架上。", "essential": false, "Lb": null}, {"id": "D.6.5", "no": "6.5", "name_en": "Guide shoe lubrication", "name_zh": "導靴的潤滑狀況", "La": {"desc_en": "Sliding guide shoe: adequate lubrication at rail contact; roller guide shoe: no lubrication on rail unless special arrangement.", "desc_zh": "滑動導靴：與導軌接觸面潤滑充分；滾動導靴：導軌表面無潤滑（除非製造商有特殊要求）。", "d": 2, "s": 4, "l": "D", "c": "III"}, "Lc": {"desc_en": "Sliding shoe lacking lubrication; or roller shoe with unwanted rail lubrication.", "desc_zh": "滑動導靴缺乏潤滑；或滾動導靴導軌表面存在不應有的潤滑。", "d": 2, "s": 4, "l": "B", "c": "II"}, "improvement_en": "Adjust and lubricate sliding shoe; for roller shoe, ensure rail dry.", "improvement_zh": "對滑動導靴，調整並潤滑；對滾輪導靴，確保樓梯表面沒有潤滑。", "essential": false, "Lb": null}, {"id": "D.6.6", "no": "6.6", "name_en": "Guide shoe lining cleanliness", "name_zh": "導靴襯的清潔度", "La": {"desc_en": "Free of dust and debris.", "desc_zh": "無灰塵和雜物。", "d": 2, "s": 4, "l": "D", "c": "III"}, "Lc": {"desc_en": "Contact area accumulates oil/dust, affecting operation.", "desc_zh": "導軌與導靴接觸面積存油污、灰塵等，影響導靴運作。", "d": 2, "s": 4, "l": "B", "c": "II"}, "improvement_en": "Clean / replace shoe lining.", "improvement_zh": "清潔/更換鞋襯以符合要求。", "essential": false, "Lb": null}]}, "D.7": {"title_en": "Buffers", "title_zh": "緩衝器", "items": [{"id": "D.7.1", "no": "7.1", "name_en": "Buffer fixing", "name_zh": "緩衝器的穩固", "La": {"desc_en": "Buffer fixed securely; no obvious tilt.", "desc_zh": "緩衝器安裝穩固，無明顯傾斜。", "d": 2, "s": 1, "l": "F", "c": "III"}, "Lc": {"desc_en": "Buffer not securely fixed; tilted.", "desc_zh": "緩衝器安裝不穩固，出現傾斜。", "d": 2, "s": 1, "l": "C", "c": "I"}, "improvement_en": "Fix buffer firmly to floor; ensure no obvious tilt.", "improvement_zh": "將緩衝器固定在地面上，並確保沒有明顯的傾斜。", "essential": false, "Lb": null}, {"id": "D.7.2", "no": "7.2", "name_en": "Hydraulic buffer — oil level & leakage", "name_zh": "液壓緩衝器的油量和洩漏", "La": {"desc_en": "Oil level above min line; no large-area oil leakage.", "desc_zh": "油位保持在最低油位線以上，且液壓油無大面積洩漏。", "d": 2, "s": 1, "l": "F", "c": "III"}, "Lc": {"desc_en": "Oil level too low; or obvious hydraulic oil leakage.", "desc_zh": "油量過低，或有明顯的液壓油洩漏。", "d": 2, "s": 1, "l": "C", "c": "I"}, "improvement_en": "Top up / repair leakage.", "improvement_zh": "檢查/加油，確保油位保持在最低油位線以上，必要時修復漏油處。", "essential": false, "Lb": null}, {"id": "D.7.3", "no": "7.3", "name_en": "Hydraulic buffer reset-check switch effectiveness", "name_zh": "液壓緩衝器復位檢查開關的有效性", "La": {"desc_en": "Reset-check switch intact and functional.", "desc_zh": "復位檢查開關完好，功能有效。", "d": 1, "s": 1, "l": "F", "c": "III"}, "Lc": {"desc_en": "Reset-check switch damaged or non-functional.", "desc_zh": "復位檢查開關損壞或失效。", "d": 1, "s": 1, "l": "D", "c": "II"}, "improvement_en": "Test reset-check switch.", "improvement_zh": "檢查並液壓測試指示燈檢查開關是否符合要求。", "essential": false, "Lb": null}, {"id": "D.7.4", "no": "7.4", "name_en": "Hydraulic buffer reset function effectiveness", "name_zh": "液壓緩衝器復位功能的有效性", "La": {"desc_en": "Buffer can reset correctly.", "desc_zh": "緩衝器可以正確重置。", "d": 1, "s": 1, "l": "F", "c": "III"}, "Lc": {"desc_en": "Buffer cannot reset correctly.", "desc_zh": "緩衝器無法正確重設。", "d": 1, "s": 1, "l": "C", "c": "I"}, "improvement_en": "Inspect and test reset function.", "improvement_zh": "檢查並液壓測試指示燈，確保復位功能正常運作。", "essential": false, "Lb": null}, {"id": "D.7.5", "no": "7.5", "name_en": "Buffer spring deformation & rust", "name_zh": "緩衝器彈簧的變形和鏽蝕", "La": {"desc_en": "Spring no severe rust/cracks, no obvious permanent deformation.", "desc_zh": "緩衝器彈簧無嚴重鏽蝕或裂紋，無明顯永久變形。", "d": 2, "s": 1, "l": "F", "c": "III"}, "Lc": {"desc_en": "Spring severely rusted/cracked; permanent deformation after action or damage.", "desc_zh": "緩衝器彈簧嚴重鏽蝕或裂紋，動作後產生永久變形或損壞。", "d": 2, "s": 1, "l": "C", "c": "I"}, "improvement_en": "Inspect / replace buffer spring.", "improvement_zh": "檢查/更換緩衝彈簧是否符合要求。", "essential": false, "Lb": null}, {"id": "D.7.6", "no": "7.6", "name_en": "Non-linear buffer ageing", "name_zh": "非線性緩衝器的老化", "La": {"desc_en": "In service life; non-metal material no cracks/peeling; intact after action.", "desc_zh": "在有效期限內使用；非金屬材質無開裂、剝落等老化現象，緩衝器動作後完好無損。", "d": 2, "s": 1, "l": "F", "c": "III"}, "Lc": {"desc_en": "Exceeded service life; non-metal material cracked/peeled; damage after action.", "desc_zh": "超過有效期限使用；非金屬材料出現開裂、剝落；動作後損壞。", "d": 2, "s": 1, "l": "C", "c": "I"}, "improvement_en": "Replace promptly.", "improvement_zh": "及時更換指示燈以符合要求。", "essential": false, "Lb": null}]}, "D.8": {"title_en": "Lift Machine and Related Equipment", "title_zh": "升降機機械及相關設備", "items": [{"id": "D.8.1", "no": "8.1", "name_en": "Motor stator winding insulation resistance", "name_zh": "電動機定子繞組絕緣電阻", "La": {"desc_en": "Cold insulation >5.5 MΩ; hot insulation >0.55 MΩ.", "desc_zh": "冷態絕緣電阻大於 5.5 MΩ，熱絕緣電阻大於 0.55 MΩ。", "d": 2, "s": 3, "l": "F", "c": "III"}, "Lc": {"desc_en": "Cold insulation <5.0 MΩ; hot insulation <0.5 MΩ.", "desc_zh": "冷態絕緣電阻小於 5.0 MΩ，熱絕緣電阻小於 0.5 MΩ。", "d": 2, "s": 3, "l": "B", "c": "I"}, "improvement_en": "Test motor stator insulation; repair as needed.", "improvement_zh": "檢測電動機定子繞組的絕緣電阻，必要時進行修復。", "essential": false, "Lb": {"desc_en": "Cold insulation 5.0–5.5 MΩ; hot 0.5–0.55 MΩ.", "desc_zh": "冷態 5.0~5.5 MΩ；熱態 0.5~0.55 MΩ。", "d": 2, "s": 3, "l": "D", "c": "II"}}, {"id": "D.8.2", "no": "8.2", "name_en": "Motor running stability", "name_zh": "電動機運轉平穩性", "La": {"desc_en": "No obvious abnormal vibration.", "desc_zh": "無明顯異常振動。", "d": 2, "s": 3, "l": "E", "c": "III"}, "Lc": {"desc_en": "Severe abnormal vibration.", "desc_zh": "有嚴重異常振動。", "d": 2, "s": 3, "l": "B", "c": "I"}, "improvement_en": "Inspect / repair driving machine for stable running.", "improvement_zh": "必要時進行檢查與修復，確保驅動機運轉平穩。", "essential": false, "Lb": {"desc_en": "Abnormal vibration present.", "desc_zh": "有異常振動。", "d": 2, "s": 3, "l": "D", "c": "II"}}, {"id": "D.8.3", "no": "8.3", "name_en": "Motor bearing condition", "name_zh": "電動機軸承狀況", "La": {"desc_en": "No abnormal noise.", "desc_zh": "無異常噪音。", "d": 2, "s": 3, "l": "E", "c": "III"}, "Lc": {"desc_en": "Significant abnormal noise.", "desc_zh": "有較大異常噪音。", "d": 2, "s": 3, "l": "B", "c": "I"}, "improvement_en": "Inspect motor bearings; repair as needed.", "improvement_zh": "檢查並根據需要修復電動機軸承，確保無異常噪音。", "essential": false, "Lb": {"desc_en": "Slight abnormal noise.", "desc_zh": "有輕微異常噪音。", "d": 2, "s": 3, "l": "D", "c": "II"}}, {"id": "D.8.4", "no": "8.4", "name_en": "Motor protection", "name_zh": "電動機的保護", "La": {"desc_en": "Short-circuit, overload and overheat protection effective.", "desc_zh": "電動機的短路保護、過載保護、過熱保護有效。", "d": 3, "s": 3, "l": "F", "c": "III"}, "Lc": {"desc_en": "Any of short-circuit / overload / overheat protection ineffective.", "desc_zh": "短路、過載或過熱保護無效。", "d": 3, "s": 3, "l": "D", "c": "II"}, "improvement_en": "Verify motor protection functions.", "improvement_zh": "檢查電動機的短路保護、過載保護、過熱保護是否正常。", "essential": false, "Lb": null}, {"id": "D.8.5", "no": "8.5", "name_en": "Encoder", "name_zh": "編碼器", "La": {"desc_en": "Encoder shielded against interference; mechanical protection in good order.", "desc_zh": "編碼器（如有）具有良好的屏蔽幹擾和機械保護。", "d": 2, "s": 3, "l": "E", "c": "III"}, "Lc": {"desc_en": "Encoder shielding or mechanical protection damaged.", "desc_zh": "編碼器幹擾屏蔽裝置或機械保護裝置損壞。", "d": 2, "s": 3, "l": "D", "c": "II"}, "improvement_en": "Verify encoder shielding and mechanical protection.", "improvement_zh": "檢查並確保編碼器具有良好的屏蔽幹擾和機械保護。", "essential": false, "Lb": null}, {"id": "D.8.6", "no": "8.6", "name_en": "Gearbox housing", "name_zh": "變速箱外殼", "La": {"desc_en": "Gearbox housing in good condition; no obvious cracks.", "desc_zh": "變速箱外殼狀況良好，無明顯裂痕。", "d": 2, "s": 1, "l": "F", "c": "III"}, "Lc": {"desc_en": "Gearbox housing visibly cracked.", "desc_zh": "變速箱外殼有明顯裂痕。", "d": 2, "s": 1, "l": "D", "c": "I"}, "improvement_en": "Replace / repair gearbox if cracked.", "improvement_zh": "如果有明顯裂紋，則更換/修理齒輪箱。", "essential": false, "Lb": null}, {"id": "D.8.7", "no": "8.7", "name_en": "Gearbox structural integrity", "name_zh": "變速箱的結構完整性", "La": {"desc_en": "Gearbox structure intact.", "desc_zh": "變速箱結構完好。", "d": 3, "s": 2, "l": "F", "c": "III"}, "Lc": {"desc_en": "Tooth breakage; gear pair defect; main shaft fatigue cracks.", "desc_zh": "齒輪副斷齒、缺陷、主軸出現疲勞裂痕。", "d": 3, "s": 2, "l": "C", "c": "I"}, "improvement_en": "Replace / repair gears.", "improvement_zh": "如發現齒輪斷裂，則更換/修理齒輪。", "essential": false, "Lb": {"desc_en": "Larger wear of gear pair; impact during reversal.", "desc_zh": "齒輪副磨損較大，升降反轉會造成衝擊。", "d": 3, "s": 2, "l": "E", "c": "II"}}, {"id": "D.8.8", "no": "8.8", "name_en": "Gearbox bearing condition", "name_zh": "變速箱軸承工作狀態", "La": {"desc_en": "No abnormal noise.", "desc_zh": "無異常噪音。", "d": 2, "s": 2, "l": "F", "c": "III"}, "Lc": {"desc_en": "Significant abnormal noise.", "desc_zh": "有較大異常噪音。", "d": 2, "s": 2, "l": "C", "c": "I"}, "improvement_en": "Repair / replace gearbox bearings; half-yearly first-gear meshing clearance check if not replaced.", "improvement_zh": "修理/更換齒輪箱軸承；如未更換，每半年應進行齒輪間隙檢查。", "essential": false, "Lb": {"desc_en": "Slight abnormal noise.", "desc_zh": "有輕微異常噪音。", "d": 2, "s": 2, "l": "E", "c": "II"}}, {"id": "D.8.9", "no": "8.9", "name_en": "Gearbox oil leakage", "name_zh": "變速箱漏油程度", "La": {"desc_en": "Slight: no leakage or spread.", "desc_zh": "輕微狀態，無漏油無擴散。", "d": 2, "s": 3, "l": "F", "c": "III"}, "Lc": {"desc_en": "Severe: large-area leakage, obvious continuous leakage.", "desc_zh": "嚴重狀態，大面積漏油，存在明顯持續洩漏。", "d": 2, "s": 3, "l": "B", "c": "I"}, "improvement_en": "Replace seals / service per requirement.", "improvement_zh": "解決要求的油封/護理。", "essential": false, "Lb": {"desc_en": "Moderate: larger leakage area, no continuous drip.", "desc_zh": "中等狀態，漏油面積較大，無持續油滴漏油。", "d": 2, "s": 3, "l": "D", "c": "II"}}, {"id": "D.8.10", "no": "8.10", "name_en": "Gearbox oil quality", "name_zh": "變速箱潤滑油品質", "La": {"desc_en": "Adequate quantity; clear oil; no contamination or degradation.", "desc_zh": "油量充足，油質清澈，無雜質，無變質。", "d": 2, "s": 4, "l": "E", "c": "III"}, "Lc": {"desc_en": "Small contamination in oil.", "desc_zh": "變速箱油中存在少量雜質。", "d": 2, "s": 4, "l": "C", "c": "II"}, "improvement_en": "Replace oil promptly.", "improvement_zh": "及時更換替換油，以符合要求。", "essential": false, "Lb": null}, {"id": "D.8.11", "no": "8.11", "name_en": "Gearbox vibration", "name_zh": "變速箱運轉狀態", "La": {"desc_en": "Vibration amplitude <4.6 mm/s.", "desc_zh": "振動幅度小於 4.6 mm/s。", "d": 2, "s": 3, "l": "F", "c": "III"}, "Lc": {"desc_en": "Vibration amplitude >11.2 mm/s.", "desc_zh": "振動幅度大於 11.2 mm/s。", "d": 2, "s": 3, "l": "B", "c": "I"}, "improvement_en": "Re-adjust to ensure vibration within limit.", "improvement_zh": "重新調整/修復以確保振動幅度在所需長度內。", "essential": false, "Lb": {"desc_en": "Vibration 4.6–11.2 mm/s.", "desc_zh": "振動幅度 4.6~11.2 mm/s。", "d": 2, "s": 3, "l": "D", "c": "II"}}, {"id": "D.8.12", "no": "8.12", "name_en": "Coupling metal fatigue", "name_zh": "聯軸器金屬疲勞", "La": {"desc_en": "Coupling retaining rings, pins etc. intact; no cracks, deformation or obvious wear on metal parts.", "desc_zh": "聯軸器擋圈、柱銷等元件完好，金屬件未出現裂紋、變形和明顯磨損。", "d": 3, "s": 2, "l": "F", "c": "III"}, "Lc": {"desc_en": "Coupling metal parts visibly cracked, deformed or worn.", "desc_zh": "聯軸器金屬部件有明顯的裂痕、變形或磨損痕跡。", "d": 3, "s": 2, "l": "B", "c": "I"}, "improvement_en": "Inspect coupling metal; replace if needed.", "improvement_zh": "檢查並在必要時更換聯軸器金屬以符合要求。", "essential": false, "Lb": null}, {"id": "D.8.13", "no": "8.13", "name_en": "Coupling connection", "name_zh": "聯軸器連接", "La": {"desc_en": "Coupling runs without vibration, shock, noise.", "desc_zh": "聯軸器運轉時無震動、衝擊、噪音。", "d": 2, "s": 2, "l": "F", "c": "III"}, "Lc": {"desc_en": "Obvious vibration, shock and noise during operation.", "desc_zh": "聯軸器運轉時有明顯的振動、衝擊和雜訊。", "d": 2, "s": 2, "l": "D", "c": "II"}, "improvement_en": "Inspect and repair coupling connection.", "improvement_zh": "必要時進行檢查和修復，以確保聯軸器連接正常運作。", "essential": false, "Lb": null}, {"id": "D.8.14", "no": "8.14", "name_en": "Coupling appearance", "name_zh": "聯軸器外觀", "La": {"desc_en": "Non-metal parts of elastic coupling: no excessive wear, cracking, severe deformation or ageing.", "desc_zh": "彈性聯軸器的非金屬元件無過度磨損、開裂、嚴重變形及老化現象。", "d": 2, "s": 2, "l": "F", "c": "III"}, "Lc": {"desc_en": "Excessive wear, cracking, severe deformation or ageing of non-metal parts.", "desc_zh": "非金屬元件磨損過度、開裂、嚴重變形、老化。", "d": 2, "s": 2, "l": "B", "c": "I"}, "improvement_en": "Inspect and replace elastic coupling parts.", "improvement_zh": "必要時進行檢查和更換，以確保彈性聯軸器正常運作。", "essential": false, "Lb": null}, {"id": "D.8.15", "no": "8.15", "name_en": "Traction sheave & diverter sheave groove wear", "name_zh": "牽引滑輪和轉向滑輪繩槽的磨損情況", "La": {"desc_en": "Grooves no obvious wear.", "desc_zh": "繩槽無明顯磨損。", "d": 2, "s": 1, "l": "F", "c": "III"}, "Lc": {"desc_en": "Groove profile changed by wear.", "desc_zh": "繩槽輪廓因磨損而改變。", "d": 2, "s": 1, "l": "B", "c": "I"}, "improvement_en": "Inspect traction/diverter sheave groove; replace if needed.", "improvement_zh": "檢查牽引滑輪/導引滑輪繩槽，必要時更換。", "essential": false, "Lb": {"desc_en": "Grooves worn with significant powder, but profile unchanged.", "desc_zh": "繩槽磨損、有較多粉末，但未改變繩槽形狀。", "d": 2, "s": 1, "l": "E", "c": "II"}}, {"id": "D.8.16", "no": "8.16", "name_en": "Traction sheave / diverter structural integrity", "name_zh": "牽引滑輪和轉向滑輪的結構完整性", "La": {"desc_en": "Traction sheave structure visibly intact.", "desc_zh": "牽引滑輪結構無可見裂紋缺陷。", "d": 2, "s": 1, "l": "F", "c": "III"}, "Lc": {"desc_en": "Crack or significant defect on traction sheave.", "desc_zh": "牽引滑輪上有裂痕或較大的缺陷。", "d": 2, "s": 1, "l": "B", "c": "I"}, "improvement_en": "Inspect; replace sheave if needed.", "improvement_zh": "檢查並必要時更換滑輪。", "essential": false, "Lb": {"desc_en": "Slight rust or minor defects.", "desc_zh": "牽引輪有鏽蝕和輕微缺陷。", "d": 2, "s": 1, "l": "E", "c": "II"}}, {"id": "D.8.17", "no": "8.17", "name_en": "Traction sheave running stability", "name_zh": "曳引滑輪運轉穩定性", "La": {"desc_en": "Smooth running, no wobble.", "desc_zh": "曳引輪運轉平穩，無晃動。", "d": 2, "s": 3, "l": "F", "c": "III"}, "Lc": {"desc_en": "Significant wobble, unrepairable.", "desc_zh": "曳引輪運轉時晃動較大，無法修復。", "d": 2, "s": 3, "l": "B", "c": "I"}, "improvement_en": "Inspect; repair/replace if needed.", "improvement_zh": "檢查牽引滑輪是否相容，必要時修理/更換。", "essential": false, "Lb": {"desc_en": "Slight wobble during running.", "desc_zh": "曳引輪運轉時輕微晃動。", "d": 2, "s": 3, "l": "D", "c": "II"}}, {"id": "D.8.18", "no": "8.18", "name_en": "Traction sheave bearing", "name_zh": "牽引滑輪軸承", "La": {"desc_en": "No abnormal noise.", "desc_zh": "無異常噪音。", "d": 2, "s": 2, "l": "F", "c": "III"}, "Lc": {"desc_en": "Significant abnormal noise.", "desc_zh": "有較大異常噪音。", "d": 2, "s": 2, "l": "C", "c": "I"}, "improvement_en": "Inspect; repair/replace bearing.", "improvement_zh": "檢查抽輪軸承運作，必要時修理/更換。", "essential": false, "Lb": {"desc_en": "Slight abnormal noise.", "desc_zh": "有輕微異常噪音。", "d": 2, "s": 2, "l": "E", "c": "II"}}, {"id": "D.8.19", "no": "8.19", "name_en": "Brake performance", "name_zh": "制動器性能", "La": {"desc_en": "Good braking; reliably stops downward car at 125% rated load.", "desc_zh": "制動性能好，能可靠地將 125% 額定載重下行的機廂停止。", "d": 2, "s": 1, "l": "F", "c": "III"}, "Lc": {"desc_en": "Cannot reliably stop downward car at 125% rated load.", "desc_zh": "無法可靠地停止 125% 額定載重下降機廂。", "d": 2, "s": 1, "l": "C", "c": "I"}, "improvement_en": "Repair / re-adjust braking system.", "improvement_zh": "修理/重新調整制動系統以符合要求。", "essential": false, "Lb": null}, {"id": "D.8.20", "no": "8.20", "name_en": "Brake type — double brake", "name_zh": "制動器類型", "La": {"desc_en": "At least two sets of brake mechanical components.", "desc_zh": "制動的機械零件至少為兩組。", "d": 2, "s": 1, "l": "F", "c": "III"}, "Lc": {"desc_en": "Only single set of brake mechanical components.", "desc_zh": "制動的機械零件為單組。", "d": 2, "s": 1, "l": "C", "c": "I"}, "improvement_en": "Install double brake system.", "improvement_zh": "安裝雙制動系統。", "essential": true, "Lb": null}, {"id": "D.8.21", "no": "8.21", "name_en": "Brake working condition", "name_zh": "制動器工作狀態", "La": {"desc_en": "Smooth operation; tool-less brake maintained per manual; tool-less brake within service life.", "desc_zh": "動作平穩；免拆式制動的維護以使用說明書要求進行；在使用壽命內使用。", "d": 1, "s": 1, "l": "F", "c": "III"}, "Lc": {"desc_en": "Abnormal action; maintenance not per manual; or exceeded service life.", "desc_zh": "動作異常；或未依說明書進行維護；或超過使用壽命。", "d": 1, "s": 1, "l": "D", "c": "II"}, "improvement_en": "Inspect and maintain brake properly.", "improvement_zh": "檢查制動的運作狀況並確保及時進行適當的維護。", "essential": false, "Lb": null}, {"id": "D.8.22", "no": "8.22", "name_en": "Brake friction working condition", "name_zh": "制動器摩擦副工作狀態", "La": {"desc_en": "Closed: braking surfaces fit evenly; Open: no friction between surfaces.", "desc_zh": "制動閉合時，制動面貼合均勻，制動打開制動面不會發生摩擦。", "d": 2, "s": 1, "l": "F", "c": "III"}, "Lc": {"desc_en": "Uneven fit when closed; friction when open.", "desc_zh": "制動閉合時不均勻；制動打開時有摩擦。", "d": 2, "s": 1, "l": "E", "c": "II"}, "improvement_en": "Repair / re-adjust brake.", "improvement_zh": "修理/重新調整制動系統以符合要求。", "essential": false, "Lb": null}, {"id": "D.8.23", "no": "8.23", "name_en": "Synchronisation of two brake shoes", "name_zh": "兩個制動靴的同步", "La": {"desc_en": "Good synchronisation.", "desc_zh": "同步性能良好。", "d": 2, "s": 1, "l": "F", "c": "III"}, "Lc": {"desc_en": "Severely out of sync.", "desc_zh": "嚴重不同步。", "d": 2, "s": 1, "l": "B", "c": "I"}, "improvement_en": "Repair / re-adjust brake.", "improvement_zh": "修理/重新調整制動系統以符合要求。", "essential": false, "Lb": {"desc_en": "Slightly out of sync.", "desc_zh": "稍微不同步。", "d": 2, "s": 1, "l": "E", "c": "II"}}, {"id": "D.8.24", "no": "8.24", "name_en": "Brake drum & shoe lining surface", "name_zh": "制動鼓和制動靴襯片的表面", "La": {"desc_en": "Surfaces clean, no scratches.", "desc_zh": "制動鼓、制動靴襯片表面清潔、無刮痕。", "d": 2, "s": 1, "l": "F", "c": "III"}, "Lc": {"desc_en": "Heavy charring particles, oil contamination etc.", "desc_zh": "大量高溫燒焦顆粒、油污等。", "d": 2, "s": 1, "l": "B", "c": "I"}, "improvement_en": "Clean / repair drum & shoe lining.", "improvement_zh": "清潔/修復制動鼓和制動靴襯片以符合要求。", "essential": false, "Lb": {"desc_en": "Few scratches or some hot-burnt particles, no oil.", "desc_zh": "有少量刮痕或高溫燒焦顆粒，無油污。", "d": 2, "s": 1, "l": "E", "c": "II"}}, {"id": "D.8.25", "no": "8.25", "name_en": "Brake shoe wear", "name_zh": "制動靴磨損狀況", "La": {"desc_en": "Brake shoe wear small and uniform.", "desc_zh": "制動靴磨損小且均勻。", "d": 2, "s": 1, "l": "F", "c": "III"}, "Lc": {"desc_en": "Brake shoe defect or wear reaches manufacturer's discard value.", "desc_zh": "制動靴的缺陷或磨損達到製造廠規定的報廢值。", "d": 2, "s": 1, "l": "B", "c": "I"}, "improvement_en": "Replace brake shoe.", "improvement_zh": "更換制動靴以符合要求。", "essential": false, "Lb": null}, {"id": "D.8.26", "no": "8.26", "name_en": "Brake electromagnetic coil insulation resistance", "name_zh": "制動器電磁線圈連接器絕緣電阻", "La": {"desc_en": "Insulation >0.55 MΩ.", "desc_zh": "絕緣電阻大於 0.55 MΩ。", "d": 2, "s": 1, "l": "F", "c": "III"}, "Lc": {"desc_en": "Insulation <0.5 MΩ.", "desc_zh": "絕緣電阻小於 0.5 MΩ。", "d": 2, "s": 1, "l": "B", "c": "I"}, "improvement_en": "Test brake coil insulation; repair/replace.", "improvement_zh": "檢查/測試制動線圈的絕緣電阻，必要時維修/更換。", "essential": false, "Lb": {"desc_en": "Insulation 0.5–0.55 MΩ.", "desc_zh": "絕緣電阻 0.5~0.55 MΩ。", "d": 2, "s": 1, "l": "E", "c": "II"}}, {"id": "D.8.27", "no": "8.27", "name_en": "Brake coil temperature rise", "name_zh": "制動器線圈溫升", "La": {"desc_en": "Class B insulation rise <70 K; Class F <95 K.", "desc_zh": "B 級絕緣線圈溫升小於 70 K，F 級小於 95 K。", "d": 2, "s": 2, "l": "F", "c": "III"}, "Lc": {"desc_en": "Class B rise >80 K; Class F >105 K.", "desc_zh": "B 級線圈溫升大於 80 K，F 級大於 105 K。", "d": 2, "s": 2, "l": "C", "c": "I"}, "improvement_en": "Test brake coil temperature rise; repair/replace.", "improvement_zh": "檢查/測試制動線圈的溫升，依要求進行必要的維修/更換。", "essential": false, "Lb": {"desc_en": "Class B rise 70–80 K; Class F 95–105 K.", "desc_zh": "B 級線圈溫升 70~80 K，F 級 95~105 K。", "d": 2, "s": 2, "l": "E", "c": "II"}}, {"id": "D.8.28", "no": "8.28", "name_en": "Self-monitoring of brake action / braking force", "name_zh": "制動動作或制動力道的自我監控", "La": {"desc_en": "Self-monitoring function present and effective.", "desc_zh": "制動具有動作及制動力道自我監測功能；且監控功能有效。", "d": 1, "s": 2, "l": "F", "c": "III"}, "Lc": {"desc_en": "No self-monitoring, or monitoring ineffective.", "desc_zh": "無制動動作或制動力道自監測，或監測功能無效。", "d": 1, "s": 2, "l": "D", "c": "II"}, "improvement_en": "Install brake monitoring switch.", "improvement_zh": "安裝制動監控開關並確保其正常運作。", "essential": false, "Lb": null}, {"id": "D.8.29", "no": "8.29", "name_en": "Emergency rescue operation equipment", "name_zh": "緊急救援操作設備", "La": {"desc_en": "Equipment complete and intact; electrical safety device for hand-wheel state functional.", "desc_zh": "緊急救援操作裝置齊全、完好，檢查盤車手輪狀態的電氣安全裝置功能有效。", "d": 2, "s": 2, "l": "F", "c": "III"}, "Lc": {"desc_en": "Equipment incomplete/failed; electrical safety device for hand-wheel state ineffective.", "desc_zh": "緊急救援操作裝置不齊全或失效，電氣安全裝置功能無效。", "d": 2, "s": 2, "l": "D", "c": "II"}, "improvement_en": "Inspect/test emergency rescue equipment; repair.", "improvement_zh": "檢查/測試緊急救援操作設備並進行必要的修復工作。", "essential": false, "Lb": null}, {"id": "D.8.30", "no": "8.30", "name_en": "Emergency rescue equipment markings", "name_zh": "緊急救援設備標誌", "La": {"desc_en": "Emergency rescue procedure instructions clearly visible; hand-wheel direction & levelling marks clear.", "desc_zh": "緊急救援程序的指示清晰可見，盤車方向、平層標誌等標識清晰可見。", "d": 2, "s": 2, "l": "F", "c": "III"}, "Lc": {"desc_en": "Instructions missing or unclear; markings missing or unclear.", "desc_zh": "緊急救援程序指示缺失或顯示不清晰，盤車方向、平層標誌等標識缺失或不清晰。", "d": 2, "s": 2, "l": "D", "c": "II"}, "improvement_en": "Provide clear emergency rescue instructions and markings.", "improvement_zh": "提供清晰可見的緊急救援程序指示和標誌。", "essential": false, "Lb": null}, {"id": "D.8.31", "no": "8.31", "name_en": "Manual brake-release device", "name_zh": "手動鬆開制動裝置", "La": {"desc_en": "Brake-release lever no severe rust/deformation/cracks; release wire rope no severe rust, jamming, breakage.", "desc_zh": "鬆閘扳手無嚴重鏽蝕、變形、裂痕；松閘鋼絲繩無嚴重鏽蝕、卡住、斷裂。", "d": 2, "s": 2, "l": "F", "c": "III"}, "Lc": {"desc_en": "Lever severely damaged; wire rope severely rusted, jammed or broken.", "desc_zh": "鬆閘扳手嚴重鏽蝕、變形、裂痕；松閘鋼絲繩嚴重鏽蝕、卡住、斷裂。", "d": 2, "s": 2, "l": "D", "c": "II"}, "improvement_en": "Repair manual brake release.", "improvement_zh": "維修/修復手動制動釋放裝置並確保其能夠發揮其預期功能。", "essential": false, "Lb": null}, {"id": "D.8.32", "no": "8.32", "name_en": "Manual brake-release structural integrity", "name_zh": "手動鬆開制動裝置的結構完整性", "La": {"desc_en": "Each brake set has separate release; or if shared, manual release lever does not rotate with magnetic field.", "desc_zh": "每組制動部件鬆閘裝置分開設置；或共用一套鬆閘裝置時，手動鬆閘桿不會跟隨磁場變化轉動。", "d": 2, "s": 1, "l": "F", "c": "III"}, "Lc": {"desc_en": "Shared release and manual lever may rotate with magnetic field.", "desc_zh": "多組制動部件共用鬆閘裝置，且手動鬆閘桿可能跟隨磁場變化轉動。", "d": 2, "s": 1, "l": "D", "c": "I"}, "improvement_en": "Repair manual brake release.", "improvement_zh": "維修/修復手動制動釋放裝置並確保其能夠發揮其預期功能。", "essential": false, "Lb": null}, {"id": "D.8.33", "no": "8.33", "name_en": "Manual hand-wheel position check", "name_zh": "手動盤車裝置的位置檢查", "La": {"desc_en": "Removable hand-wheel: electrical safety device checks position; functional.", "desc_zh": "可拆卸的手動盤車輪設有電氣安全裝置檢查位置，且功能有效。", "d": 2, "s": 2, "l": "F", "c": "III"}, "Lc": {"desc_en": "Removable hand-wheel without electrical safety device or device failed.", "desc_zh": "可拆卸手動盤車輪無電氣安全裝置或失效。", "d": 2, "s": 2, "l": "D", "c": "II"}, "improvement_en": "Install electrical safety device for hand-wheel.", "improvement_zh": "為可感應手動上鍊輪安裝電氣安全裝置。", "essential": false, "Lb": null}, {"id": "D.8.34", "no": "8.34", "name_en": "Manual hand-wheel device", "name_zh": "手動盤車裝置", "La": {"desc_en": "Hand-wheel no severe rust, deformation, cracks; welds intact; gear pair meshes effectively; no cracks or broken teeth.", "desc_zh": "手動盤車輪無嚴重鏽蝕、變形、裂痕、缺陷，焊接處無裂痕；齒輪副嚙合有效；齒輪無裂痕、斷齒。", "d": 2, "s": 2, "l": "F", "c": "III"}, "Lc": {"desc_en": "Hand-wheel severely damaged; welds cracked; gears cracked or with broken teeth.", "desc_zh": "手動盤車輪有嚴重鏽蝕、變形、裂痕或缺陷；焊接處有裂痕；嚙合齒輪副有裂痕或斷齒。", "d": 2, "s": 2, "l": "D", "c": "II"}, "improvement_en": "Repair manual hand-wheel device.", "improvement_zh": "維修/修復手動上鍊裝置並確保其能夠發揮其預期功能。", "essential": false, "Lb": null}, {"id": "D.8.35", "no": "8.35", "name_en": "Emergency power supply device", "name_zh": "緊急電源裝置", "La": {"desc_en": "Battery intact; voltage normal.", "desc_zh": "緊急電源裝置的電池完好，電壓正常。", "d": 1, "s": 2, "l": "F", "c": "III"}, "Lc": {"desc_en": "Battery leaking; output voltage after charging clearly below normal.", "desc_zh": "電池漏液，充電後輸出電壓明顯低於正常工作電壓。", "d": 1, "s": 2, "l": "D", "c": "II"}, "improvement_en": "Test emergency power supply; repair/replace.", "improvement_zh": "檢查/測試緊急電源裝置並進行必要的維修/更換工作。", "essential": false, "Lb": null}]}, "D.9": {"title_en": "Electrical Installations", "title_zh": "電氣裝置", "items": [{"id": "D.9.1", "no": "9.1", "name_en": "Main power supply voltage", "name_zh": "主電源電壓", "La": {"desc_en": "Main circuit voltage fluctuation ≤±7% of rated.", "desc_zh": "主迴路電源電壓相對於額定電壓的波動值不超過 ±7% 範圍。", "d": 1, "s": 4, "l": "D", "c": "III"}, "Lc": {"desc_en": "Voltage fluctuation >±7%.", "desc_zh": "主迴路電源電壓波動值超過 ±7%。", "d": 1, "s": 4, "l": "A", "c": "II"}, "improvement_en": "Test main circuit voltage; verify compliance.", "improvement_zh": "檢查/測試主迴路電源電壓是否符合要求。", "essential": false, "Lb": null}, {"id": "D.9.2", "no": "9.2", "name_en": "Main switch", "name_zh": "主開關", "La": {"desc_en": "Main switch reliably cuts power during operation.", "desc_zh": "主開關能在升降機運作過程中可靠地切斷電源。", "d": 2, "s": 1, "l": "F", "c": "III"}, "Lc": {"desc_en": "Main switch cannot reliably cut power.", "desc_zh": "升降機運作過程中，主開關無法可靠地切斷電源。", "d": 2, "s": 1, "l": "C", "c": "I"}, "improvement_en": "Test main switch; repair/replace.", "improvement_zh": "檢查/測試主開關並進行必要的維修/更換工作。", "essential": false, "Lb": null}, {"id": "D.9.3", "no": "9.3", "name_en": "Earthing condition", "name_zh": "接地狀況", "La": {"desc_en": "All earth wires and terminals well connected.", "desc_zh": "所有接地線、接地端子連接良好。", "d": 2, "s": 1, "l": "F", "c": "III"}, "Lc": {"desc_en": "Earth wires broken or loose; or terminals loose.", "desc_zh": "存接地線斷裂或松脫，或接地端址鬆動。", "d": 2, "s": 1, "l": "E", "c": "II"}, "improvement_en": "Test earthing; repair/replace.", "improvement_zh": "檢查/測試接地狀況並進行必要的修理/更換工作以符合要求。", "essential": false, "Lb": null}, {"id": "D.9.4", "no": "9.4", "name_en": "Travelling cable", "name_zh": "隨行電纜", "La": {"desc_en": "Travelling cable no severe deformation/twist; jacket no cracking.", "desc_zh": "隨行電纜無嚴重變形、扭曲，護套無開裂。", "d": 2, "s": 4, "l": "D", "c": "III"}, "Lc": {"desc_en": "Severe deformation/twist; jacket cracked exposing cores.", "desc_zh": "隨行電纜嚴重變形、扭曲，或護套裂開導致線芯外露。", "d": 2, "s": 4, "l": "A", "c": "II"}, "improvement_en": "Inspect travelling cable; repair/replace.", "improvement_zh": "檢查隨行電纜的狀況並按要求進行必要的修理/更換工作。", "essential": false, "Lb": null}, {"id": "D.9.5", "no": "9.5", "name_en": "Insulation enclosure", "name_zh": "絕緣外殼", "La": {"desc_en": "Insulation enclosure for non-safety-voltage live parts (safety switches, inverters, etc.) intact.", "desc_zh": "非安全電壓的帶電部件（如安全開關、變頻器等）絕緣外殼完好。", "d": 2, "s": 1, "l": "F", "c": "III"}, "Lc": {"desc_en": "Insulation enclosure severely damaged.", "desc_zh": "絕緣外殼嚴重損壞。", "d": 2, "s": 1, "l": "D", "c": "I"}, "improvement_en": "Inspect and repair insulation enclosure.", "improvement_zh": "檢查非安全電壓帶電部件的絕緣外殼是否合格，並進行必要的修理/更換工作。", "essential": false, "Lb": null}, {"id": "D.9.6", "no": "9.6", "name_en": "Power safety circuit earth protection", "name_zh": "電力安全回路接地保護裝置", "La": {"desc_en": "Safety circuit earth protection device functional.", "desc_zh": "安全回路接地保護裝置功能正常。", "d": 2, "s": 1, "l": "F", "c": "III"}, "Lc": {"desc_en": "Safety circuit earth protection failed.", "desc_zh": "安全回路接地保護裝置功能失效。", "d": 2, "s": 1, "l": "E", "c": "II"}, "improvement_en": "Test earth protection device; repair/replace.", "improvement_zh": "檢查/測試電氣安全連接接地保護裝置，並進行必要的維修/更換工作。", "essential": false, "Lb": null}]}, "D.10": {"title_en": "Electronic Control System", "title_zh": "電子控制系統", "items": [{"id": "D.10.1", "no": "10.1", "name_en": "Frequency inverter", "name_zh": "變頻器", "La": {"desc_en": "Inverter intact, no abnormalities.", "desc_zh": "變頻器完好，無異常。", "d": 2, "s": 3, "l": "E", "c": "III"}, "Lc": {"desc_en": "(1) main board copper traces broken; (2) DC-bus capacitor bulged/leaking/burnt; (3) terminals severely overheated/arc-oxidised/corroded.", "desc_zh": "出現下列情況：(1) 主電路板銅皮斷裂；(2) 直流母線電容鼓包、漏液或燒壞；(3) 接線端子嚴重過熱變形/拉弧氧化/腐蝕。", "d": 2, "s": 3, "l": "D", "c": "II"}, "improvement_en": "Inspect frequency inverter; repair/replace as needed.", "improvement_zh": "檢查變頻器是否已拆除、功能正常，必要時進行維修/更換。", "essential": false, "Lb": null}, {"id": "D.10.2", "no": "10.2", "name_en": "Phase-loss protection", "name_zh": "缺相保護功能", "La": {"desc_en": "Phase-loss protection effective.", "desc_zh": "缺相保護功能有效。", "d": 2, "s": 3, "l": "E", "c": "III"}, "Lc": {"desc_en": "Phase-loss protection failed.", "desc_zh": "缺相保護功能失效。", "d": 2, "s": 3, "l": "D", "c": "II"}, "improvement_en": "Test phase-loss protection; repair/replace.", "improvement_zh": "檢查/測試相序保護裝置是否正常運轉，如有必要，依要求進行維修/更換工作。", "essential": false, "Lb": null}, {"id": "D.10.3", "no": "10.3", "name_en": "Contactor", "name_zh": "接觸器", "La": {"desc_en": "Contactor intact and functional.", "desc_zh": "接觸器完好，功能正常。", "d": 2, "s": 3, "l": "E", "c": "III"}, "Lc": {"desc_en": "(1) housing damaged; (2) fails to open/close reliably on coil energise/de-energise; (3) severely worn or rusted; (4) excessive electromagnetic noise.", "desc_zh": "出現下列情況：(1) 外殼破損；(2) 通斷時無法正確/可靠斷開或閉合；(3) 嚴重磨損或鏽蝕；(4) 電磁雜訊很大。", "d": 2, "s": 3, "l": "D", "c": "II"}, "improvement_en": "Test contactor; repair/replace.", "improvement_zh": "檢查/測試接觸器是否功能正常，依要求進行維修/更換工作。", "essential": false, "Lb": null}, {"id": "D.10.4", "no": "10.4", "name_en": "Control cabinet", "name_zh": "控制櫃", "La": {"desc_en": "Control cabinet intact and functional.", "desc_zh": "控制櫃完好，功能正常。", "d": 3, "s": 3, "l": "F", "c": "III"}, "Lc": {"desc_en": "(1) cabinet severely rusted/deformed/damaged, components cannot be secured; (2) electrical components failed, cannot be replaced with same spec, replacement still does not work.", "desc_zh": "出現下列情況：(1) 控制櫃櫃體嚴重鏽蝕、變形、損壞；(2) 控制櫃內電氣元件失效。", "d": 3, "s": 3, "l": "D", "c": "II"}, "improvement_en": "Inspect control cabinet; repair as needed.", "improvement_zh": "檢查控制櫃是否充足，如有必要，進行維修/修復工作以符合要求。", "essential": false, "Lb": null}, {"id": "D.10.5", "no": "10.5", "name_en": "Sensors and detection switches", "name_zh": "感應器和檢測開關", "La": {"desc_en": "Sensors & detection switches intact and functional.", "desc_zh": "感應器及檢測開關完好，功能正常。", "d": 1, "s": 3, "l": "F", "c": "III"}, "Lc": {"desc_en": "(1) output signal abnormal, causing functional failure/misoperation; (2) housing severely damaged or deformed.", "desc_zh": "出現下列情況：(1) 輸出訊號異常，引起功能失效或誤動作；(2) 外殼嚴重破損或變形。", "d": 1, "s": 3, "l": "D", "c": "II"}, "improvement_en": "Test sensors and detection switches; repair/replace.", "improvement_zh": "檢查/偵測感測器和偵測開關是否正常運作，必要時進行維修/更換工作。", "essential": false, "Lb": null}, {"id": "D.10.6", "no": "10.6", "name_en": "Levelling accuracy", "name_zh": "平層準確度", "La": {"desc_en": "Levelling accuracy ≤10 mm at every floor.", "desc_zh": "每層平層準確度不大於 10 mm。", "d": 2, "s": 3, "l": "E", "c": "III"}, "Lc": {"desc_en": "Some floors' levelling >10 mm.", "desc_zh": "部分樓層平層準確度大於 10 mm。", "d": 2, "s": 3, "l": "D", "c": "II"}, "improvement_en": "Check levelling accuracy at all landings; repair if necessary.", "improvement_zh": "檢查各層站的平層準確度是否在要求範圍內，必要時進行修復。", "essential": false, "Lb": null}, {"id": "D.10.7", "no": "10.7", "name_en": "Floor control system function", "name_zh": "樓層控制系統功能", "La": {"desc_en": "All equipment normal.", "desc_zh": "所有設備均正常。", "d": 1, "s": 3, "l": "E", "c": "III"}, "Lc": {"desc_en": "Some floors' display abnormal or call response ineffective.", "desc_zh": "部分樓層顯示異常或應答召喚無效。", "d": 1, "s": 3, "l": "D", "c": "II"}, "improvement_en": "Verify floor control system; repair as required.", "improvement_zh": "樓層控制系統是否正常運行，必要時進行維修以滿足測試要求。", "essential": false, "Lb": null}, {"id": "D.10.8", "no": "10.8", "name_en": "Safety switch", "name_zh": "安全開關", "La": {"desc_en": "Safety switch intact and functional.", "desc_zh": "安全開關完好，功能正常。", "d": 2, "s": 1, "l": "F", "c": "III"}, "Lc": {"desc_en": "Drive structure failed; or trigger mechanism failed.", "desc_zh": "驅動安全開關結構故障；或觸發安全開關的機械裝置失效。", "d": 2, "s": 1, "l": "D", "c": "I"}, "improvement_en": "Test safety switch; repair/replace.", "improvement_zh": "檢查/測試安全開關是否正常運轉，必要時進行維修/更換工作。", "essential": false, "Lb": {"desc_en": "Contacts severely rusted affecting normal operation; or contacts severely burnt or poor contact.", "desc_zh": "觸點嚴重鏽蝕影響正常工作；或接點嚴重燒壞或接觸不良。", "d": 2, "s": 1, "l": "D", "c": "II"}}, {"id": "D.10.9", "no": "10.9", "name_en": "Overload protection function", "name_zh": "過載保護裝置功能", "La": {"desc_en": "When load ≈110% rated, alarm activates promptly and cancels promptly when overload removed; function reliable.", "desc_zh": "現場載入接近 110% 額定載荷時，若過載持續，靈敏發出警報；過載消失，靈敏取消警報；功能可靠。", "d": 2, "s": 1, "l": "F", "c": "III"}, "Lc": {"desc_en": "Alarm not activated at >110% rated; function unreliable.", "desc_zh": "額定負載超過 110% 時不發出警報，功能不可靠。", "d": 2, "s": 1, "l": "D", "c": "I"}, "improvement_en": "Test overload device; repair/replace.", "improvement_zh": "檢查/測試過載裝置是否正常運作，並在必要時進行維修/更換工作。", "essential": false, "Lb": null}, {"id": "D.10.10", "no": "10.10", "name_en": "Landing & car door bypass device", "name_zh": "層站門與機廂門旁通裝置", "La": {"desc_en": "Bypass device intact and effective.", "desc_zh": "層站門與機廂門旁通裝置完好且有效。", "d": 2, "s": 1, "l": "F", "c": "III"}, "Lc": {"desc_en": "Bypass device failed.", "desc_zh": "層站門與機廂門旁通裝置失效。", "d": 2, "s": 1, "l": "E", "c": "II"}, "improvement_en": "Test landing & car door bypass; repair/replace.", "improvement_zh": "檢查/測試層站門和機廂門橋接裝置是否正常運轉，並在必要時進行維修/更換工作。", "essential": false, "Lb": null}, {"id": "D.10.11", "no": "10.11", "name_en": "Door circuit detection function", "name_zh": "門回路檢測功能", "La": {"desc_en": "Door circuit detection effective.", "desc_zh": "門回路檢測功能有效。", "d": 2, "s": 1, "l": "F", "c": "III"}, "Lc": {"desc_en": "Door circuit detection failed.", "desc_zh": "門回路檢測功能失效。", "d": 2, "s": 1, "l": "E", "c": "II"}, "improvement_en": "Test door circuit detection; repair/replace.", "improvement_zh": "檢查/測試門關閉檢測裝置是否正常運轉，並在必要時按要求進行維修/更換工作。", "essential": false, "Lb": null}, {"id": "D.10.12", "no": "10.12", "name_en": "Final terminal limit switch", "name_zh": "機廂終端限位開關", "La": {"desc_en": "Final terminal limit switch intact and effective.", "desc_zh": "機廂終端限位開關完好且有效。", "d": 1, "s": 1, "l": "F", "c": "III"}, "Lc": {"desc_en": "Final terminal limit switch damaged or ineffective.", "desc_zh": "機廂終端限位開關損壞或失效。", "d": 1, "s": 1, "l": "B", "c": "I"}, "improvement_en": "Test final terminal limit switch; repair/replace.", "improvement_zh": "檢查/測試機廂最終限位開關是否正常運轉，必要時進行維修/更換工作。", "essential": false, "Lb": null}, {"id": "D.10.13", "no": "10.13", "name_en": "Motor run-time limiter", "name_zh": "電動機持續轉動限時裝置", "La": {"desc_en": "Motor run-time limiter functional and effective.", "desc_zh": "電動機運轉時間限制器功能正常有效。", "d": 2, "s": 1, "l": "F", "c": "III"}, "Lc": {"desc_en": "Motor run-time limiter failed or not installed.", "desc_zh": "電動機運轉時間限制器功能失效或未設置。", "d": 2, "s": 1, "l": "D", "c": "I"}, "improvement_en": "Test motor run-time limiter; repair/replace.", "improvement_zh": "檢查/驅動測試運轉時間限制器是否正常運轉，必要時進行修理/更換。", "essential": false, "Lb": null}, {"id": "D.10.14", "no": "10.14", "name_en": "Automatic Rescue Device (ARD)", "name_zh": "自動拯救裝置", "La": {"desc_en": "ARD operates normally and effectively.", "desc_zh": "自動拯救裝置運作正常、有效。", "d": 2, "s": 2, "l": "F", "c": "III"}, "Lc": {"desc_en": "ARD non-functional or not installed.", "desc_zh": "自動拯救裝置功能無效或未設定。", "d": 2, "s": 2, "l": "D", "c": "II"}, "improvement_en": "Install ARD and verify operation.", "improvement_zh": "安裝自動救援裝置，並確保其正常運作。", "essential": false, "Lb": null}]}, "D.11": {"title_en": "Other Requirements Applicable to Hong Kong", "title_zh": "適用於香港的其他要求", "items": [{"id": "D.11.1", "no": "11.1", "name_en": "Rope retainer in machine room", "name_zh": "升降機機房纜索固定器", "La": {"desc_en": "Rope retainer installed to prevent rope leaving pulley groove.", "desc_zh": "設有纜索固定器，用於防止纜索脫離滑輪的凹槽。", "d": 2, "s": 2, "l": "F", "c": "III"}, "Lc": {"desc_en": "No rope retainer installed.", "desc_zh": "未提供防止纜索脫離滑輪槽的纜索固定裝置。", "d": 2, "s": 2, "l": "D", "c": "II"}, "improvement_en": "Install rope retainer.", "improvement_zh": "安裝纜索固定器，防止纜索脫離滑輪的車輪。", "essential": false, "Lb": null}, {"id": "D.11.2", "no": "11.2", "name_en": "CCTV system", "name_zh": "閉路電視系統", "La": {"desc_en": "Cabin CCTV installed and connected to building management & machine room.", "desc_zh": "升降機機廂內設有閉路電視攝影機，並與大樓管理處和機房相連。", "d": 2, "s": 2, "l": "F", "c": "III"}, "Lc": {"desc_en": "No cabin CCTV, or not connected.", "desc_zh": "升降機機廂內未安裝閉路電視攝影機或未連接。", "d": 2, "s": 2, "l": "D", "c": "II"}, "improvement_en": "Connect CCTV to building management and machine room.", "improvement_zh": "將閉路電視系統連接至大樓管理處及升降機機房。", "essential": false, "Lb": null}, {"id": "D.11.3", "no": "11.3", "name_en": "Fire extinguisher in machine room", "name_zh": "機房內的滅火器", "La": {"desc_en": "Fire extinguisher provided in machine room.", "desc_zh": "機房內設有滅火器。", "d": 2, "s": 2, "l": "F", "c": "III"}, "Lc": {"desc_en": "No fire extinguisher in machine room.", "desc_zh": "機房未配備滅火器。", "d": 2, "s": 2, "l": "D", "c": "II"}, "improvement_en": "Provide proper fire extinguisher in lift machine room.", "improvement_zh": "電梯機房內應配備合適的滅火器。", "essential": false, "Lb": null}, {"id": "D.11.4", "no": "11.4", "name_en": "Emergency trap door in car", "name_zh": "升降機機廂內的緊急活板門", "La": {"desc_en": "Trap door compliant with HK Code of Practice Cl. 5.4.6.", "desc_zh": "設有符合《升降機工程及自動梯工程實務守則》第 5.4.6 條要求的緊急活板門。", "d": 2, "s": 2, "l": "F", "c": "III"}, "Lc": {"desc_en": "Trap door not compliant with Cl. 5.4.6.", "desc_zh": "未設置符合第 5.4.6 條要求的緊急活板門。", "d": 2, "s": 2, "l": "D", "c": "II"}, "improvement_en": "Inspect/test emergency trap door; repair if needed.", "improvement_zh": "檢查/升降機測試機機廂內的緊急活板門是否正常，必要時進行維修/更換。", "essential": false, "Lb": null}, {"id": "D.11.5", "no": "11.5", "name_en": "Landing door emergency unlocking device", "name_zh": "層站門緊急解鎖裝置", "La": {"desc_en": "All landing doors equipped with emergency unlocking device, functional.", "desc_zh": "各層站門均設有緊急解鎖裝置，且功能正常。", "d": 2, "s": 2, "l": "F", "c": "III"}, "Lc": {"desc_en": "Landing doors lack unlocking device or device not functional.", "desc_zh": "各層站門未配備緊急解鎖裝置或該裝置無法正常運作。", "d": 2, "s": 2, "l": "D", "c": "II"}, "improvement_en": "Install/modify emergency unlocking devices at all landings.", "improvement_zh": "為各層站門/改造緊急解鎖裝置安裝，並確保其正常運作。", "essential": false, "Lb": null}, {"id": "D.11.6", "no": "11.6", "name_en": "Pit inspection control device", "name_zh": "升降機井底檢查控制裝置", "La": {"desc_en": "Pit inspection control device installed and operating normally.", "desc_zh": "升降機井底設有檢查控制裝置，運作正常。", "d": 2, "s": 2, "l": "F", "c": "III"}, "Lc": {"desc_en": "No pit inspection control device, or not functional.", "desc_zh": "未設有升降機井底檢查控制裝置或運作不正常。", "d": 2, "s": 2, "l": "D", "c": "II"}, "improvement_en": "Install pit inspection control station and verify operation.", "improvement_zh": "在升降機井安裝檢查控制站並確保其正常運作。", "essential": false, "Lb": null}, {"id": "D.11.7", "no": "11.7", "name_en": "Barrier-free access requirements", "name_zh": "升降機無障礙通道的要求", "La": {"desc_en": "Lift designed per Buildings Department Design Manual: Barrier Free Access Ch.4 Cl.19.", "desc_zh": "升降機是依照屋宇署《設計手冊：暢通無阻的通道》第 4 章第 19 節所訂的設計要求設計的。", "d": 2, "s": 2, "l": "F", "c": "III"}, "Lc": {"desc_en": "Lift fails to comply with BD Design Manual Ch.4 Cl.19.", "desc_zh": "該升降機未能符合屋宇署《設計手冊：暢通無阻的通道》第 4 章第 19 節。", "d": 2, "s": 2, "l": "D", "c": "II"}, "improvement_en": "Provide necessary barrier-free access facilities per design requirements.", "improvement_zh": "根據設計要求提供必要的無障礙通道設施。", "essential": false, "Lb": null}, {"id": "D.11.8", "no": "11.8", "name_en": "Three-point bearing design of mechanical shaft", "name_zh": "機械軸的三點軸承設計", "La": {"desc_en": "Three-point bearing shaft inspected by NDT (Non-Destructive Testing) per manufacturer's recommendation or every 3 years.", "desc_zh": "機械軸為三點支承設計，依製造商建議或每三年接受無損檢測（NDT）。", "d": 3, "s": 2, "l": "F", "c": "III"}, "Lc": {"desc_en": "Three-point bearing shaft not subjected to NDT in past 3 years.", "desc_zh": "機械軸為三點支承設計，過去三年內未接受無損檢測（NDT）。", "d": 3, "s": 2, "l": "D", "c": "II"}, "improvement_en": "Short-term: arrange NDT promptly. Long-term: modify to eliminate three-point bearing design risk.", "improvement_zh": "短期：迅速安排無損檢測。長期：進行修改並消除三點軸承設計的風險。", "essential": false, "Lb": null}]}}, "totals": {"A": 8, "B": 3, "C": 10, "D": 157, "ALL": 178}};
+const STATE = {
+  info: {},
+  A: {},   // {id: 'yes'|'no'}
+  B: {},   // {id: points (number)}
+  C: {},   // {id: [sub_index booleans...]}
+  D: {},   // {id: {choice: 'La|Lb|Lc', d, s, l, c, notes, flagged}}
+  photos: [],
+  remarks: '',
+  urgent: '',
+};
+const STORAGE_KEY = 'lifthium_ara_form_v1';
+
+// ═══════════════════════════════════════════════════════════
+//  PHASE 1 — Authorization gate + Draft manager (IndexedDB)
+// ═══════════════════════════════════════════════════════════
+// Owner Authorization Code (client-side gate; re-verified server-side in Phase 2)
+const OWNER_CODE = '51220643';
+const AUTH_SESSION_KEY = 'lifthium_ara_authed';
+let AUTHED = sessionStorage.getItem(AUTH_SESSION_KEY) === '1';
+
+// Track current draft + timing for usage history
+let CURRENT_DRAFT_ID = null;
+const SESSION_STARTED = Date.now();
+
+// ─── IndexedDB ───
+const DB_NAME = 'lifthium_ara_db';
+const DB_STORE = 'drafts';
+let _db = null;
+function openDB() {
+  return new Promise((resolve, reject) => {
+    if (_db) return resolve(_db);
+    const req = indexedDB.open(DB_NAME, 1);
+    req.onupgradeneeded = e => {
+      const db = e.target.result;
+      if (!db.objectStoreNames.contains(DB_STORE)) {
+        db.createObjectStore(DB_STORE, { keyPath: 'id' });
+      }
+    };
+    req.onsuccess = e => { _db = e.target.result; resolve(_db); };
+    req.onerror = e => reject(e.target.error);
+  });
+}
+async function dbPut(rec) {
+  const db = await openDB();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(DB_STORE, 'readwrite');
+    tx.objectStore(DB_STORE).put(rec);
+    tx.oncomplete = () => resolve(true);
+    tx.onerror = e => reject(e.target.error);
+  });
+}
+async function dbGetAll() {
+  const db = await openDB();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(DB_STORE, 'readonly');
+    const req = tx.objectStore(DB_STORE).getAll();
+    req.onsuccess = () => resolve(req.result || []);
+    req.onerror = e => reject(e.target.error);
+  });
+}
+async function dbGet(id) {
+  const db = await openDB();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(DB_STORE, 'readonly');
+    const req = tx.objectStore(DB_STORE).get(id);
+    req.onsuccess = () => resolve(req.result || null);
+    req.onerror = e => reject(e.target.error);
+  });
+}
+async function dbDelete(id) {
+  const db = await openDB();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(DB_STORE, 'readwrite');
+    tx.objectStore(DB_STORE).delete(id);
+    tx.oncomplete = () => resolve(true);
+    tx.onerror = e => reject(e.target.error);
+  });
+}
+
+// ─── Authorization gate ───
+function isAuthed() { return AUTHED; }
+function setAuthed(v) {
+  AUTHED = v;
+  if (v) sessionStorage.setItem(AUTH_SESSION_KEY, '1');
+  else sessionStorage.removeItem(AUTH_SESSION_KEY);
+  updateAuthChip();
+}
+function updateAuthChip() {
+  const chip = $('#authChip'); const txt = $('#authChipTxt');
+  if (!chip) return;
+  if (AUTHED) { chip.classList.add('unlocked'); txt.textContent = 'Unlocked 已解鎖'; }
+  else { chip.classList.remove('unlocked'); txt.textContent = 'Locked 鎖定'; }
+}
+// Returns a Promise that resolves true if authed (prompting if needed)
+function requireAuth() {
+  return new Promise(resolve => {
+    if (AUTHED) return resolve(true);
+    const modal = $('#authModal');
+    const input = $('#authInput');
+    const err = $('#authErr');
+    err.textContent = '';
+    input.value = '';
+    modal.classList.add('show');
+    setTimeout(() => input.focus(), 100);
+    const submit = () => {
+      if (input.value === OWNER_CODE) {
+        setAuthed(true);
+        cleanup();
+        modal.classList.remove('show');
+        showToast('Unlocked · 已解鎖');
+        resolve(true);
+      } else {
+        err.textContent = 'Incorrect code · 授權碼錯誤';
+        input.value = '';
+        input.focus();
+      }
+    };
+    const onKey = e => { if (e.key === 'Enter') submit(); };
+    const onCancel = () => { cleanup(); modal.classList.remove('show'); resolve(false); };
+    function cleanup() {
+      $('#authSubmit').removeEventListener('click', submit);
+      input.removeEventListener('keydown', onKey);
+      modal.querySelectorAll('[data-close="authModal"]').forEach(b => b.removeEventListener('click', onCancel));
+    }
+    $('#authSubmit').addEventListener('click', submit);
+    input.addEventListener('keydown', onKey);
+    modal.querySelectorAll('[data-close="authModal"]').forEach(b => b.addEventListener('click', onCancel));
+  });
+}
+
+// ─── Build a usage-history summary from STATE (for drafts + Phase 2 Sheet) ───
+function buildSummary() {
+  const om = calcOMTotal();
+  const omG = omGrade(om.total);
+  const d = calcDScore();
+  const i = STATE.info;
+  return {
+    ara_name: i.f_araname || '',
+    ara_reg: i.f_arareg || '',
+    site: i.f_site || '',
+    address: i.f_address || '',
+    lift_no: i.f_liftno || '',
+    emsd_no: i.f_emsdno || '',
+    manufacturer: i.f_mfr || '',
+    lift_type: i.f_type || '',
+    rated_speed: i.f_speed || '',
+    rated_load: i.f_load || '',
+    year_mfr: i.f_year || '',
+    year_comm: i.f_commyear || '',
+    floors: i.f_floors || '',
+    inspect_date: i.f_inspdate || '',
+    d_score: d.D === null ? '' : Math.round(d.D * 10) / 10,
+    d_grade: d.gradeEn,
+    om_score: om.total,
+    om_grade: 'L' + omG.lvl,
+    cat_I: d.countCatI, cat_II: d.countCatII, cat_III: d.countCatIII,
+    next_inspection_yr: nextInspectionInterval(d),
+    items_filled: Object.keys(STATE.A).length + Object.keys(STATE.B).length
+      + Object.keys(STATE.C).filter(k => (STATE.C[k]||[]).some(v=>v)).length
+      + Object.keys(STATE.D).length,
+  };
+}
+
+// ─── Save / Save as New (gated) ───
+let _pendingSaveAsNew = false;
+async function doSaveDraft(asNew) {
+  const ok = await requireAuth();
+  if (!ok) return;
+  _pendingSaveAsNew = asNew;
+  // suggest a name
+  const s = buildSummary();
+  const suggested = [s.site, s.lift_no].filter(Boolean).join(' — ') || 'Draft';
+  const nameModal = $('#nameModal');
+  const nameInput = $('#nameInput');
+  nameInput.value = suggested;
+  nameModal.classList.add('show');
+  setTimeout(() => { nameInput.focus(); nameInput.select(); }, 100);
+}
+
+async function commitDraft(name) {
+  const now = Date.now();
+  const summary = buildSummary();
+  let id = CURRENT_DRAFT_ID;
+  let created = now;
+  if (_pendingSaveAsNew || !id) {
+    id = 'draft_' + now + '_' + Math.random().toString(36).slice(2, 7);
+  } else {
+    const existing = await dbGet(id);
+    if (existing) created = existing.created;
+  }
+  const rec = {
+    id,
+    name: name || summary.site || 'Untitled',
+    created,
+    updated: now,
+    summary,
+    state: JSON.parse(JSON.stringify(STATE)),
+  };
+  await dbPut(rec);
+  CURRENT_DRAFT_ID = id;
+  _pendingSaveAsNew = false;
+  showToast('Draft saved · 草稿已儲存');
+}
+
+// ─── Draft list UI ───
+async function openDraftsModal() {
+  const ok = await requireAuth();
+  if (!ok) return;
+  await renderDraftList();
+  $('#draftsModal').classList.add('show');
+}
+async function renderDraftList() {
+  const list = $('#draftList');
+  const drafts = (await dbGetAll()).sort((a, b) => b.updated - a.updated);
+  if (!drafts.length) {
+    list.innerHTML = '<div class="draft-empty">No saved drafts yet · 尚無已儲存草稿</div>';
+    return;
+  }
+  list.innerHTML = '';
+  drafts.forEach(dr => {
+    const dt = new Date(dr.updated);
+    const dstr = dt.toLocaleString('en-GB', { year:'numeric',month:'short',day:'numeric',hour:'2-digit',minute:'2-digit' });
+    const s = dr.summary || {};
+    const row = document.createElement('div');
+    row.className = 'draft-row';
+    row.innerHTML = `
+      <div class="draft-info">
+        <div class="draft-name">${esc(dr.name)}</div>
+        <div class="draft-meta">
+          ${s.ara_name ? '<span class="badge">'+esc(s.ara_name)+'</span>' : ''}
+          ${s.d_grade ? '<span class="badge">'+esc(s.d_grade)+'</span>' : ''}
+          ${s.items_filled ? s.items_filled+' items · ' : ''}${dstr}
+        </div>
+      </div>
+      <div class="draft-btns">
+        <button class="draft-open" data-open="${dr.id}">Open 開啟</button>
+        <button class="draft-del" data-del="${dr.id}">✕</button>
+      </div>`;
+    list.appendChild(row);
+  });
+  list.querySelectorAll('[data-open]').forEach(b => b.addEventListener('click', () => loadDraft(b.dataset.open)));
+  list.querySelectorAll('[data-del]').forEach(b => b.addEventListener('click', () => delDraft(b.dataset.del)));
+}
+async function loadDraft(id) {
+  const dr = await dbGet(id);
+  if (!dr) return;
+  Object.assign(STATE, dr.state);
+  CURRENT_DRAFT_ID = id;
+  applyStateToUI();
+  updateAll();
+  $('#draftsModal').classList.remove('show');
+  showToast('Draft loaded · 草稿已載入');
+  goTab('info');
+}
+async function delDraft(id) {
+  if (!confirm('Delete this draft? · 刪除此草稿？')) return;
+  await dbDelete(id);
+  if (CURRENT_DRAFT_ID === id) CURRENT_DRAFT_ID = null;
+  await renderDraftList();
+  showToast('Draft deleted · 草稿已刪除');
+}
+
+
+// ─── UTIL ───
+const $ = s => document.querySelector(s);
+const $$ = s => document.querySelectorAll(s);
+const esc = s => String(s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const showToast = msg => { const t = $('#toast'); t.textContent = msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'), 2400); };
+
+// ─── TAB SWITCH ───
+function goTab(name) {
+  $$('.panel').forEach(p => p.classList.remove('active'));
+  $$('.tab').forEach(t => t.classList.remove('active'));
+  const panel = $('#panel-' + name);
+  const tab = document.querySelector('.tab[data-tab="' + name + '"]');
+  if (panel) panel.classList.add('active');
+  if (tab) tab.classList.add('active');
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+// ─── ANNEX A: YES/NO ───
+function renderAnnexA() {
+  const wrap = $('#annexA-items');
+  wrap.innerHTML = '';
+  DATA.annexA.forEach(it => {
+    const card = document.createElement('div');
+    card.className = 'item';
+    card.id = 'item-' + it.id;
+    const essMark = it.essential ? '<span class="item-essential">★ ESSENTIAL</span>' : '';
+    const bonusMark = it.bonus ? '<span class="item-essential" style="background:var(--blue)">+ BONUS</span>' : '';
+    card.innerHTML = `
+      <div class="item-head">
+        <span class="item-no">${it.no}</span>${essMark}${bonusMark}
+        <span class="points-tag">${it.max} pts</span>
+      </div>
+      <div class="item-name-en">${esc(it.name_en)}</div>
+      <div class="item-name-zh">${esc(it.name_zh)}</div>
+      <div class="ab-options">
+        <button class="ab-btn" data-val="yes">✓ YES · 是 (${it.max} pts)</button>
+        <button class="ab-btn" data-val="no">✗ NO · 否 (0 pts)</button>
+      </div>
+    `;
+    wrap.appendChild(card);
+    card.querySelectorAll('.ab-btn').forEach(b => b.addEventListener('click', () => {
+      const v = b.dataset.val;
+      card.querySelectorAll('.ab-btn').forEach(x => { x.classList.remove('sel-yes','sel-no'); });
+      b.classList.add('sel-' + v);
+      STATE.A[it.id] = v;
+      updateAll();
+    }));
+  });
+}
+
+// ─── ANNEX B: RADIO BUTTONS ───
+function renderAnnexB() {
+  const wrap = $('#annexB-items');
+  wrap.innerHTML = '';
+  DATA.annexB.forEach(it => {
+    const card = document.createElement('div');
+    card.className = 'item';
+    card.id = 'item-' + it.id;
+    const noteHtml = it.note_en ? `<div class="item-note">${esc(it.note_en)}<br>${esc(it.note_zh||'')}</div>` : '';
+    let opts = '';
+    it.options.forEach((opt, i) => {
+      opts += `<button class="b-btn" data-pts="${opt.points}" data-idx="${i}">${esc(opt.label_en)}<span class="pts">${esc(opt.label_zh)} · ${opt.points} pts</span></button>`;
+    });
+    card.innerHTML = `
+      <div class="item-head"><span class="item-no">${it.no}</span><span class="points-tag">${it.max} pts max</span></div>
+      <div class="item-name-en">${esc(it.name_en)}</div>
+      <div class="item-name-zh">${esc(it.name_zh)}</div>
+      ${noteHtml}
+      <div class="b-options" style="margin-top:8px">${opts}</div>
+    `;
+    wrap.appendChild(card);
+    card.querySelectorAll('.b-btn').forEach(b => b.addEventListener('click', () => {
+      card.querySelectorAll('.b-btn').forEach(x => x.classList.remove('sel'));
+      b.classList.add('sel');
+      STATE.B[it.id] = parseInt(b.dataset.pts);
+      updateAll();
+    }));
+  });
+}
+
+// ─── ANNEX C: CHECKLIST ───
+function renderAnnexC() {
+  const wrap = $('#annexC-items');
+  wrap.innerHTML = '';
+  DATA.annexC.forEach(it => {
+    const card = document.createElement('div');
+    card.className = 'item';
+    card.id = 'item-' + it.id;
+    let subs = '';
+    it.subs.forEach((sub, i) => {
+      const cid = `c_${it.id}_${i}`.replace(/\./g,'_');
+      subs += `
+        <div class="c-sub">
+          <input type="checkbox" id="${cid}" data-itemid="${it.id}" data-idx="${i}" data-pts="${sub.points}">
+          <label for="${cid}">${esc(sub.text_en)}<span class="zh">${esc(sub.text_zh)}</span></label>
+          <span class="pts">${sub.points} pt${sub.points>1?'s':''}</span>
+        </div>
+      `;
+    });
+    card.innerHTML = `
+      <div class="item-head"><span class="item-no">${it.no}</span><span class="points-tag">${it.max} pts max</span></div>
+      <div class="item-name-en">${esc(it.name_en)}</div>
+      <div class="item-name-zh">${esc(it.name_zh)}</div>
+      <div style="margin-top:6px">${subs}</div>
+    `;
+    wrap.appendChild(card);
+    if (!STATE.C[it.id]) STATE.C[it.id] = it.subs.map(() => false);
+    card.querySelectorAll('input[type=checkbox]').forEach(cb => cb.addEventListener('change', () => {
+      const idx = parseInt(cb.dataset.idx);
+      if (!STATE.C[it.id]) STATE.C[it.id] = it.subs.map(() => false);
+      STATE.C[it.id][idx] = cb.checked;
+      updateAll();
+    }));
+  });
+}
+
+// ─── ANNEX D: La/Lb/Lc + risk overrides ───
+function renderAnnexD() {
+  const wrap = $('#annexD-sections');
+  wrap.innerHTML = '';
+  Object.entries(DATA.annexD).forEach(([secKey, sec]) => {
+    const det = document.createElement('details');
+    det.className = 'subsec';
+    det.id = 'subsec-' + secKey;
+    det.innerHTML = `
+      <summary>
+        ${secKey} ${esc(sec.title_en)} <span class="subsec-zh">${esc(sec.title_zh)}</span>
+        <span class="subsec-count">${sec.items.length} items</span>
+      </summary>
+      <div class="subsec-body"></div>
+    `;
+    const body = det.querySelector('.subsec-body');
+    sec.items.forEach(it => body.appendChild(renderDItem(it)));
+    wrap.appendChild(det);
+  });
+}
+
+function renderDItem(it) {
+  const card = document.createElement('div');
+  card.className = 'item';
+  card.id = 'item-' + it.id;
+
+  const essMark = it.essential ? '<span class="item-essential">★ ESSENTIAL ⚠ ※</span>' : '';
+  const noteHtml = it.note_en ? `<div class="item-note">${esc(it.note_en)}<br>${esc(it.note_zh||'')}</div>` : '';
+
+  const laBtn = `<button class="lc-btn" data-choice="La">
+    <span class="lc-tag">▷ La · Good 良好</span>
+    <span class="lc-desc">${esc(it.La.desc_en)}</span>
+    <span class="lc-desc lc-desc-zh">${esc(it.La.desc_zh)}</span></button>`;
+
+  const lbBtn = it.Lb ? `<button class="lc-btn" data-choice="Lb">
+    <span class="lc-tag">▷ Lb · Borderline 極限</span>
+    <span class="lc-desc">${esc(it.Lb.desc_en)}</span>
+    <span class="lc-desc lc-desc-zh">${esc(it.Lb.desc_zh)}</span></button>` : '';
+
+  const lcBtn = `<button class="lc-btn" data-choice="Lc">
+    <span class="lc-tag">▷ Lc · Unsafe 不安全</span>
+    <span class="lc-desc">${esc(it.Lc.desc_en)}</span>
+    <span class="lc-desc lc-desc-zh">${esc(it.Lc.desc_zh)}</span></button>`;
+
+  card.innerHTML = `
+    <div class="item-head">
+      <span class="item-no">${it.no}</span>${essMark}
+    </div>
+    <div class="item-name-en">${esc(it.name_en)}</div>
+    <div class="item-name-zh">${esc(it.name_zh)}</div>
+    ${noteHtml}
+    <div class="lc-buttons">${laBtn}${lbBtn}${lcBtn}</div>
+    <div class="risk-block" style="display:none">
+      <div class="risk-grid">
+        <div class="risk-field">
+          <label>Detection · 探測能力<span class="zh">① ② ③</span></label>
+          <select class="r-d">
+            <option value="1">① Auto-monitored 自動監測</option>
+            <option value="2">② Manual inspection 人手檢查</option>
+            <option value="3">③ Difficult to detect 難以識別</option>
+          </select>
+        </div>
+        <div class="risk-field">
+          <label>Severity · 嚴重程度<span class="zh">1–4</span></label>
+          <select class="r-s">
+            <option value="1">1 High 高</option>
+            <option value="2">2 Medium 中</option>
+            <option value="3">3 Low 低</option>
+            <option value="4">4 Negligible 可忽略</option>
+          </select>
+        </div>
+        <div class="risk-field">
+          <label>Likelihood · 可能性<span class="zh">A–F</span></label>
+          <select class="r-l">
+            <option value="A">A Extremely likely 極可能</option>
+            <option value="B">B Very likely 很可能</option>
+            <option value="C">C Occasional 偶爾</option>
+            <option value="D">D Rare 絕少</option>
+            <option value="E">E Unlikely 不大可能</option>
+            <option value="F">F Extremely unlikely 極不可能</option>
+          </select>
+        </div>
+        <div class="risk-field">
+          <label>Category · 風險類別<span class="zh">I / II / III</span></label>
+          <select class="r-c">
+            <option value="I">Ⅰ Action required</option>
+            <option value="II">Ⅱ Review</option>
+            <option value="III">Ⅲ No action</option>
+          </select>
+        </div>
+      </div>
+      <div class="cat-display"></div>
+      ${it.essential ? `<div class="special-flag">
+        <input type="checkbox" class="essential-mark" id="ess-${it.id}">
+        <label for="ess-${it.id}">Mark with ※ — installed without this essential safety device <span style="font-family:var(--font-zh)">標記為 ※（安裝時欠缺此必須安全裝置）</span></label>
+      </div>` : ''}
+      <div class="improvement">
+        <strong>Improvement Recommendation · 改善建議</strong>
+        ${esc(it.improvement_en)}
+        <span class="zh">${esc(it.improvement_zh)}</span>
+      </div>
+      <div class="notes-field">
+        <label>ARA Site Notes · 評估員現場備註</label>
+        <textarea class="r-notes" placeholder="Notes, measurements, photo refs..."></textarea>
+      </div>
+    </div>
+  `;
+
+  // Hook up La/Lb/Lc buttons
+  const riskBlock = card.querySelector('.risk-block');
+  card.querySelectorAll('.lc-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const choice = btn.dataset.choice;
+      card.querySelectorAll('.lc-btn').forEach(b => b.classList.remove('act-La','act-Lb','act-Lc'));
+      btn.classList.add('act-' + choice);
+      card.classList.remove('sel-La','sel-Lb','sel-Lc');
+      card.classList.add('sel-' + choice);
+      // Pre-fill risk params from default
+      const def = it[choice];
+      const dSel = card.querySelector('.r-d'); dSel.value = def.d;
+      const sSel = card.querySelector('.r-s'); sSel.value = def.s;
+      const lSel = card.querySelector('.r-l'); lSel.value = def.l;
+      const cSel = card.querySelector('.r-c'); cSel.value = def.c;
+      riskBlock.style.display = 'block';
+      saveDItem(it.id, card);
+      updateAll();
+    });
+  });
+
+  // Hook up risk param overrides
+  ['.r-d','.r-s','.r-l','.r-c','.r-notes','.essential-mark'].forEach(sel => {
+    const el = card.querySelector(sel);
+    if (!el) return;
+    const evt = (el.type === 'checkbox' || el.tagName === 'TEXTAREA') ? 'input' : 'change';
+    el.addEventListener(evt, () => { saveDItem(it.id, card); updateAll(); });
+  });
+
+  return card;
+}
+
+function saveDItem(id, card) {
+  const btnSel = card.querySelector('.lc-btn.act-La, .lc-btn.act-Lb, .lc-btn.act-Lc');
+  if (!btnSel) return;
+  const choice = btnSel.dataset.choice;
+  STATE.D[id] = {
+    choice,
+    d: parseInt(card.querySelector('.r-d').value),
+    s: parseInt(card.querySelector('.r-s').value),
+    l: card.querySelector('.r-l').value,
+    c: card.querySelector('.r-c').value,
+    notes: card.querySelector('.r-notes').value,
+    flagged: card.querySelector('.essential-mark') ? card.querySelector('.essential-mark').checked : false,
+  };
+  // Update Category badge
+  const catDisp = card.querySelector('.cat-display');
+  const cat = STATE.D[id].c;
+  catDisp.className = 'cat-display cat-' + cat;
+  const catLbl = {'I':'Class Ⅰ — Mitigation REQUIRED','II':'Class Ⅱ — Review &amp; consider mitigation','III':'Class Ⅲ — No action needed'}[cat];
+  const catLblZh = {'I':'第Ⅰ類 — 需採取降低風險措施','II':'第Ⅱ類 — 需進行檢討','III':'第Ⅲ類 — 無需採取任何措施'}[cat];
+  catDisp.innerHTML = catLbl + '<span class="zh">' + catLblZh + '</span>';
+}
+
+// ─── PHOTOS ───
+function renderPhotos() {
+  const grid = $('#photoGrid');
+  grid.innerHTML = '';
+  const MAX = 24;
+  for (let i = 0; i < MAX; i++) {
+    const slot = document.createElement('div');
+    slot.className = 'photo-slot';
+    slot.dataset.idx = i;
+    const p = STATE.photos[i];
+    if (p) {
+      slot.innerHTML = `<img src="${p.dataUrl}" alt=""><span class="remove" data-rm="${i}">✕</span>`;
+    } else {
+      slot.innerHTML = '+ Add';
+    }
+    grid.appendChild(slot);
+  }
+  // Hook handlers
+  grid.querySelectorAll('.photo-slot').forEach(s => s.addEventListener('click', e => {
+    if (e.target.classList.contains('remove')) {
+      const idx = parseInt(e.target.dataset.rm);
+      STATE.photos.splice(idx, 1);
+      renderPhotos();
+      return;
+    }
+    const idx = parseInt(s.dataset.idx);
+    $('#fileInput').dataset.targetIdx = idx;
+    $('#fileInput').click();
+  }));
+}
+
+$('#fileInput').addEventListener('change', e => {
+  const files = Array.from(e.target.files || []);
+  const targetIdx = parseInt(e.target.dataset.targetIdx || '0');
+  files.forEach((file, i) => {
+    const reader = new FileReader();
+    reader.onload = ev => {
+      // Compress if too big — basic resize via canvas
+      const img = new Image();
+      img.onload = () => {
+        const maxDim = 1600;
+        let w = img.width, h = img.height;
+        if (w > maxDim || h > maxDim) {
+          const r = maxDim / Math.max(w, h);
+          w = Math.round(w * r); h = Math.round(h * r);
+        }
+        const canvas = document.createElement('canvas');
+        canvas.width = w; canvas.height = h;
+        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+        const compressed = canvas.toDataURL('image/jpeg', 0.7);
+        const slot = targetIdx + i;
+        STATE.photos[slot] = { dataUrl: compressed, name: file.name };
+        renderPhotos();
+        autoSave();
+      };
+      img.src = ev.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+  e.target.value = '';
+});
+
+// ─── SCORING ENGINE ───
+function calcSumA() {
+  let sum = 0;
+  DATA.annexA.forEach(it => { if (STATE.A[it.id] === 'yes') sum += it.max; });
+  return sum;
+}
+function calcSumB() {
+  let sum = 0;
+  DATA.annexB.forEach(it => { if (typeof STATE.B[it.id] === 'number') sum += STATE.B[it.id]; });
+  return sum;
+}
+function calcSumC() {
+  let sum = 0;
+  DATA.annexC.forEach(it => {
+    const arr = STATE.C[it.id] || [];
+    it.subs.forEach((sub, i) => { if (arr[i]) sum += sub.points; });
+  });
+  return sum;
+}
+
+function calcOMTotal() {
+  const a = calcSumA(), b = calcSumB(), c = calcSumC();
+  // Bonus 10 points from Annex A item 1.8 if marked
+  let bonus = 0;
+  const bonusItem = DATA.annexA.find(it => it.bonus);
+  if (bonusItem && STATE.A[bonusItem.id] === 'yes') bonus = 0; // already counted in max
+  return { a, b, c, total: a + b + c, max: 150 };
+}
+
+function omGrade(total) {
+  if (total >= 136) return { lvl: 1, en: 'Excellent', zh: '優異', rec_en: 'Maintain excellent performance; consider further improvements on individual items.', rec_zh: '表現優異。負責人應維持優異表現，並考慮採取適當措施改善個別項目。' };
+  if (total >= 121) return { lvl: 2, en: 'Good', zh: '良好', rec_en: 'Maintain good performance; take appropriate measures to improve individual items.', rec_zh: '表現良好。負責人應維持良好表現，並採取適當措施改善個別項目。' };
+  if (total >= 101) return { lvl: 3, en: 'Fair', zh: '尚可', rec_en: 'Carefully review all items and take appropriate measures to improve.', rec_zh: '表現尚可。強烈建議負責人仔細檢視所有評估項目，並採取適當措施改善表現。' };
+  return { lvl: 4, en: 'Action Required', zh: '需即時改善', rec_en: 'Take immediate measures to improve; re-assess within a reasonable timeframe (e.g. 3 years).', rec_zh: '負責人須立即採取適當措施改善表現，並在合理的時限內（例如三年）重新評估情況。' };
+}
+
+// D Score per EMSD formula:
+// v_i: Cat I = 0 (or ※ excluded), Cat II = -1, Cat III = 1
+// D = (Σ vi / n) × 100  if ∀vi ≠ 0 and Σvi ≥ 0
+// D = 0 if ∃vi = 0 (non-※ Cat I exists) OR Σvi < 0
+// If D ≥ 70 but ※-marked Cat I exists, grade = Level 4
+function calcDScore() {
+  const items = [];
+  let countCatI = 0, countCatII = 0, countCatIII = 0;
+  let hasUnmarkedCatI = false;   // Any non-※ Cat I → D = 0
+  let hasMarkedCatI = false;     // ※-marked Cat I → forces Level 4 even if D ≥ 70
+  Object.entries(STATE.D).forEach(([id, st]) => {
+    const cat = st.c;
+    if (cat === 'I') {
+      countCatI++;
+      if (st.flagged) {
+        hasMarkedCatI = true;
+        // ※ items excluded from D calculation
+      } else {
+        hasUnmarkedCatI = true;
+        items.push(0);
+      }
+    } else if (cat === 'II') {
+      countCatII++;
+      items.push(-1);
+    } else if (cat === 'III') {
+      countCatIII++;
+      items.push(1);
+    }
+  });
+
+  const totalRated = countCatI + countCatII + countCatIII;
+  const totalForCalc = items.length;
+  const sum = items.reduce((a, b) => a + b, 0);
+
+  let D;
+  if (totalForCalc === 0) {
+    D = null;
+  } else if (hasUnmarkedCatI || sum < 0) {
+    D = 0;
+  } else {
+    D = (sum / totalForCalc) * 100;
+  }
+
+  let grade, gradeEn, gradeZh, recEn, recZh;
+  if (D === null) {
+    grade = null;
+    gradeEn = '—'; gradeZh = '—'; recEn = 'Insufficient data — complete more items.'; recZh = '資料不足 — 請完成更多項目。';
+  } else if (hasMarkedCatI && D >= 70) {
+    grade = 4;
+    gradeEn = 'Level 4'; gradeZh = '第四級';
+    recEn = 'Plan to eliminate or reduce risk and optimise lift; implement plan effectively. Recommend stopping lift use until protective measures in place.';
+    recZh = '應制定計劃，以消除或降低風險以及優化升降機；並有效實施該計劃。建議停用升降機。只有在採取防護措施以消除或降低風險後，才可恢復操作。';
+  } else if (D >= 90) {
+    grade = 1; gradeEn = 'Level 1'; gradeZh = '第一級';
+    recEn = 'Adopt protective measures to eliminate or reduce risk.';
+    recZh = '宜採取防護措施，以消除或降低風險。';
+  } else if (D >= 80) {
+    grade = 2; gradeEn = 'Level 2'; gradeZh = '第二級';
+    recEn = 'Should adopt protective measures to eliminate or reduce risk.';
+    recZh = '應採取防護措施，以消除或降低風險。';
+  } else if (D >= 70) {
+    grade = 3; gradeEn = 'Level 3'; gradeZh = '第三級';
+    recEn = 'Should adopt protective measures as soon as practicable to eliminate or reduce risk.';
+    recZh = '應盡快採取防護措施，以消除或降低風險。';
+  } else {
+    grade = 4; gradeEn = 'Level 4'; gradeZh = '第四級';
+    recEn = 'Plan to eliminate or reduce risk and optimise lift; implement effectively. Recommend stopping lift use until protective measures in place.';
+    recZh = '應制定計劃，以消除或降低風險以及優化升降機；並有效實施該計劃。建議停用升降機。只有在採取防護措施以消除或降低風險後，才可恢復操作。';
+  }
+
+  return {
+    D, grade, gradeEn, gradeZh, recEn, recZh,
+    countCatI, countCatII, countCatIII,
+    totalRated, totalForCalc, sum,
+    hasUnmarkedCatI, hasMarkedCatI,
+    totalItems: DATA.totals.D,
+  };
+}
+
+// Re-determine next inspection interval per EMSD § 6.2:
+// 3-year interval if: a) >30 yrs old; b) lacks all 4 essential safety devices;
+// c) D < 80; or d) ARA opines close monitoring needed. Else 5 years.
+function nextInspectionInterval(d) {
+  const liftAge = (parseInt($('#f_year')?.value) || 0) > 0
+    ? (new Date().getFullYear() - parseInt($('#f_year').value))
+    : null;
+  const ess = DATA.annexA.filter(it => it.essential);
+  const lacksAllEssential = ess.length > 0 && ess.every(it => STATE.A[it.id] === 'no');
+  const ageOver30 = liftAge !== null && liftAge > 30;
+  const lowScore = d.D !== null && d.D < 80;
+  if (ageOver30 || lacksAllEssential || lowScore) return 3;
+  return 5;
+}
+
+// ─── UPDATE ALL ───
+function updateAll() {
+  const om = calcOMTotal();
+  const omG = omGrade(om.total);
+  const d = calcDScore();
+
+  $('#aSum').textContent = om.a;
+  $('#bSum').textContent = om.b;
+  $('#cSum').textContent = om.c;
+
+  $('#omScoreTop').textContent = om.total + '/150';
+  $('#omScoreTop').className = 'val' + (om.total >= 121 ? '' : om.total >= 101 ? ' warn' : ' danger');
+
+  $('#dFilled').textContent = d.totalRated;
+  $('#dCatI').textContent = d.countCatI;
+  $('#dCatII').textContent = d.countCatII;
+  $('#dCatIII').textContent = d.countCatIII;
+
+  $('#dScoreTop').textContent = d.D === null ? '—' : (Math.round(d.D * 10) / 10).toFixed(1);
+  $('#dScoreTop').className = 'val' + (d.grade === 1 || d.grade === 2 ? '' : d.grade === 3 ? ' warn' : ' danger');
+
+  // Filled count
+  const filledA = Object.keys(STATE.A).length;
+  const filledB = Object.keys(STATE.B).length;
+  const filledC = Object.keys(STATE.C).filter(k => (STATE.C[k]||[]).some(v => v)).length;
+  const filledD = Object.keys(STATE.D).length;
+  const totalFilled = filledA + filledB + filledC + filledD;
+  $('#filledTop').textContent = totalFilled + '/' + DATA.totals.ALL;
+
+  const pct = Math.round((totalFilled / DATA.totals.ALL) * 100);
+  $('#progressBar').style.width = pct + '%';
+
+  // Render verdict
+  renderVerdict(om, omG, d);
+
+  autoSave();
+}
+
+// ─── VERDICT RENDERING ───
+function renderVerdict(om, omG, d) {
+  const cont = $('#verdictContainer');
+  const interval = nextInspectionInterval(d);
+  const dScoreDisp = d.D === null ? '—' : (Math.round(d.D * 10) / 10).toFixed(1);
+
+  cont.innerHTML = `
+    <div class="verdict-card">
+      <div class="verdict-label">Overall Safety Grade · 整體安全等級</div>
+      <div class="verdict-grade">${d.gradeEn} <span style="font-family:var(--font-zh);font-size:.6em">${d.gradeZh}</span></div>
+      <div class="verdict-grid">
+        <div class="verdict-stat">
+          <div class="lbl">D Score · 整體安全得分</div>
+          <div class="num">${dScoreDisp}</div>
+        </div>
+        <div class="verdict-stat">
+          <div class="lbl">O&amp;M Score · 運作及保養</div>
+          <div class="num">${om.total}/150</div>
+        </div>
+        <div class="verdict-stat">
+          <div class="lbl">Next Inspection · 下次評估</div>
+          <div class="num">${interval} yr</div>
+        </div>
+      </div>
+
+      <div class="verdict-breakdown">
+        <h4>Score Breakdown · 分數明細</h4>
+        <table>
+          <tr><td>Annex A — Optimisation Level 優化水平</td><td>${om.a} / 50</td></tr>
+          <tr><td>Annex B — Operating Records 運作記錄</td><td>${om.b} / 50</td></tr>
+          <tr><td>Annex C — Management Records 管理記錄</td><td>${om.c} / 50</td></tr>
+          <tr><td style="border-top:1px solid rgba(255,255,255,.2)"><strong>O&amp;M Subtotal · 小計</strong></td><td style="border-top:1px solid rgba(255,255,255,.2)"><strong>${om.total} / 150 — ${omG.en} ${omG.zh}</strong></td></tr>
+          <tr><td style="padding-top:10px">Annex D — Items rated 已評項目</td><td style="padding-top:10px">${d.totalRated} / ${d.totalItems}</td></tr>
+          <tr><td>· Class Ⅰ items 第Ⅰ類</td><td>${d.countCatI}${d.hasMarkedCatI ? ' (incl. ※ marked)' : ''}</td></tr>
+          <tr><td>· Class Ⅱ items 第Ⅱ類</td><td>${d.countCatII}</td></tr>
+          <tr><td>· Class Ⅲ items 第Ⅲ類</td><td>${d.countCatIII}</td></tr>
+          <tr><td>Σ vᵢ (sum)</td><td>${d.sum}</td></tr>
+          <tr><td>n (items in calc)</td><td>${d.totalForCalc}</td></tr>
+          <tr><td><strong>D = (Σ vᵢ / n) × 100</strong></td><td><strong>${dScoreDisp}</strong></td></tr>
+        </table>
+      </div>
+
+      <div class="verdict-rec">
+        <strong>Recommendation · 建議</strong>
+        ${esc(d.recEn)}
+        <span class="zh">${esc(d.recZh)}</span>
+      </div>
+
+      <div class="verdict-rec">
+        <strong>O&amp;M Performance Grade · 運作及保養表現等級</strong>
+        Grade ${omG.lvl} (${omG.en} · ${omG.zh}). ${esc(omG.rec_en)}
+        <span class="zh">第 ${omG.lvl} 級（${omG.zh}）。${esc(omG.rec_zh)}</span>
+      </div>
+
+      ${d.hasUnmarkedCatI ? `<div class="verdict-rec" style="background:rgba(220,53,69,.15);border-color:var(--danger)">
+        <strong style="color:var(--danger)">⚠ Critical Class Ⅰ Item Detected · 偵測到嚴重第Ⅰ類項目</strong>
+        Non-※ Class Ⅰ risk(s) detected. Per EMSD formula, D Score is forced to 0. Immediate mitigation required.
+        <span class="zh">偵測到非 ※ 標記之第Ⅰ類風險。依 EMSD 公式，D 分數強制歸零。須即時採取降低風險措施。</span>
+      </div>` : ''}
+    </div>
+  `;
+}
+
+// ─── INFO FORM ───
+function bindInfoInputs() {
+  const ids = ['f_site','f_address','f_rp','f_contractor','f_liftno','f_emsdno','f_mfr','f_type','f_speed','f_load','f_year','f_commyear','f_floors','f_araname','f_arareg','f_aracompany','f_araexpiry','f_inspdate','f_insptime','f_weather','f_rle','f_rlw','f_remarks','f_urgent','f_sig_ara','f_sig_date','f_prep','f_review','f_approve','f_seal'];
+  ids.forEach(id => {
+    const el = $('#' + id);
+    if (!el) return;
+    el.addEventListener('input', () => { STATE.info[id] = el.value; autoSave(); });
+  });
+}
+
+// ─── SAVE / LOAD ───
+function autoSave() {
+  STATE.remarks = $('#f_remarks')?.value || '';
+  STATE.urgent = $('#f_urgent')?.value || '';
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(STATE)); } catch (e) {}
+}
+
+function loadFromStorage() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return false;
+    const s = JSON.parse(raw);
+    Object.assign(STATE, s);
+    return true;
+  } catch (e) { return false; }
+}
+
+function applyStateToUI() {
+  // Info
+  Object.entries(STATE.info).forEach(([k, v]) => {
+    const el = $('#' + k);
+    if (el) el.value = v;
+  });
+  if (STATE.remarks) $('#f_remarks').value = STATE.remarks;
+  if (STATE.urgent) $('#f_urgent').value = STATE.urgent;
+
+  // Annex A
+  Object.entries(STATE.A).forEach(([id, v]) => {
+    const card = $('#item-' + id);
+    if (!card) return;
+    const btn = card.querySelector(`.ab-btn[data-val="${v}"]`);
+    if (btn) {
+      card.querySelectorAll('.ab-btn').forEach(x => x.classList.remove('sel-yes','sel-no'));
+      btn.classList.add('sel-' + v);
+    }
+  });
+
+  // Annex B
+  Object.entries(STATE.B).forEach(([id, pts]) => {
+    const card = $('#item-' + id);
+    if (!card) return;
+    card.querySelectorAll('.b-btn').forEach(b => {
+      if (parseInt(b.dataset.pts) === pts) { b.classList.add('sel'); }
+    });
+  });
+
+  // Annex C
+  Object.entries(STATE.C).forEach(([id, arr]) => {
+    const card = $('#item-' + id);
+    if (!card) return;
+    arr.forEach((checked, i) => {
+      const cid = `c_${id}_${i}`.replace(/\./g,'_');
+      const cb = card.querySelector('#' + cid);
+      if (cb) cb.checked = checked;
+    });
+  });
+
+  // Annex D
+  Object.entries(STATE.D).forEach(([id, st]) => {
+    const card = $('#item-' + id);
+    if (!card) return;
+    const btn = card.querySelector(`.lc-btn[data-choice="${st.choice}"]`);
+    if (btn) {
+      card.querySelectorAll('.lc-btn').forEach(b => b.classList.remove('act-La','act-Lb','act-Lc'));
+      btn.classList.add('act-' + st.choice);
+      card.classList.add('sel-' + st.choice);
+    }
+    const riskBlock = card.querySelector('.risk-block');
+    if (riskBlock) riskBlock.style.display = 'block';
+    if (card.querySelector('.r-d')) card.querySelector('.r-d').value = st.d;
+    if (card.querySelector('.r-s')) card.querySelector('.r-s').value = st.s;
+    if (card.querySelector('.r-l')) card.querySelector('.r-l').value = st.l;
+    if (card.querySelector('.r-c')) card.querySelector('.r-c').value = st.c;
+    if (card.querySelector('.r-notes')) card.querySelector('.r-notes').value = st.notes || '';
+    const essMark = card.querySelector('.essential-mark');
+    if (essMark) essMark.checked = !!st.flagged;
+    saveDItem(id, card);
+  });
+
+  // Photos
+  renderPhotos();
+}
+
+async function exportJSON() {
+  const ok = await requireAuth();
+  if (!ok) return;
+  const payload = { _summary: buildSummary(), ...STATE };
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  const ts = new Date().toISOString().replace(/[:.]/g,'-').slice(0,19);
+  const site = (STATE.info.f_site || 'lift').replace(/[^a-zA-Z0-9_-]/g, '_');
+  const liftno = (STATE.info.f_liftno || '').replace(/[^a-zA-Z0-9_-]/g, '_');
+  a.href = url;
+  a.download = `Lifthium_ARA_${site}_${liftno}_${ts}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('JSON exported · JSON 已匯出');
+}
+
+function importJSON() {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = 'application/json,.json';
+  input.onchange = e => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = ev => {
+      try {
+        const s = JSON.parse(ev.target.result);
+        Object.assign(STATE, s);
+        applyStateToUI();
+        updateAll();
+        showToast('JSON loaded · JSON 已載入');
+      } catch (err) {
+        showToast('Invalid JSON · JSON 格式錯誤');
+      }
+    };
+    reader.readAsText(file);
+  };
+  input.click();
+}
+
+function resetAll() {
+  if (!confirm('Reset ALL data? This cannot be undone.\n重設所有資料？此操作無法復原。')) return;
+  Object.keys(STATE.A).forEach(k => delete STATE.A[k]);
+  Object.keys(STATE.B).forEach(k => delete STATE.B[k]);
+  Object.keys(STATE.C).forEach(k => delete STATE.C[k]);
+  Object.keys(STATE.D).forEach(k => delete STATE.D[k]);
+  Object.keys(STATE.info).forEach(k => delete STATE.info[k]);
+  STATE.photos.length = 0;
+  STATE.remarks = ''; STATE.urgent = '';
+  localStorage.removeItem(STORAGE_KEY);
+  location.reload();
+}
+
+// ─── INIT ───
+function init() {
+  renderAnnexA();
+  renderAnnexB();
+  renderAnnexC();
+  renderAnnexD();
+  renderPhotos();
+
+  // Bind tab clicks
+  $$('.tab').forEach(t => t.addEventListener('click', () => goTab(t.dataset.tab)));
+  $$('[data-goto]').forEach(b => b.addEventListener('click', () => goTab(b.dataset.goto)));
+
+  // Bind top bar buttons
+  $('#saveBtn').addEventListener('click', exportJSON);
+  $('#loadBtn').addEventListener('click', importJSON);
+  $('#printBtn').addEventListener('click', () => { 
+    // Open all D accordions for print
+    document.querySelectorAll('details.subsec').forEach(d => d.setAttribute('open',''));
+    window.print();
+  });
+  $('#resetBtn').addEventListener('click', resetAll);
+  $('#draftsBtn').addEventListener('click', openDraftsModal);
+  $('#authChip').addEventListener('click', () => { if (!AUTHED) requireAuth(); });
+
+  // Draft save buttons (topbar modal + verdict panel)
+  $('#saveDraftBtn').addEventListener('click', () => doSaveDraft(false));
+  $('#saveAsNewBtn').addEventListener('click', () => doSaveDraft(true));
+  $('#saveDraftBtn2').addEventListener('click', () => doSaveDraft(false));
+  $('#saveAsNewBtn2').addEventListener('click', () => doSaveDraft(true));
+
+  // Name modal submit
+  const submitName = async () => {
+    const nm = $('#nameInput').value.trim() || 'Untitled';
+    $('#nameModal').classList.remove('show');
+    await commitDraft(nm);
+    if ($('#draftsModal').classList.contains('show')) renderDraftList();
+  };
+  $('#nameSubmit').addEventListener('click', submitName);
+  $('#nameInput').addEventListener('keydown', e => { if (e.key === 'Enter') submitName(); });
+
+  // Generic modal close buttons
+  document.querySelectorAll('[data-close]').forEach(b => {
+    b.addEventListener('click', () => $('#' + b.dataset.close).classList.remove('show'));
+  });
+  // Click outside modal closes it
+  document.querySelectorAll('.modal-overlay').forEach(ov => {
+    ov.addEventListener('click', e => { if (e.target === ov) ov.classList.remove('show'); });
+  });
+
+  // Bind verdict buttons
+  $('#finalSaveBtn').addEventListener('click', exportJSON);
+  $('#newAssessBtn').addEventListener('click', resetAll);
+
+  updateAuthChip();
+
+  // Auto-fill ARA company per Lifthium brand
+  if (!$('#f_aracompany').value) $('#f_aracompany').value = 'Lifthium Consultancy Limited 極樂公證行有限公司';
+
+  bindInfoInputs();
+
+  // Load saved
+  if (loadFromStorage()) {
+    applyStateToUI();
+    showToast('Restored from auto-save · 已從自動儲存還原');
+  }
+
+  updateAll();
+}
+
+document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>
