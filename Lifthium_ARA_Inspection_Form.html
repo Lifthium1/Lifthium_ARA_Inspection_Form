@@ -836,6 +836,8 @@ async function delDraft(id) {
 // ─── UTIL ───
 const $ = s => document.querySelector(s);
 const $$ = s => document.querySelectorAll(s);
+// getElementById handles IDs containing dots (e.g. item-D.1.1) which querySelector cannot
+const byId = id => document.getElementById(id);
 const esc = s => String(s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const showToast = msg => { const t = $('#toast'); t.textContent = msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'), 2400); };
 
@@ -1442,7 +1444,7 @@ function applyStateToUI() {
 
   // Annex A
   Object.entries(STATE.A).forEach(([id, v]) => {
-    const card = $('#item-' + id);
+    const card = byId('item-' + id);
     if (!card) return;
     const btn = card.querySelector(`.ab-btn[data-val="${v}"]`);
     if (btn) {
@@ -1453,7 +1455,7 @@ function applyStateToUI() {
 
   // Annex B
   Object.entries(STATE.B).forEach(([id, pts]) => {
-    const card = $('#item-' + id);
+    const card = byId('item-' + id);
     if (!card) return;
     card.querySelectorAll('.b-btn').forEach(b => {
       if (parseInt(b.dataset.pts) === pts) { b.classList.add('sel'); }
@@ -1462,7 +1464,7 @@ function applyStateToUI() {
 
   // Annex C
   Object.entries(STATE.C).forEach(([id, arr]) => {
-    const card = $('#item-' + id);
+    const card = byId('item-' + id);
     if (!card) return;
     arr.forEach((checked, i) => {
       const cid = `c_${id}_${i}`.replace(/\./g,'_');
@@ -1473,7 +1475,7 @@ function applyStateToUI() {
 
   // Annex D
   Object.entries(STATE.D).forEach(([id, st]) => {
-    const card = $('#item-' + id);
+    const card = byId('item-' + id);
     if (!card) return;
     const btn = card.querySelector(`.lc-btn[data-choice="${st.choice}"]`);
     if (btn) {
