@@ -239,10 +239,12 @@ details.subsec .subsec-count{font-size:.72rem;color:rgba(255,255,255,.7);font-we
 
 /* Print-only logo (top-left of every printed/PDF page) */
 .print-logo{display:none}
+/* Print-only report pages (cover + declaration) — hidden on screen */
+.print-only{display:none}
 
 /* PRINT */
 @media print {
-  @page{margin:14mm 12mm}
+  @page{margin:22mm 14mm 16mm 14mm}
   .topbar,.progress-track,.tabs,.nav-row,.btn-icon,.modal-overlay{display:none!important}
   .panel{display:block!important;page-break-after:always}
   body{background:#fff}
@@ -250,9 +252,43 @@ details.subsec .subsec-count{font-size:.72rem;color:rgba(255,255,255,.7);font-we
   .card,.item{box-shadow:none;border:1px solid #aaa;page-break-inside:avoid}
   details.subsec{break-inside:avoid}
   details.subsec[open] summary,details.subsec summary{background:#f0f0f0;color:#000}
-  /* Company logo fixed to top-left corner — repeats on every printed page */
-  .print-logo{display:block;position:fixed;top:0;left:0;width:60px;height:60px;z-index:9999}
+  /* Company logo fixed to top-left corner — repeats on every printed page, clears content */
+  .print-logo{display:block;position:fixed;top:2mm;left:1mm;width:15mm;height:15mm;z-index:9999}
   .print-logo svg{width:100%;height:100%;display:block}
+
+  /* ---- COVER + DECLARATION (print only) ---- */
+  .print-only{display:block}
+  .print-page{page-break-after:always;position:relative}
+  .pc-head{text-align:center;border-bottom:2.5px solid var(--gold);padding-bottom:5mm;margin-bottom:8mm;padding-left:16mm}
+  .pc-title{font-size:21pt;font-weight:700;color:var(--navy);letter-spacing:2px;margin-bottom:2mm;font-family:var(--font-zh)}
+  .pc-title-en{font-family:var(--font-h);font-size:11.5pt;color:var(--blue);letter-spacing:.5px;font-weight:600}
+  .pc-fields{width:86%;margin:0 auto 9mm}
+  .pc-row{display:flex;padding:5px 0;border-bottom:1px dotted #bbb}
+  .pc-label{width:46%;font-weight:700;color:#333;font-size:10.5pt;font-family:var(--font-zh)}
+  .pc-label .en{display:block;font-family:var(--font-h);font-weight:600;font-size:8pt;color:#999}
+  .pc-value{flex:1;color:#000;font-size:10.5pt;padding-left:6px}
+  .pc-sig{display:flex;gap:8mm;width:96%;margin:8mm auto 0}
+  .pc-sigbox{flex:1}
+  .pc-sigtitle{font-weight:700;border-bottom:1.5px solid var(--navy);padding-bottom:4px;margin-bottom:9px;color:var(--navy);font-size:10pt;font-family:var(--font-zh)}
+  .pc-sigtitle .en{display:block;font-family:var(--font-h);font-size:7.5pt;color:#999;font-weight:600}
+  .pc-sigline{margin:8px 0;font-size:9.5pt}
+  .pc-sigline .lab{display:inline-block;min-width:118px;color:#444}
+  .pc-sigline .un{display:inline-block;border-bottom:1px solid #999;min-width:120px;min-height:1em}
+  .pc-foot{text-align:center;margin-top:12mm;font-size:8.5pt;color:#999;font-family:var(--font-h)}
+
+  .pd-head{border-bottom:2px solid var(--gold);padding-bottom:4px;margin-bottom:6mm;padding-left:16mm;min-height:15mm;display:flex;flex-direction:column;justify-content:center}
+  .pd-head .en{font-family:var(--font-h);font-weight:700;font-size:10pt;color:var(--navy)}
+  .pd-head .zh{font-size:8.5pt;color:#666;font-family:var(--font-zh)}
+  .pd-title{text-align:center;font-size:15pt;font-weight:700;color:var(--navy);margin:5mm 0;font-family:var(--font-zh)}
+  .pd-title .en{display:block;font-family:var(--font-h);font-size:10pt;color:var(--blue);font-weight:600;margin-top:2px}
+  .pd-body{font-size:10pt;line-height:1.75;text-align:justify;margin-bottom:7mm;font-family:var(--font-zh)}
+  .pd-body .en{display:block;color:#555;font-size:9pt;margin-top:3px;font-family:var(--font-en)}
+  .pd-item{display:flex;gap:8px;margin-bottom:5mm;page-break-inside:avoid}
+  .pd-num{flex-shrink:0;width:22px;height:22px;background:var(--navy);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9pt;font-weight:700;font-family:var(--font-h)}
+  .pd-txt{flex:1;font-size:10pt;line-height:1.7;font-family:var(--font-zh)}
+  .pd-txt .en{display:block;color:#555;font-size:9pt;margin-top:2px;font-family:var(--font-en)}
+  .pd-sechead{font-size:12.5pt;font-weight:700;color:var(--navy);text-align:center;margin:6mm 0 4mm;font-family:var(--font-zh)}
+  .pd-sechead .en{display:block;font-family:var(--font-h);font-size:9pt;color:var(--blue);font-weight:600}
 }
 </style>
 </head>
@@ -304,6 +340,63 @@ details.subsec .subsec-count{font-size:.72rem;color:rgba(255,255,255,.7);font-we
 
 <main class="main">
 
+  <!-- ═══ PRINT-ONLY: COVER PAGE ═══ -->
+  <div class="print-only">
+    <div class="print-page" id="printCover">
+      <div class="pc-head">
+        <div class="pc-title">升降機風險評估報告</div>
+        <div class="pc-title-en">Risk Assessment Report for Lift by Accredited Risk Assessor</div>
+      </div>
+      <div class="pc-fields">
+        <div class="pc-row"><div class="pc-label">升降機負責人 <span class="en">Responsible Person</span></div><div class="pc-value" id="pc_rp"></div></div>
+        <div class="pc-row"><div class="pc-label">機電署地點編號 <span class="en">EMSD Location No.</span></div><div class="pc-value" id="pc_emsd"></div></div>
+        <div class="pc-row"><div class="pc-label">升降機編號 <span class="en">Lift No.</span></div><div class="pc-value" id="pc_liftno"></div></div>
+        <div class="pc-row"><div class="pc-label">地址 <span class="en">Address</span></div><div class="pc-value" id="pc_address"></div></div>
+        <div class="pc-row"><div class="pc-label">升降機製造商 <span class="en">Lift Manufacturer</span></div><div class="pc-value" id="pc_mfr"></div></div>
+        <div class="pc-row"><div class="pc-label">保養承辦商 <span class="en">Maintenance Contractor</span></div><div class="pc-value" id="pc_contractor"></div></div>
+        <div class="pc-row"><div class="pc-label">評估機構 <span class="en">Assessment Organisation</span></div><div class="pc-value" id="pc_org"></div></div>
+        <div class="pc-row"><div class="pc-label">評估日期 <span class="en">Assessment Date</span></div><div class="pc-value" id="pc_date"></div></div>
+      </div>
+      <div class="pc-sig">
+        <div class="pc-sigbox">
+          <div class="pc-sigtitle">風險評估員簽署 <span class="en">Risk Assessor's Signature</span></div>
+          <div class="pc-sigline"><span class="lab">姓名 Name:</span><span class="un" id="pc_araname"></span></div>
+          <div class="pc-sigline"><span class="lab">評估員編號 ARA No.:</span><span class="un" id="pc_arareg"></span></div>
+          <div class="pc-sigline"><span class="lab">日期 Date:</span><span class="un"></span></div>
+          <div class="pc-sigline"><span class="lab">電話 Tel:</span><span class="un"></span></div>
+        </div>
+        <div class="pc-sigbox">
+          <div class="pc-sigtitle">升降機負責人簽署 <span class="en">Responsible Person's Signature</span></div>
+          <div class="pc-sigline"><span class="lab">姓名 Name:</span><span class="un"></span></div>
+          <div class="pc-sigline"><span class="lab">日期 Date:</span><span class="un"></span></div>
+          <div class="pc-sigline"><span class="lab">電話 Tel:</span><span class="un"></span></div>
+        </div>
+      </div>
+      <div class="pc-foot">Lifthium Consultancy Limited 極樂公證行有限公司</div>
+    </div>
+
+    <!-- ═══ PRINT-ONLY: DECLARATION PAGE ═══ -->
+    <div class="print-page" id="printDecl">
+      <div class="pd-head">
+        <span class="en">Risk Assessment for Lift by Accredited Risk Assessor</span>
+        <span class="zh">升降機風險評估記錄表&nbsp;·&nbsp;極樂公證行有限公司</span>
+      </div>
+      <div class="pd-title">免責聲明<span class="en">Disclaimer</span></div>
+      <div class="pd-body">
+        升降機負責人，例如大廈業主、業主立案法團、物業管理公司、承辦商及相關行業營運者，均可參考或考慮採納本報告的內容，以配合其運作需求。
+        <span class="en">The responsible person for the lift — such as building owners, owners' corporations, property management companies, contractors and related industry operators — may refer to or consider adopting the contents of this report to suit their operational needs.</span>
+      </div>
+      <div class="pd-sechead">通知<span class="en">Notice</span></div>
+      <div class="pd-item"><div class="pd-num">1</div><div class="pd-txt">本報告根據《曳引式升降機風險評估指引》制定。<span class="en">This report is prepared in accordance with the Guideline on Risk Assessment for Traction Lifts.</span></div></div>
+      <div class="pd-item"><div class="pd-num">2</div><div class="pd-txt">本報告須以電腦印刷或原子筆填寫。字跡需清晰、整潔。<span class="en">This report must be completed by computer printout or in ballpoint pen, with clear and legible handwriting.</span></div></div>
+      <div class="pd-item"><div class="pd-num">3</div><div class="pd-txt">如沒有風險評估員簽署，此報告為無效。<span class="en">This report is invalid without the signature of the risk assessor.</span></div></div>
+      <div class="pd-item"><div class="pd-num">4</div><div class="pd-txt">升降機負責人如對評估報告及建議有異議或其他意見的，應於收到本報告之日起 15 個曆日內向評估機構提出書面意見。<span class="en">If the responsible person disagrees with or has other comments on the report and recommendations, they should submit written comments to the assessment organisation within 15 calendar days from the date of receipt.</span></div></div>
+      <div class="pd-item"><div class="pd-num">5</div><div class="pd-txt">本報告及其建議僅適用於被評估升降機的現狀；如評估後升降機及其使用環境有任何變化，本評估報告中的相關條款及結論可能不再適用。<span class="en">This report and its recommendations apply only to the current condition of the assessed lift. If the lift or its operating environment changes after the assessment, the relevant terms and conclusions may no longer apply.</span></div></div>
+      <div class="pd-item"><div class="pd-num">6</div><div class="pd-txt">在任何情況下，若需引用本報告中的結果或數據，均應保持原意，不得添加、修改、偽造或否認事實。<span class="en">Under any circumstances, when citing the results or data in this report, the original meaning must be preserved; no addition, modification, falsification or denial of facts is permitted.</span></div></div>
+      <div class="pd-item"><div class="pd-num">7</div><div class="pd-txt">本報告需一式三份，評估機構留存一份，升降機負責人留存兩份。<span class="en">This report shall be made in triplicate: one copy retained by the assessment organisation and two copies by the responsible person.</span></div></div>
+    </div>
+  </div>
+
   <!-- TABS -->
   <nav class="tabs">
     <button class="tab active" data-tab="info">Project · 項目</button>
@@ -328,7 +421,7 @@ details.subsec .subsec-count{font-size:.72rem;color:rgba(255,255,255,.7);font-we
       </div>
       <div class="info-grid-3" style="margin-top:10px">
         <div class="field"><label>Lift No. / ID <span class="zh">升降機編號</span></label><input type="text" id="f_liftno" placeholder="e.g. L-01"></div>
-        <div class="field"><label>EMSD Lift Reg. No. <span class="zh">機電署註冊編號</span></label><input type="text" id="f_emsdno" placeholder="EMSD reg. no."></div>
+        <div class="field"><label>EMSD Location No. <span class="zh">機電署地點編號</span></label><input type="text" id="f_emsdno" placeholder="e.g. 1012838-001"></div>
         <div class="field"><label>Manufacturer <span class="zh">製造商</span></label><input type="text" id="f_mfr" placeholder="OEM"></div>
       </div>
       <div class="info-grid-3" style="margin-top:10px">
@@ -731,6 +824,27 @@ function buildSummary() {
       + Object.keys(STATE.C).filter(k => (STATE.C[k]||[]).some(v=>v)).length
       + Object.keys(STATE.D).length,
   };
+}
+
+// ─── Populate the print-only cover page from current form data ───
+function populatePrintCover() {
+  const i = STATE.info;
+  const v = id => { const el = byId(id); return el ? (el.value || el.textContent || '') : ''; };
+  const set = (id, val) => { const el = byId(id); if (el) el.textContent = val || '—'; };
+  // pull live values directly from inputs (most current)
+  set('pc_rp', v('f_rp') || v('f_site'));
+  set('pc_emsd', v('f_emsdno'));
+  set('pc_liftno', v('f_liftno'));
+  set('pc_address', v('f_address'));
+  set('pc_mfr', v('f_mfr'));
+  set('pc_contractor', v('f_contractor'));
+  set('pc_org', v('f_aracompany') || 'Lifthium Consultancy Limited 極樂公證行有限公司');
+  // format date nicely if present
+  let d = v('f_inspdate');
+  if (d) { try { const dt = new Date(d); d = dt.getFullYear() + ' 年 ' + (dt.getMonth()+1) + ' 月 ' + dt.getDate() + ' 日'; } catch(e){} }
+  set('pc_date', d);
+  set('pc_araname', v('f_araname'));
+  set('pc_arareg', v('f_arareg'));
 }
 
 // ─── Save / Save as New (gated) ───
@@ -1569,6 +1683,7 @@ function init() {
   $('#saveBtn').addEventListener('click', exportJSON);
   $('#loadBtn').addEventListener('click', importJSON);
   $('#printBtn').addEventListener('click', () => { 
+    populatePrintCover();
     // Open all D accordions for print
     document.querySelectorAll('details.subsec').forEach(d => d.setAttribute('open',''));
     window.print();
