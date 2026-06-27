@@ -252,14 +252,14 @@ details.subsec .subsec-count{font-size:.72rem;color:rgba(255,255,255,.7);font-we
   .card,.item{box-shadow:none;border:1px solid #aaa;page-break-inside:avoid}
   details.subsec{break-inside:avoid}
   details.subsec[open] summary,details.subsec summary{background:#f0f0f0;color:#000}
-  /* Company logo fixed to top-left corner — repeats on every printed page, clears content */
-  .print-logo{display:block;position:fixed;top:2mm;left:1mm;width:15mm;height:15mm;z-index:9999}
+  /* Company logo fixed into the TOP MARGIN (negative top) so it never overlaps page content */
+  .print-logo{display:block;position:fixed;top:-19mm;left:0;width:14mm;height:14mm;z-index:9999}
   .print-logo svg{width:100%;height:100%;display:block}
 
   /* ---- COVER + DECLARATION (print only) ---- */
   .print-only{display:block}
   .print-page{page-break-after:always;position:relative}
-  .pc-head{text-align:center;border-bottom:2.5px solid var(--gold);padding-bottom:5mm;margin-bottom:8mm;padding-left:16mm}
+  .pc-head{text-align:center;border-bottom:2.5px solid var(--gold);padding-bottom:5mm;margin-bottom:8mm}
   .pc-title{font-size:21pt;font-weight:700;color:var(--navy);letter-spacing:2px;margin-bottom:2mm;font-family:var(--font-zh)}
   .pc-title-en{font-family:var(--font-h);font-size:11.5pt;color:var(--blue);letter-spacing:.5px;font-weight:600}
   .pc-fields{width:86%;margin:0 auto 9mm}
@@ -276,7 +276,7 @@ details.subsec .subsec-count{font-size:.72rem;color:rgba(255,255,255,.7);font-we
   .pc-sigline .un{display:inline-block;border-bottom:1px solid #999;min-width:120px;min-height:1em}
   .pc-foot{text-align:center;margin-top:12mm;font-size:8.5pt;color:#999;font-family:var(--font-h)}
 
-  .pd-head{border-bottom:2px solid var(--gold);padding-bottom:4px;margin-bottom:6mm;padding-left:16mm;min-height:15mm;display:flex;flex-direction:column;justify-content:center}
+  .pd-head{border-bottom:2px solid var(--gold);padding-bottom:4px;margin-bottom:6mm;min-height:12mm;display:flex;flex-direction:column;justify-content:center}
   .pd-head .en{font-family:var(--font-h);font-weight:700;font-size:10pt;color:var(--navy)}
   .pd-head .zh{font-size:8.5pt;color:#666;font-family:var(--font-zh)}
   .pd-title{text-align:center;font-size:15pt;font-weight:700;color:var(--navy);margin:5mm 0;font-family:var(--font-zh)}
