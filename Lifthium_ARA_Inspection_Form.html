@@ -160,12 +160,18 @@ details.subsec .subsec-zh{font-family:var(--font-zh);font-weight:500;font-size:.
 details.subsec .subsec-count{font-size:.72rem;color:rgba(255,255,255,.7);font-weight:400;margin-left:auto;background:rgba(255,255,255,.08);padding:2px 8px;border-radius:10px}
 
 /* PHOTOS */
-.photo-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:10px 0}
-@media(max-width:600px){.photo-grid{grid-template-columns:repeat(3,1fr)}}
-.photo-slot{aspect-ratio:1;border:2px dashed var(--border);border-radius:6px;display:flex;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;position:relative;background:var(--bg);font-size:.8rem;color:var(--muted)}
+.photo-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:10px 0}
+@media(max-width:900px){.photo-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:600px){.photo-grid{grid-template-columns:repeat(2,1fr)}}
+.photo-cell{display:flex;flex-direction:column;gap:5px;border:1px solid var(--border);border-radius:8px;padding:7px;background:#fff}
+.photo-cell-no{font-family:var(--font-h);font-weight:700;font-size:.66rem;color:var(--gold-dk);letter-spacing:.04em}
+.photo-slot{height:130px;border:2px dashed var(--border);border-radius:6px;display:flex;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;position:relative;background:var(--bg);font-size:.8rem;color:var(--muted)}
 .photo-slot:hover{border-color:var(--gold)}
 .photo-slot img{width:100%;height:100%;object-fit:cover}
-.photo-slot .remove{position:absolute;top:4px;right:4px;background:rgba(0,0,0,.7);color:#fff;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8rem;cursor:pointer}
+.photo-slot .remove{position:absolute;top:4px;right:4px;background:rgba(0,0,0,.7);color:#fff;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8rem;cursor:pointer;z-index:2}
+.photo-desc{width:100%;border:1px solid var(--border);border-radius:5px;padding:5px 7px;font-family:var(--font-b);font-size:.76rem;color:var(--text);resize:vertical;min-height:46px;line-height:1.4}
+.photo-desc:focus{border-color:var(--blue);outline:none}
+.photo-desc::placeholder{color:#abb4c0;font-size:.72rem}
 
 /* VERDICT */
 .verdict-card{background:linear-gradient(135deg,var(--navy-dp),var(--navy));color:#fff;border-radius:var(--radius);padding:24px;text-align:center}
@@ -183,6 +189,14 @@ details.subsec .subsec-count{font-size:.72rem;color:rgba(255,255,255,.7);font-we
 .verdict-rec{background:rgba(212,175,55,.15);border:1px solid var(--gold);border-radius:6px;padding:12px 14px;margin-top:16px;text-align:left;font-size:.82rem;line-height:1.45}
 .verdict-rec strong{color:var(--gold);display:block;margin-bottom:4px;font-family:var(--font-h)}
 .verdict-rec .zh{font-family:var(--font-zh);display:block;margin-top:4px}
+/* Recommendations-by-annex card */
+.rec-note{font-size:.84rem;color:var(--muted);margin-bottom:14px}
+.rec-block{margin-bottom:14px}
+.rec-label{font-family:var(--font-h);font-weight:700;font-size:.86rem;color:var(--navy);margin-bottom:6px;display:flex;align-items:center;gap:7px}
+.rec-label .zh{font-family:var(--font-zh);font-weight:400;color:var(--muted);font-size:.82rem}
+.rec-tag{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:5px;background:var(--gold);color:#fff;font-weight:700;font-size:.78rem;flex-shrink:0}
+.rec-area{width:100%;border:1px solid var(--border);border-radius:6px;padding:9px 11px;font-family:var(--font-b);font-size:.88rem;color:var(--text);resize:vertical;line-height:1.5}
+.rec-area:focus{border-color:var(--blue);outline:none}
 
 /* DECLARATION */
 .decl-text{font-size:.82rem;line-height:1.55;color:var(--text);background:rgba(74,144,226,.04);border-left:3px solid var(--blue);padding:12px 14px;border-radius:4px;margin-bottom:12px}
@@ -237,28 +251,70 @@ details.subsec .subsec-count{font-size:.72rem;color:rgba(255,255,255,.7);font-we
 .auth-chip .dot{width:7px;height:7px;border-radius:50%;background:var(--gold)}
 .auth-chip.unlocked .dot{background:var(--success)}
 
-/* Print-only logo (top-left of every printed/PDF page) */
+/* Print-only logo (in-flow, reliable across browsers) */
 .print-logo{display:none}
+.print-section-header{display:none}
+/* Running-header table: behaves as block on screen, repeating thead in print */
+.print-wrap,.print-wrap tbody,.print-wrap tr,.print-wrap td,.print-tb,.print-cell{display:block}
+.print-rh{display:none}
 /* Print-only report pages (cover + declaration) — hidden on screen */
 .print-only{display:none}
 
 /* PRINT */
 @media print {
-  @page{margin:22mm 14mm 16mm 14mm}
-  .topbar,.progress-track,.tabs,.nav-row,.btn-icon,.modal-overlay{display:none!important}
+  @page{margin:12mm 12mm 14mm 12mm}
+  .topbar,.progress-track,.tabs,.nav-row,.btn-icon,.modal-overlay,.print-logo,.toast{display:none!important}
   .panel{display:block!important;page-break-after:always}
   body{background:#fff}
-  .main{max-width:100%;padding:8px}
-  .card,.item{box-shadow:none;border:1px solid #aaa;page-break-inside:avoid}
-  details.subsec{break-inside:avoid}
-  details.subsec[open] summary,details.subsec summary{background:#f0f0f0;color:#000}
-  /* Company logo fixed into the TOP MARGIN (negative top) so it never overlaps page content */
-  .print-logo{display:block;position:fixed;top:-19mm;left:0;width:14mm;height:14mm;z-index:9999}
-  .print-logo svg{width:100%;height:100%;display:block}
+  .main{max-width:100%;padding:0}
+  /* Big section cards may span pages; only keep individual items together */
+  .card{box-shadow:none;border:1px solid #aaa}
+  .item{box-shadow:none;border:1px solid #aaa;page-break-inside:avoid}
+  details.subsec{break-inside:auto}
+  details.subsec[open] summary,details.subsec summary{background:#f0f0f0;color:#000;break-after:avoid}
+  /* Keep the section header attached to the content that follows it */
+  .print-section-header,.card-title{break-after:avoid;page-break-after:avoid}
+
+  /* In-flow running header at top of each section (logo top-left + title) */
+  .print-section-header{display:flex;align-items:center;gap:8px;padding-bottom:5px;margin-bottom:8px;border-bottom:2px solid var(--gold)}
+  .print-section-header .psh-logo{width:13mm;height:13mm;flex-shrink:0}
+  .print-section-header .psh-logo svg{width:100%;height:100%;display:block}
+  .print-section-header .psh-text{line-height:1.25}
+  .print-section-header .psh-text .en{display:block;font-family:var(--font-h);font-weight:700;font-size:9.5pt;color:var(--navy)}
+  .print-section-header .psh-text .zh{display:block;font-family:var(--font-zh);font-size:8pt;color:#666}
+
+  /* Running-header table — thead reprints on EVERY printed page */
+  .print-wrap{display:table;width:100%;border-collapse:collapse}
+  .print-tb{display:table-row-group}
+  .print-wrap tr{display:table-row}
+  .print-cell{display:table-cell}
+  .print-rh{display:table-header-group}
+  .print-rh tr{display:table-row}
+  .print-rh td{display:table-cell;padding:0 0 6px 0}
+  .rh-inner{display:flex;align-items:center;gap:8px;padding-bottom:5px;border-bottom:2px solid var(--gold)}
+  .rh-logo{width:13mm;height:13mm;flex-shrink:0}
+  .rh-logo svg{width:100%;height:100%;display:block}
+  .rh-text{line-height:1.25}
+  .rh-text .en{display:block;font-family:var(--font-h);font-weight:700;font-size:9.5pt;color:var(--navy)}
+  .rh-text .zh{display:block;font-family:var(--font-zh);font-size:8pt;color:#666}
+
+  /* Photos: 2×2 grid = 4 large photos per page, description under each */
+  .photo-note,.photo-slot .remove{display:none!important}
+  .photo-cell.empty{display:none!important}
+  #panel-photos .card{padding:5px!important}
+  #panel-photos .card-title{margin-bottom:4px!important;padding-bottom:3px!important}
+  .photo-grid{grid-template-columns:repeat(2,1fr)!important;gap:4mm!important;margin:2mm 0!important}
+  .photo-cell{page-break-inside:avoid!important;border:1px solid #ccc!important;border-radius:6px!important;padding:2.5mm!important;height:auto!important}
+  .photo-cell-no{font-size:8.5pt!important;margin-bottom:1mm!important}
+  .photo-slot{height:80mm!important;aspect-ratio:auto!important;border:1px solid #999!important;background:#fff!important;border-radius:4px!important}
+  .photo-slot img{object-fit:contain!important;width:100%!important;height:100%!important}
+  .photo-desc{border:1px solid #999!important;min-height:13mm!important;font-size:8.5pt!important;margin-top:1.5mm!important;width:100%!important}
 
   /* ---- COVER + DECLARATION (print only) ---- */
   .print-only{display:block}
   .print-page{page-break-after:always;position:relative}
+  .pc-logo{width:26mm;height:26mm;margin:0 auto 4mm}
+  .pc-logo svg{width:100%;height:100%;display:block}
   .pc-head{text-align:center;border-bottom:2.5px solid var(--gold);padding-bottom:5mm;margin-bottom:8mm}
   .pc-title{font-size:21pt;font-weight:700;color:var(--navy);letter-spacing:2px;margin-bottom:2mm;font-family:var(--font-zh)}
   .pc-title-en{font-family:var(--font-h);font-size:11.5pt;color:var(--blue);letter-spacing:.5px;font-weight:600}
@@ -276,9 +332,11 @@ details.subsec .subsec-count{font-size:.72rem;color:rgba(255,255,255,.7);font-we
   .pc-sigline .un{display:inline-block;border-bottom:1px solid #999;min-width:120px;min-height:1em}
   .pc-foot{text-align:center;margin-top:12mm;font-size:8.5pt;color:#999;font-family:var(--font-h)}
 
-  .pd-head{border-bottom:2px solid var(--gold);padding-bottom:4px;margin-bottom:6mm;min-height:12mm;display:flex;flex-direction:column;justify-content:center}
-  .pd-head .en{font-family:var(--font-h);font-weight:700;font-size:10pt;color:var(--navy)}
-  .pd-head .zh{font-size:8.5pt;color:#666;font-family:var(--font-zh)}
+  .pd-head{display:flex;align-items:center;gap:8px;border-bottom:2px solid var(--gold);padding-bottom:5px;margin-bottom:6mm}
+  .pd-head .pd-hlogo{width:13mm;height:13mm;flex-shrink:0}
+  .pd-head .pd-hlogo svg{width:100%;height:100%;display:block}
+  .pd-head .en{font-family:var(--font-h);font-weight:700;font-size:10pt;color:var(--navy);display:block}
+  .pd-head .zh{font-size:8.5pt;color:#666;font-family:var(--font-zh);display:block}
   .pd-title{text-align:center;font-size:15pt;font-weight:700;color:var(--navy);margin:5mm 0;font-family:var(--font-zh)}
   .pd-title .en{display:block;font-family:var(--font-h);font-size:10pt;color:var(--blue);font-weight:600;margin-top:2px}
   .pd-body{font-size:10pt;line-height:1.75;text-align:justify;margin-bottom:7mm;font-family:var(--font-zh)}
@@ -325,7 +383,15 @@ details.subsec .subsec-count{font-size:.72rem;color:rgba(255,255,255,.7);font-we
     <div class="auth-chip" id="authChip" title="Owner authorization 老闆授權"><span class="dot"></span><span id="authChipTxt">Locked 鎖定</span></div>
   </div>
 </header>
-<div class="print-logo"><svg xmlns="http://www.w3.org/2000/svg" viewBox="-50 -50 1100 1100" role="img" aria-label="Lifthium 極樂公證行">
+<div class="progress-track"><div class="progress-fill" id="progressBar"></div></div>
+
+<main class="main">
+
+  <!-- ═══ PRINT-ONLY: COVER PAGE ═══ -->
+  <div class="print-only">
+    <div class="print-page" id="printCover">
+      <div class="pc-head">
+        <div class="pc-logo"><svg xmlns="http://www.w3.org/2000/svg" viewBox="-50 -50 1100 1100" role="img" aria-label="Lifthium 極樂公證行">
   <title>Lifthium</title>
   <circle cx="500" cy="500" r="443.5" fill="none" stroke="#1E3A5F" stroke-width="113"></circle>
   <circle cx="500" cy="500" r="333" fill="none" stroke="#D4AF37" stroke-width="108"></circle>
@@ -336,14 +402,6 @@ details.subsec .subsec-count{font-size:.72rem;color:rgba(255,255,255,.7);font-we
     <text x="500" y="510"><tspan fill="#D4AF37">Lift</tspan><tspan fill="#4A90E2">hium</tspan></text>
   </g>
 </svg></div>
-<div class="progress-track"><div class="progress-fill" id="progressBar"></div></div>
-
-<main class="main">
-
-  <!-- ═══ PRINT-ONLY: COVER PAGE ═══ -->
-  <div class="print-only">
-    <div class="print-page" id="printCover">
-      <div class="pc-head">
         <div class="pc-title">升降機風險評估報告</div>
         <div class="pc-title-en">Risk Assessment Report for Lift by Accredited Risk Assessor</div>
       </div>
@@ -378,8 +436,21 @@ details.subsec .subsec-count{font-size:.72rem;color:rgba(255,255,255,.7);font-we
     <!-- ═══ PRINT-ONLY: DECLARATION PAGE ═══ -->
     <div class="print-page" id="printDecl">
       <div class="pd-head">
-        <span class="en">Risk Assessment for Lift by Accredited Risk Assessor</span>
-        <span class="zh">升降機風險評估記錄表&nbsp;·&nbsp;極樂公證行有限公司</span>
+        <div class="pd-hlogo"><svg xmlns="http://www.w3.org/2000/svg" viewBox="-50 -50 1100 1100" role="img" aria-label="Lifthium 極樂公證行">
+  <title>Lifthium</title>
+  <circle cx="500" cy="500" r="443.5" fill="none" stroke="#1E3A5F" stroke-width="113"></circle>
+  <circle cx="500" cy="500" r="333" fill="none" stroke="#D4AF37" stroke-width="108"></circle>
+  <circle cx="500" cy="-9" r="36" fill="#000000"></circle>
+  <circle cx="500" cy="120" r="36" fill="#000000"></circle>
+  <circle cx="500" cy="885" r="36" fill="#000000"></circle>
+  <g font-family="'Poppins', 'Century Gothic', 'Inter', sans-serif" font-size="118" font-weight="700" text-anchor="middle" dominant-baseline="middle">
+    <text x="500" y="510"><tspan fill="#D4AF37">Lift</tspan><tspan fill="#4A90E2">hium</tspan></text>
+  </g>
+</svg></div>
+        <div>
+          <span class="en">Risk Assessment for Lift by Accredited Risk Assessor</span>
+          <span class="zh">升降機風險評估記錄表&nbsp;·&nbsp;極樂公證行有限公司</span>
+        </div>
       </div>
       <div class="pd-title">免責聲明<span class="en">Disclaimer</span></div>
       <div class="pd-body">
@@ -408,6 +479,29 @@ details.subsec .subsec-count{font-size:.72rem;color:rgba(255,255,255,.7);font-we
     <button class="tab" data-tab="decl">Declaration · 聲明</button>
     <button class="tab" data-tab="verdict">Verdict · 評估結果</button>
   </nav>
+
+  <!-- Repeating running header (logo) for print — reprints on every page via <thead> -->
+  <table class="print-wrap">
+    <thead class="print-rh"><tr><td>
+      <div class="rh-inner">
+        <div class="rh-logo"><svg xmlns="http://www.w3.org/2000/svg" viewBox="-50 -50 1100 1100" role="img" aria-label="Lifthium 極樂公證行">
+  <title>Lifthium</title>
+  <circle cx="500" cy="500" r="443.5" fill="none" stroke="#1E3A5F" stroke-width="113"></circle>
+  <circle cx="500" cy="500" r="333" fill="none" stroke="#D4AF37" stroke-width="108"></circle>
+  <circle cx="500" cy="-9" r="36" fill="#000000"></circle>
+  <circle cx="500" cy="120" r="36" fill="#000000"></circle>
+  <circle cx="500" cy="885" r="36" fill="#000000"></circle>
+  <g font-family="'Poppins', 'Century Gothic', 'Inter', sans-serif" font-size="118" font-weight="700" text-anchor="middle" dominant-baseline="middle">
+    <text x="500" y="510"><tspan fill="#D4AF37">Lift</tspan><tspan fill="#4A90E2">hium</tspan></text>
+  </g>
+</svg></div>
+        <div class="rh-text">
+          <span class="en">Risk Assessment for Lift by Accredited Risk Assessor</span>
+          <span class="zh">升降機風險評估記錄表&nbsp;·&nbsp;極樂公證行有限公司</span>
+        </div>
+      </div>
+    </td></tr></thead>
+    <tbody class="print-tb"><tr><td class="print-cell">
 
   <!-- PANEL: PROJECT INFO -->
   <section class="panel active" id="panel-info">
@@ -536,7 +630,7 @@ details.subsec .subsec-count{font-size:.72rem;color:rgba(255,255,255,.7);font-we
   <section class="panel" id="panel-photos">
     <div class="card">
       <div class="card-title">Site Photos <span class="card-title-zh">場地相片</span></div>
-      <p style="font-size:.8rem;color:var(--muted);margin-bottom:10px">Tap any slot to upload. Stored locally as base64; export with the JSON backup. Max 24 photos. <span class="zh" style="font-family:var(--font-zh)">點任意空格上傳。相片以 base64 儲存本機，可隨 JSON 一同匯出。最多 24 張。</span></p>
+      <p class="photo-note" style="font-size:.8rem;color:var(--muted);margin-bottom:10px">Tap any slot to upload. Stored locally as base64; export with the JSON backup. Max 24 photos. <span class="zh" style="font-family:var(--font-zh)">點任意空格上傳。相片以 base64 儲存本機，可隨 JSON 一同匯出。最多 24 張。</span></p>
       <div class="photo-grid" id="photoGrid"></div>
       <input type="file" id="fileInput" accept="image/*" multiple style="display:none">
       <div class="field" style="margin-top:14px">
@@ -591,6 +685,29 @@ details.subsec .subsec-count{font-size:.72rem;color:rgba(255,255,255,.7);font-we
   <!-- PANEL: VERDICT -->
   <section class="panel" id="panel-verdict">
     <div id="verdictContainer"></div>
+
+    <div class="card rec-card">
+      <div class="card-title">Risk Assessor's Recommendations by Annex <span class="card-title-zh">風險評估員建議（按附件）</span></div>
+      <p class="rec-note">Enter specific recommendations for each Annex below. <span class="zh" style="font-family:var(--font-zh)">請於下方為每個附件輸入具體建議。</span></p>
+
+      <div class="rec-block">
+        <div class="rec-label"><span class="rec-tag">A</span> Annex A — Lift Optimisation Level <span class="zh">附件 A · 升降機優化水平</span></div>
+        <textarea id="rec_A" class="rec-area" rows="3" placeholder="Recommendations for Annex A… 附件 A 建議…"></textarea>
+      </div>
+      <div class="rec-block">
+        <div class="rec-label"><span class="rec-tag">B</span> Annex B — Operating Records 運作記錄 <span class="zh">附件 B · 升降機運作記錄</span></div>
+        <textarea id="rec_B" class="rec-area" rows="3" placeholder="Recommendations for Annex B… 附件 B 建議…"></textarea>
+      </div>
+      <div class="rec-block">
+        <div class="rec-label"><span class="rec-tag">C</span> Annex C — Management Records 管理記錄 <span class="zh">附件 C · 升降機管理記錄</span></div>
+        <textarea id="rec_C" class="rec-area" rows="3" placeholder="Recommendations for Annex C… 附件 C 建議…"></textarea>
+      </div>
+      <div class="rec-block">
+        <div class="rec-label"><span class="rec-tag">D</span> Annex D — Equipment Risk 設備風險 <span class="zh">附件 D · 升降機設備風險</span></div>
+        <textarea id="rec_D" class="rec-area" rows="3" placeholder="Recommendations for Annex D… 附件 D 建議…"></textarea>
+      </div>
+    </div>
+
     <div class="nav-row">
       <button class="btn-secondary" data-goto="decl">← Back</button>
       <button class="btn-secondary" id="saveDraftBtn2">💾 Save Draft 儲存草稿</button>
@@ -600,7 +717,35 @@ details.subsec .subsec-count{font-size:.72rem;color:rgba(255,255,255,.7);font-we
     </div>
   </section>
 
+    </td></tr></tbody>
+  </table>
 </main>
+
+<!-- AUTH MODAL -->
+<!-- PDF TIPS MODAL -->
+<div class="modal-overlay" id="pdfModal">
+  <div class="modal">
+    <div class="modal-head">
+      <div><h3>Save as PDF · 匯出 PDF</h3><div class="zh">如何正確匯出可開啟的 PDF</div></div>
+      <button class="modal-close" data-close="pdfModal">×</button>
+    </div>
+    <div class="modal-body">
+      <p style="margin-bottom:12px">In the print window that opens next, please set: <span class="zh">喺接住彈出嘅列印視窗，請設定：</span></p>
+      <ol style="margin:0 0 14px 18px;line-height:1.9;font-size:.92rem">
+        <li><b>Destination 目的地</b> → <b style="color:var(--blue)">Save as PDF / 另存為 PDF</b><br>
+          <span style="color:var(--muted);font-size:.85rem">⚠️ NOT「Microsoft Print to PDF」— that one won't open in some readers. 唔好揀「Microsoft Print to PDF」</span></li>
+        <li><b>Headers and footers 頁首和頁尾</b> → untick 取消剔（移除網址、日期）</li>
+      </ol>
+      <label style="display:flex;align-items:center;gap:8px;font-size:.85rem;color:var(--muted);cursor:pointer">
+        <input type="checkbox" id="pdfDontShow"> Don't show this again 下次唔再顯示
+      </label>
+      <div class="modal-actions">
+        <button class="btn-secondary" data-close="pdfModal">Cancel 取消</button>
+        <button class="btn-primary" id="pdfContinue">Continue 繼續 →</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- AUTH MODAL -->
 <div class="modal-overlay" id="authModal">
@@ -672,6 +817,7 @@ const STATE = {
   photos: [],
   remarks: '',
   urgent: '',
+  recs: { A: '', B: '', C: '', D: '' },  // ARA recommendations per Annex
 };
 const STORAGE_KEY = 'lifthium_ara_form_v1';
 
@@ -1233,28 +1379,40 @@ function renderPhotos() {
   grid.innerHTML = '';
   const MAX = 24;
   for (let i = 0; i < MAX; i++) {
-    const slot = document.createElement('div');
-    slot.className = 'photo-slot';
-    slot.dataset.idx = i;
-    const p = STATE.photos[i];
-    if (p) {
-      slot.innerHTML = `<img src="${p.dataUrl}" alt=""><span class="remove" data-rm="${i}">✕</span>`;
-    } else {
-      slot.innerHTML = '+ Add';
-    }
-    grid.appendChild(slot);
+    const p = STATE.photos[i] || {};
+    const cell = document.createElement('div');
+    cell.className = 'photo-cell' + (p.dataUrl ? '' : ' empty');
+    const imgHtml = p.dataUrl
+      ? `<img src="${p.dataUrl}" alt=""><span class="remove" data-rm="${i}">✕</span>`
+      : '+ Add 加入相片';
+    cell.innerHTML = `
+      <div class="photo-cell-no">Photo ${i + 1} · 相片 ${i + 1}</div>
+      <div class="photo-slot" data-idx="${i}">${imgHtml}</div>
+      <textarea class="photo-desc" data-idx="${i}" rows="2"
+        placeholder="Description / Finding 描述／發現…">${esc(p.desc || '')}</textarea>
+    `;
+    grid.appendChild(cell);
   }
-  // Hook handlers
+  // Image slot click → upload, or remove
   grid.querySelectorAll('.photo-slot').forEach(s => s.addEventListener('click', e => {
     if (e.target.classList.contains('remove')) {
       const idx = parseInt(e.target.dataset.rm);
-      STATE.photos.splice(idx, 1);
+      // Keep the description, clear only the image
+      if (STATE.photos[idx]) { delete STATE.photos[idx].dataUrl; delete STATE.photos[idx].name; }
       renderPhotos();
+      autoSave();
       return;
     }
     const idx = parseInt(s.dataset.idx);
     $('#fileInput').dataset.targetIdx = idx;
     $('#fileInput').click();
+  }));
+  // Description typing → save in place (preserve photo)
+  grid.querySelectorAll('.photo-desc').forEach(t => t.addEventListener('input', () => {
+    const idx = parseInt(t.dataset.idx);
+    if (!STATE.photos[idx]) STATE.photos[idx] = {};
+    STATE.photos[idx].desc = t.value;
+    autoSave();
   }));
 }
 
@@ -1278,7 +1436,8 @@ $('#fileInput').addEventListener('change', e => {
         canvas.getContext('2d').drawImage(img, 0, 0, w, h);
         const compressed = canvas.toDataURL('image/jpeg', 0.7);
         const slot = targetIdx + i;
-        STATE.photos[slot] = { dataUrl: compressed, name: file.name };
+        // Preserve any existing description on that slot
+        STATE.photos[slot] = { ...(STATE.photos[slot] || {}), dataUrl: compressed, name: file.name };
         renderPhotos();
         autoSave();
       };
@@ -1528,12 +1687,19 @@ function bindInfoInputs() {
     if (!el) return;
     el.addEventListener('input', () => { STATE.info[id] = el.value; autoSave(); });
   });
+  // Recommendations-by-annex textareas
+  ['A','B','C','D'].forEach(k => {
+    const el = $('#rec_' + k);
+    if (el) el.addEventListener('input', autoSave);
+  });
 }
 
 // ─── SAVE / LOAD ───
 function autoSave() {
   STATE.remarks = $('#f_remarks')?.value || '';
   STATE.urgent = $('#f_urgent')?.value || '';
+  if (!STATE.recs) STATE.recs = { A:'', B:'', C:'', D:'' };
+  ['A','B','C','D'].forEach(k => { const el = $('#rec_' + k); if (el) STATE.recs[k] = el.value; });
   try { localStorage.setItem(STORAGE_KEY, JSON.stringify(STATE)); } catch (e) {}
 }
 
@@ -1555,6 +1721,8 @@ function applyStateToUI() {
   });
   if (STATE.remarks) $('#f_remarks').value = STATE.remarks;
   if (STATE.urgent) $('#f_urgent').value = STATE.urgent;
+  // Recommendations by annex
+  if (STATE.recs) ['A','B','C','D'].forEach(k => { const el = $('#rec_' + k); if (el) el.value = STATE.recs[k] || ''; });
 
   // Annex A
   Object.entries(STATE.A).forEach(([id, v]) => {
@@ -1682,11 +1850,22 @@ function init() {
   // Bind top bar buttons
   $('#saveBtn').addEventListener('click', exportJSON);
   $('#loadBtn').addEventListener('click', importJSON);
-  $('#printBtn').addEventListener('click', () => { 
+  function doPrint() {
     populatePrintCover();
+    // Ensure all textarea content prints (mirror live value into DOM text)
+    document.querySelectorAll('textarea').forEach(t => { t.textContent = t.value; });
     // Open all D accordions for print
     document.querySelectorAll('details.subsec').forEach(d => d.setAttribute('open',''));
     window.print();
+  }
+  $('#printBtn').addEventListener('click', () => {
+    if (localStorage.getItem('lifthium_pdf_tips_off') === '1') { doPrint(); return; }
+    $('#pdfModal').classList.add('show');
+  });
+  $('#pdfContinue').addEventListener('click', () => {
+    if ($('#pdfDontShow') && $('#pdfDontShow').checked) localStorage.setItem('lifthium_pdf_tips_off', '1');
+    $('#pdfModal').classList.remove('show');
+    setTimeout(doPrint, 200);
   });
   $('#resetBtn').addEventListener('click', resetAll);
   $('#draftsBtn').addEventListener('click', openDraftsModal);
