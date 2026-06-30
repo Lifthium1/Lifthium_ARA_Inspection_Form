@@ -96,12 +96,21 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-b);min-height
 .lc-btn .lc-tag{font-size:.74rem;font-weight:800;letter-spacing:.05em}
 .lc-btn .lc-desc{display:block;font-weight:400;font-size:.7rem;margin-top:4px;color:var(--muted)}
 .lc-btn .lc-desc-zh{font-family:var(--font-zh)}
+/* EMSD reference values shown on each option (探測/嚴重/可能性/類別) */
+.lc-ref{display:block;margin-top:6px;padding-top:5px;border-top:1px dashed var(--border);font-family:var(--font-h);font-size:.66rem;font-weight:700;letter-spacing:.02em;color:var(--blue-dk)}
+.d-print-summary{display:none}
 .lc-btn.act-La{background:rgba(34,160,107,.08);border-color:var(--success)}
 .lc-btn.act-La .lc-tag{color:var(--success)}
 .lc-btn.act-Lb{background:rgba(232,155,42,.08);border-color:var(--warn)}
 .lc-btn.act-Lb .lc-tag{color:var(--warn)}
 .lc-btn.act-Lc{background:rgba(220,53,69,.08);border-color:var(--danger)}
 .lc-btn.act-Lc .lc-tag{color:var(--danger)}
+/* N/A — compact button, smaller proportion */
+.lc-btn.na-btn{flex:0 0 auto;min-width:auto;width:auto;padding:9px 14px;text-align:center;align-self:flex-start}
+.lc-btn.na-btn .lc-tag{color:var(--muted)}
+.lc-btn.act-NA{background:rgba(120,130,145,.14);border-color:#8a93a0}
+.lc-btn.act-NA .lc-tag{color:var(--text)}
+.item.sel-NA{border-left-color:#8a93a0}
 
 /* Risk params */
 .risk-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:8px;padding:10px;background:rgba(74,144,226,.04);border-radius:5px;border:1px solid rgba(74,144,226,.15)}
@@ -143,11 +152,16 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-b);min-height
 .b-btn .pts{display:block;font-size:.7rem;font-weight:400;opacity:.85;margin-top:2px}
 
 /* Annex C */
-.c-sub{display:flex;align-items:flex-start;gap:8px;padding:6px 0}
-.c-sub input{margin-top:3px;flex-shrink:0;width:16px;height:16px;cursor:pointer}
-.c-sub label{flex:1;font-size:.85rem;cursor:pointer;line-height:1.35}
-.c-sub label .zh{font-family:var(--font-zh);display:block;color:var(--muted);font-size:.82rem;margin-top:1px}
-.c-sub .pts{font-size:.68rem;color:var(--gold-dk);font-weight:700;padding:1px 6px;background:rgba(212,175,55,.1);border-radius:3px;font-family:var(--font-h);align-self:flex-start;margin-top:2px}
+.c-sub{padding:9px 0;border-bottom:1px solid var(--border)}
+.c-sub:last-child{border-bottom:none}
+.c-sub-label{font-size:.85rem;line-height:1.35;color:var(--text);margin-bottom:7px}
+.c-sub-label .zh{font-family:var(--font-zh);display:block;color:var(--muted);font-size:.82rem;margin-top:1px}
+.c-sub .pts{font-size:.66rem;color:var(--gold-dk);font-weight:700;padding:1px 6px;background:rgba(212,175,55,.1);border-radius:3px;font-family:var(--font-h);white-space:nowrap}
+.c-sub-yn{display:flex;gap:6px}
+.cyn-btn{padding:5px 18px;border:1.5px solid var(--border);border-radius:5px;background:#fff;font-family:var(--font-h);font-weight:600;font-size:.78rem;cursor:pointer;color:var(--text);transition:.12s}
+.cyn-btn:hover{border-color:var(--blue)}
+.cyn-btn.sel-yes{background:rgba(34,160,107,.12);border-color:var(--success);color:var(--success)}
+.cyn-btn.sel-no{background:rgba(220,53,69,.1);border-color:var(--danger);color:var(--danger)}
 
 /* D Sub-section accordion */
 details.subsec{margin-bottom:12px}
@@ -197,6 +211,50 @@ details.subsec .subsec-count{font-size:.72rem;color:rgba(255,255,255,.7);font-we
 .rec-tag{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:5px;background:var(--gold);color:#fff;font-weight:700;font-size:.78rem;flex-shrink:0}
 .rec-area{width:100%;border:1px solid var(--border);border-radius:6px;padding:9px 11px;font-family:var(--font-b);font-size:.88rem;color:var(--text);resize:vertical;line-height:1.5}
 .rec-area:focus{border-color:var(--blue);outline:none}
+.rec-autofill{display:inline-flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:8px;padding:7px 12px;border:1.5px solid var(--gold);background:rgba(212,175,55,.1);border-radius:6px;font-family:var(--font-h);font-weight:600;font-size:.76rem;color:var(--gold-dk);cursor:pointer;transition:.15s}
+.rec-autofill:hover{background:rgba(212,175,55,.2)}
+.rec-autofill .zh{font-family:var(--font-zh);font-weight:400}
+.af-count{background:var(--gold);color:#fff;border-radius:10px;padding:1px 8px;font-size:.72rem}
+/* Executive summary card (verdict tab + print) */
+.ex-card table{display:table!important;width:100%}
+.ex-card table tbody{display:table-row-group!important}
+.ex-card table tr{display:table-row!important}
+.ex-card table td{display:table-cell!important}
+.ex-card .ex-id{width:100%;border-collapse:collapse;margin:4px 0 14px;font-size:.8rem}
+.ex-card .ex-id td{border:1px solid var(--border);padding:5px 9px;font-family:var(--font-zh)}
+.ex-card .ex-id .exl{background:#f3f4f6;font-weight:700;color:var(--navy);width:23%;white-space:nowrap}
+.ex-card .ex-sec{font-family:var(--font-h);font-weight:700;font-size:.9rem;color:var(--navy);background:rgba(212,175,55,.14);border-left:4px solid var(--gold);padding:6px 10px;margin:16px 0 0}
+.ex-card .ex-sec span{font-weight:400;font-size:.76rem;color:var(--muted)}
+.ex-card .ex-table{width:100%;border-collapse:collapse;margin-bottom:4px;font-size:.82rem}
+.ex-card .ex-table td{border:1px solid var(--border);padding:5px 10px;font-family:var(--font-zh)}
+.ex-card .ex-table td:last-child{width:26%;text-align:center;font-weight:700;font-family:var(--font-h);color:var(--navy)}
+.ex-card .ex-table td.exsub{padding-left:18px;color:#555}
+.ex-card .ex-table .ex-total td{background:#eef2f7;font-weight:700;color:var(--navy)}
+.ex-card .ex-table .ex-total td:last-child{font-size:.95rem;color:var(--gold-dk)}
+.ex-card .ex-table .ex-level-row td{background:var(--navy);color:#fff}
+.ex-card .ex-table .ex-level-row td:last-child{color:var(--gold)}
+.ex-conclusion{margin-top:16px;border:2px solid var(--gold);border-radius:8px;padding:16px;page-break-inside:avoid}
+.ex-conc-label{font-family:var(--font-h);font-weight:700;font-size:.74rem;color:var(--gold-dk);text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px}
+.ex-conc-level{font-family:var(--font-h);font-weight:800;font-size:1.5rem;color:var(--navy);margin-bottom:8px}
+.ex-conc-rec{font-family:var(--font-zh);font-size:.84rem;line-height:1.6;color:#333}
+#printExec.lvl1 .ex-conc-level,#printExec.lvl2 .ex-conc-level{color:#1a7a4a}
+#printExec.lvl3 .ex-conc-level{color:#b8860b}
+#printExec.lvl4 .ex-conc-level{color:#c0392b}
+#printExec.lvl4 .ex-conclusion{border-color:#c0392b}
+/* Clickable Filled pill + unfilled-items modal */
+.score-pill-click{cursor:pointer;transition:.15s}
+.score-pill-click:hover{background:rgba(255,255,255,.12)}
+.unfilled-list{display:flex;flex-direction:column;gap:6px;max-height:58vh;overflow-y:auto}
+.unfilled-row{display:flex;align-items:center;gap:10px;width:100%;text-align:left;padding:9px 11px;border:1px solid var(--border);border-radius:6px;background:#fff;cursor:pointer;font-family:var(--font-b);transition:.12s}
+.unfilled-row:hover{background:rgba(74,144,226,.08);border-color:var(--blue)}
+.uf-ax{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:5px;background:var(--navy);color:#fff;font-weight:700;font-size:.76rem;flex-shrink:0;font-family:var(--font-h)}
+.uf-no{font-weight:700;color:var(--gold-dk);min-width:38px;font-size:.82rem}
+.uf-name{flex:1;font-size:.82rem;color:var(--text);line-height:1.3}
+.uf-zh{font-family:var(--font-zh);color:var(--muted);font-size:.78rem}
+.uf-go{color:var(--blue);font-weight:700;font-size:1.1rem}
+.unfilled-empty{text-align:center;padding:24px;color:var(--success);font-weight:700;font-family:var(--font-h)}
+.item-flash{animation:itemFlash 2.2s ease}
+@keyframes itemFlash{0%,100%{background:#fff}25%{background:rgba(212,175,55,.28);box-shadow:0 0 0 3px var(--gold)}}
 
 /* DECLARATION */
 .decl-text{font-size:.82rem;line-height:1.55;color:var(--text);background:rgba(74,144,226,.04);border-left:3px solid var(--blue);padding:12px 14px;border-radius:4px;margin-bottom:12px}
@@ -347,6 +405,29 @@ details.subsec .subsec-count{font-size:.72rem;color:rgba(255,255,255,.7);font-we
   .pd-txt .en{display:block;color:#555;font-size:9pt;margin-top:2px;font-family:var(--font-en)}
   .pd-sechead{font-size:12.5pt;font-weight:700;color:var(--navy);text-align:center;margin:6mm 0 4mm;font-family:var(--font-zh)}
   .pd-sechead .en{display:block;font-family:var(--font-h);font-size:9pt;color:var(--blue);font-weight:600}
+
+  /* ---- ANNEX D: compact print — replace option buttons with one clean summary line ---- */
+  #panel-D .item{padding:7px 11px!important;margin-bottom:6px!important}
+  #panel-D .item-name-en{font-size:9.2pt!important;line-height:1.3!important}
+  #panel-D .item-name-zh{font-size:8.6pt!important;line-height:1.3!important}
+  #panel-D .lc-buttons{display:none!important}
+  #panel-D .risk-block{display:none!important}
+  #panel-D .improvement{display:none!important}
+  #panel-D .d-print-summary{display:block!important;margin-top:5px!important;padding:6px 10px!important;border:1px solid #ccc!important;border-left-width:4px!important;border-radius:4px!important;font-size:8.4pt!important;line-height:1.4!important;font-family:var(--font-zh)!important}
+  #panel-D .d-print-summary .dps-tag{font-family:var(--font-h)!important;font-weight:700!important;font-size:8.8pt!important}
+  #panel-D .d-print-summary .dps-ref{display:block!important;margin-top:3px!important;font-family:var(--font-h)!important;font-weight:700!important;font-size:7.6pt!important;color:var(--blue-dk)!important}
+  #panel-D .dps-La{border-left-color:var(--success)!important}
+  #panel-D .dps-La .dps-tag{color:var(--success)!important}
+  #panel-D .dps-Lb{border-left-color:var(--warn)!important}
+  #panel-D .dps-Lb .dps-tag{color:var(--warn)!important}
+  #panel-D .dps-Lc{border-left-color:var(--danger)!important}
+  #panel-D .dps-Lc .dps-tag{color:var(--danger)!important}
+  #panel-D .dps-NA{border-left-color:#8a93a0!important}
+  #panel-D .dps-NA .dps-tag{color:#555!important}
+
+  /* Executive Summary starts on a fresh page; keep result cards from splitting */
+  .ex-card{page-break-before:always!important;break-before:page!important}
+  .verdict-rec,.ex-conclusion,.ex-sec,.rec-block{page-break-inside:avoid!important}
 }
 </style>
 </head>
@@ -372,7 +453,7 @@ details.subsec .subsec-count{font-size:.72rem;color:rgba(255,255,255,.7);font-we
   <div class="topbar-scores">
     <div class="score-pill"><div class="lbl">D Score</div><div class="val" id="dScoreTop">—</div></div>
     <div class="score-pill"><div class="lbl">O&amp;M</div><div class="val" id="omScoreTop">—</div></div>
-    <div class="score-pill"><div class="lbl">Filled</div><div class="val" id="filledTop">0/178</div></div>
+    <div class="score-pill score-pill-click" id="filledPill" title="Tap to trace unfilled items · 點擊追蹤未填項目"><div class="lbl">Filled 🔍</div><div class="val" id="filledTop">0/178</div></div>
   </div>
   <div class="topbar-right">
     <button class="btn-icon" id="draftsBtn">☰ Drafts 草稿</button>
@@ -406,6 +487,7 @@ details.subsec .subsec-count{font-size:.72rem;color:rgba(255,255,255,.7);font-we
         <div class="pc-title-en">Risk Assessment Report for Lift by Accredited Risk Assessor</div>
       </div>
       <div class="pc-fields">
+        <div class="pc-row"><div class="pc-label">檢驗編號 <span class="en">Inspection No.</span></div><div class="pc-value" id="pc_inspno"></div></div>
         <div class="pc-row"><div class="pc-label">升降機負責人 <span class="en">Responsible Person</span></div><div class="pc-value" id="pc_rp"></div></div>
         <div class="pc-row"><div class="pc-label">機電署地點編號 <span class="en">EMSD Location No.</span></div><div class="pc-value" id="pc_emsd"></div></div>
         <div class="pc-row"><div class="pc-label">升降機編號 <span class="en">Lift No.</span></div><div class="pc-value" id="pc_liftno"></div></div>
@@ -466,6 +548,8 @@ details.subsec .subsec-count{font-size:.72rem;color:rgba(255,255,255,.7);font-we
       <div class="pd-item"><div class="pd-num">6</div><div class="pd-txt">在任何情況下，若需引用本報告中的結果或數據，均應保持原意，不得添加、修改、偽造或否認事實。<span class="en">Under any circumstances, when citing the results or data in this report, the original meaning must be preserved; no addition, modification, falsification or denial of facts is permitted.</span></div></div>
       <div class="pd-item"><div class="pd-num">7</div><div class="pd-txt">本報告需一式三份，評估機構留存一份，升降機負責人留存兩份。<span class="en">This report shall be made in triplicate: one copy retained by the assessment organisation and two copies by the responsible person.</span></div></div>
     </div>
+
+    </div>
   </div>
 
   <!-- TABS -->
@@ -507,6 +591,9 @@ details.subsec .subsec-count{font-size:.72rem;color:rgba(255,255,255,.7);font-we
   <section class="panel active" id="panel-info">
     <div class="card">
       <div class="card-title">Project &amp; Lift Information <span class="card-title-zh">項目及升降機資料</span></div>
+      <div class="info-grid-3" style="margin-bottom:10px">
+        <div class="field"><label>Inspection No. <span class="zh">檢驗編號</span></label><input type="text" id="f_inspno" placeholder="e.g. 26ARA0001"></div>
+      </div>
       <div class="info-grid">
         <div class="field"><label>Project / Site Name <span class="zh">項目／場地名稱</span></label><input type="text" id="f_site" placeholder="e.g. Mei Foo Sun Chuen Stage 8 Tower 12"></div>
         <div class="field"><label>Site Address <span class="zh">場地地址</span></label><input type="text" id="f_address" placeholder="Address"></div>
@@ -609,8 +696,8 @@ details.subsec .subsec-count{font-size:.72rem;color:rgba(255,255,255,.7);font-we
     <div class="card">
       <div class="card-title">Annex D — Lift, Associated Equipment &amp; Machinery <span class="card-title-zh">附件 D · 升降機、相聯設備或機械</span></div>
       <p style="font-size:.8rem;color:var(--muted);margin-bottom:10px">
-        Select <strong style="color:var(--success)">La</strong> (good), <strong style="color:var(--warn)">Lb</strong> (borderline) or <strong style="color:var(--danger)">Lc</strong> (unsafe) per item. EMSD default risk parameters auto-populate; adjust if site reality differs.
-        <span class="zh" style="font-family:var(--font-zh);display:block;margin-top:4px">每項選 La（良好）／Lb（極限）／Lc（不安全）。EMSD 預設風險參數自動帶出，可按現場實況調整。</span>
+        Select <strong style="color:var(--success)">La</strong> (good), <strong style="color:var(--warn)">Lb</strong> (fair) or <strong style="color:var(--danger)">Lc</strong> (failure) per item. EMSD default risk parameters auto-populate; adjust if site reality differs.
+        <span class="zh" style="font-family:var(--font-zh);display:block;margin-top:4px">每項選 La（良好）／Lb（不良）／Lc（嚴重）。EMSD 預設風險參數自動帶出，可按現場實況調整。</span>
       </p>
       <div id="annexD-sections"></div>
       <div style="margin-top:14px;padding:12px;background:rgba(212,175,55,.08);border-radius:6px;font-family:var(--font-h);font-weight:700;text-align:center">
@@ -686,6 +773,44 @@ details.subsec .subsec-count{font-size:.72rem;color:rgba(255,255,255,.7);font-we
   <section class="panel" id="panel-verdict">
     <div id="verdictContainer"></div>
 
+    <div class="card ex-card" id="printExec">
+      <div class="card-title">Executive Summary <span class="card-title-zh">行政摘要</span></div>
+      <table class="ex-id">
+        <tr><td class="exl">檢驗編號 Inspection No.</td><td id="ex_inspno"></td><td class="exl">評估日期 Date</td><td id="ex_date"></td></tr>
+        <tr><td class="exl">場地 Site</td><td id="ex_site"></td><td class="exl">升降機編號 Lift No.</td><td id="ex_liftno"></td></tr>
+      </table>
+
+      <div class="ex-sec">運作及保養表現 · Operation &amp; Maintenance Performance <span>（滿分 max 150）</span></div>
+      <table class="ex-table">
+        <tr><td>附件 A 升降機優化水平 · Annex A Optimisation Level</td><td id="ex_a">—</td></tr>
+        <tr><td>附件 B 升降機運作記錄 · Annex B Operating Records</td><td id="ex_b">—</td></tr>
+        <tr><td>附件 C 升降機管理記錄 · Annex C Management Records</td><td id="ex_c">—</td></tr>
+        <tr class="ex-total"><td>運作及保養表現總分 · O&amp;M Total Score</td><td id="ex_om">—</td></tr>
+        <tr class="ex-level-row"><td>表現等級 · Performance Level</td><td id="ex_omlevel">—</td></tr>
+      </table>
+
+      <div class="ex-sec">3.3 升降機整體安全標準 · Overall Safety Standard of the Lift Installation <span>（附件 D · Annex D）</span></div>
+      <table class="ex-table">
+        <tr><td>已評估風險項目總數 · Total risk items assessed [A]</td><td id="ex_A">—</td></tr>
+        <tr><td class="exsub">− 第 Ⅰ 類風險數目 · No. of Category Ⅰ risk [B]</td><td id="ex_B">—</td></tr>
+        <tr><td class="exsub">− 第 Ⅱ 類風險數目 · No. of Category Ⅱ risk [C]</td><td id="ex_C">—</td></tr>
+        <tr><td class="exsub">− 第 Ⅲ 類風險數目 · No. of Category Ⅲ risk [E]</td><td id="ex_E">—</td></tr>
+        <tr><td class="exsub">− 標記 "※" 項目數目 · No. of items scored "※" [F]</td><td id="ex_F">—</td></tr>
+        <tr><td>已確定類別的風險項目 · Items with identified categories [G = A − F]</td><td id="ex_G">—</td></tr>
+        <tr><td>第 Ⅰ 類分配總值 · Total assigned value, Cat Ⅰ [H = B × 0]</td><td id="ex_H">—</td></tr>
+        <tr><td>第 Ⅱ 類分配總值 · Total assigned value, Cat Ⅱ [I = C × −1]</td><td id="ex_I">—</td></tr>
+        <tr><td>第 Ⅲ 類分配總值 · Total assigned value, Cat Ⅲ [J = E × 1]</td><td id="ex_J">—</td></tr>
+        <tr class="ex-total"><td>整體得分 · Overall ranking　D = [(H+I+J) / G] × 100</td><td id="ex_D">—</td></tr>
+        <tr><td>是否存在標記 "※" 的第 Ⅰ 類風險 · Any Cat Ⅰ risk marked "※"?</td><td id="ex_marked">—</td></tr>
+      </table>
+
+      <div class="ex-conclusion" id="ex_concbox">
+        <div class="ex-conc-label">整體安全等級及建議 · Overall Safety Standard &amp; Recommendation</div>
+        <div class="ex-conc-level" id="ex_level">—</div>
+        <div class="ex-conc-rec" id="ex_rec">—</div>
+      </div>
+    </div>
+
     <div class="card rec-card">
       <div class="card-title">Risk Assessor's Recommendations by Annex <span class="card-title-zh">風險評估員建議（按附件）</span></div>
       <p class="rec-note">Enter specific recommendations for each Annex below. <span class="zh" style="font-family:var(--font-zh)">請於下方為每個附件輸入具體建議。</span></p>
@@ -704,6 +829,7 @@ details.subsec .subsec-count{font-size:.72rem;color:rgba(255,255,255,.7);font-we
       </div>
       <div class="rec-block">
         <div class="rec-label"><span class="rec-tag">D</span> Annex D — Equipment Risk 設備風險 <span class="zh">附件 D · 升降機設備風險</span></div>
+        <button class="rec-autofill" id="autofillD" type="button">↓ Auto-fill guideline recommendations for Lb/Lc items <span class="zh" style="font-family:var(--font-zh)">自動填入 Lb／Lc 項目的指引建議</span> <span id="autofillDcount" class="af-count"></span></button>
         <textarea id="rec_D" class="rec-area" rows="3" placeholder="Recommendations for Annex D… 附件 D 建議…"></textarea>
       </div>
     </div>
@@ -722,6 +848,20 @@ details.subsec .subsec-count{font-size:.72rem;color:rgba(255,255,255,.7);font-we
 </main>
 
 <!-- AUTH MODAL -->
+<!-- UNFILLED ITEMS MODAL -->
+<div class="modal-overlay" id="unfilledModal">
+  <div class="modal">
+    <div class="modal-head">
+      <div><h3>Unfilled Items · 未填項目</h3><div class="zh" id="unfilledCount"></div></div>
+      <button class="modal-close" data-close="unfilledModal">×</button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:.82rem;color:var(--muted);margin-bottom:10px">Tap any item to jump to it. <span class="zh" style="font-family:var(--font-zh)">點擊任一項目即可跳至該處。</span></p>
+      <div id="unfilledList" class="unfilled-list"></div>
+    </div>
+  </div>
+</div>
+
 <!-- PDF TIPS MODAL -->
 <div class="modal-overlay" id="pdfModal">
   <div class="modal">
@@ -946,6 +1086,7 @@ function buildSummary() {
   const d = calcDScore();
   const i = STATE.info;
   return {
+    inspection_no: i.f_inspno || '',
     ara_name: i.f_araname || '',
     ara_reg: i.f_arareg || '',
     site: i.f_site || '',
@@ -967,9 +1108,145 @@ function buildSummary() {
     cat_I: d.countCatI, cat_II: d.countCatII, cat_III: d.countCatIII,
     next_inspection_yr: nextInspectionInterval(d),
     items_filled: Object.keys(STATE.A).length + Object.keys(STATE.B).length
-      + Object.keys(STATE.C).filter(k => (STATE.C[k]||[]).some(v=>v)).length
+      + DATA.annexC.filter(cItemDone).length
       + Object.keys(STATE.D).length,
   };
+}
+
+// ─── Trace unfilled items (tap the Filled pill) ───
+function findUnfilled() {
+  const out = [];
+  DATA.annexA.forEach(it => { if (STATE.A[it.id] === undefined) out.push({tab:'A',id:it.id,no:it.no,en:it.name_en,zh:it.name_zh}); });
+  DATA.annexB.forEach(it => { if (STATE.B[it.id] === undefined) out.push({tab:'B',id:it.id,no:it.no,en:it.name_en,zh:it.name_zh}); });
+  DATA.annexC.forEach(it => { if (!cItemDone(it)) out.push({tab:'C',id:it.id,no:it.no,en:it.name_en,zh:it.name_zh}); });
+  Object.values(DATA.annexD).forEach(sec => sec.items.forEach(it => { if (STATE.D[it.id] === undefined) out.push({tab:'D',id:it.id,no:it.no,en:it.name_en,zh:it.name_zh}); }));
+  return out;
+}
+function jumpToItem(tab, id) {
+  byId('unfilledModal').classList.remove('show');
+  goTab(tab);
+  setTimeout(() => {
+    const el = byId('item-' + id);
+    if (!el) return;
+    const det = el.closest('details.subsec');
+    if (det) det.setAttribute('open', '');
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    el.classList.add('item-flash');
+    setTimeout(() => el.classList.remove('item-flash'), 2200);
+  }, 160);
+}
+function showUnfilled() {
+  const list = findUnfilled();
+  const cont = byId('unfilledList');
+  byId('unfilledCount').textContent = list.length
+    ? (list.length + ' item(s) not filled · ' + list.length + ' 個項目未填')
+    : '';
+  if (!list.length) {
+    cont.innerHTML = '<div class="unfilled-empty">✓ All items filled · 全部項目已填寫</div>';
+  } else {
+    cont.innerHTML = list.map(u =>
+      `<button class="unfilled-row" type="button" data-tab="${u.tab}" data-id="${esc(u.id)}">
+        <span class="uf-ax">${u.tab}</span>
+        <span class="uf-no">${esc(u.no)}</span>
+        <span class="uf-name">${esc(u.en)}<br><span class="uf-zh">${esc(u.zh)}</span></span>
+        <span class="uf-go">→</span></button>`).join('');
+    cont.querySelectorAll('.unfilled-row').forEach(b =>
+      b.addEventListener('click', () => jumpToItem(b.dataset.tab, b.dataset.id)));
+  }
+  byId('unfilledModal').classList.add('show');
+}
+
+// ─── Auto-fill Annex D recommendations from Lb/Lc items (EMSD guideline) ───
+function collectAnnexDRecs() {
+  const lines = [];
+  Object.values(DATA.annexD).forEach(sec => sec.items.forEach(it => {
+    const st = STATE.D[it.id];
+    if (st && (st.choice === 'Lb' || st.choice === 'Lc')) {
+      const lvl = st.choice === 'Lb' ? 'Lb·Fair 不良' : 'Lc·Failure 嚴重';
+      lines.push(`• [${it.no} · ${lvl}] ${it.improvement_zh} / ${it.improvement_en}`);
+    }
+  }));
+  return lines;
+}
+function updateAutofillCount() {
+  const el = byId('autofillDcount');
+  if (!el) return;
+  const n = collectAnnexDRecs().length;
+  el.textContent = n ? (n + ' items') : '';
+  const btn = byId('autofillD');
+  if (btn) btn.style.opacity = n ? '1' : '.5';
+}
+function autofillAnnexD() {
+  const lines = collectAnnexDRecs();
+  const el = byId('rec_D');
+  if (!lines.length) { showToast('No Lb/Lc items in Annex D · 附件 D 暫無 Lb／Lc 項目'); return; }
+  const auto = lines.join('\n');
+  if (el.value.trim() && !confirm('Replace the Annex D box with guideline recommendations? You can edit and add your own opinion afterwards.\n用指引建議取代附件 D 框內容？之後仍可自由編輯及補充意見。')) return;
+  el.value = auto;
+  STATE.recs.D = auto;
+  autoSave();
+  showToast('Inserted ' + lines.length + ' recommendation(s) · 已填入 ' + lines.length + ' 項建議');
+}
+
+// ─── Before printing: build one clean summary line per Annex D item (selected rating only) ───
+function prepPrintD() {
+  const detMap = {1:'①',2:'②',3:'③','1':'①','2':'②','3':'③'};
+  const catMap = {'I':'Ⅰ','II':'Ⅱ','III':'Ⅲ'};
+  const tagMap = { La:'▷ La · Good 良好', Lb:'▷ Lb · Fair 不良', Lc:'▷ Lc · Failure 嚴重', NA:'⊘ N/A 不適用' };
+  Object.values(DATA.annexD).forEach(sec => sec.items.forEach(it => {
+    const card = byId('item-' + it.id);
+    if (!card) return;
+    const out = card.querySelector('.d-print-summary');
+    if (!out) return;
+    const st = STATE.D[it.id];
+    if (!st || !st.choice) { out.className = 'd-print-summary dps-none'; out.innerHTML = '<span class="dps-tag" style="color:#999">—　未評估 Not assessed</span>'; return; }
+    const ch = st.choice;
+    out.className = 'd-print-summary dps-' + ch;
+    if (ch === 'NA') { out.innerHTML = '<span class="dps-tag">⊘ N/A 不適用</span>'; return; }
+    const lv = it[ch] || {};
+    const desc_zh = lv.desc_zh || '';
+    const desc_en = lv.desc_en || '';
+    const flagged = st.flagged ? '　<b>※</b>' : '';
+    const ref = '探測 ' + (detMap[st.d]||st.d) + ' · 嚴重 ' + st.s + ' · 可能性 ' + st.l + ' · 風險類別 ' + (catMap[st.c]||st.c);
+    out.innerHTML = '<span class="dps-tag">' + tagMap[ch] + '</span>' + flagged + '　' + esc(desc_zh) + ' / ' + esc(desc_en) +
+      '<span class="dps-ref">' + ref + (st.notes ? '　｜ 備註 Notes: ' + esc(st.notes) : '') + '</span>';
+  }));
+}
+
+// ─── Populate the Executive Summary page (§3.3 table + O&M level) ───
+function populateExecSummary() {
+  const om = calcOMTotal();
+  const omG = omGrade(om.total);
+  const d = calcDScore();
+  const v = id => { const el = byId(id); return el ? (el.value || el.textContent || '') : ''; };
+  const set = (id, val) => { const el = byId(id); if (el) el.textContent = (val === '' || val == null) ? '—' : val; };
+  const zhNum = ['一','二','三','四'];
+  set('ex_inspno', v('f_inspno'));
+  let exd = v('f_inspdate');
+  if (exd && /^\d{4}-\d{2}-\d{2}$/.test(exd)) { const p = exd.split('-'); exd = p[0] + ' 年 ' + (+p[1]) + ' 月 ' + (+p[2]) + ' 日'; }
+  set('ex_date', exd);
+  set('ex_site', v('f_site'));
+  set('ex_liftno', v('f_liftno'));
+  set('ex_a', om.a + ' / 50');
+  set('ex_b', om.b + ' / 50');
+  set('ex_c', om.c + ' / 50');
+  set('ex_om', om.total + ' / 150');
+  set('ex_omlevel', 'Level ' + omG.lvl + ' · 第' + zhNum[omG.lvl-1] + '級（' + omG.zh + '）');
+  set('ex_A', d.totalRated);
+  set('ex_B', d.countCatI);
+  set('ex_C', d.countCatII);
+  set('ex_E', d.countCatIII);
+  set('ex_F', d.countMarked || 0);
+  set('ex_G', d.totalForCalc);
+  set('ex_H', '0');
+  set('ex_I', (-d.countCatII));
+  set('ex_J', d.countCatIII);
+  set('ex_D', d.D === null ? '—' : (d.D.toFixed(1)));
+  set('ex_marked', d.hasMarkedCatI ? '是 Yes' : '否 No');
+  set('ex_level', d.grade === null ? '—' : (d.gradeEn + ' · ' + d.gradeZh));
+  set('ex_rec', d.grade === null ? '資料不足，請完成更多項目。 Insufficient data — complete more items.' : (d.recZh + '　' + d.recEn));
+  const box = byId('printExec');
+  if (box) box.className = 'card ex-card' + (d.grade ? ' lvl' + d.grade : '');
 }
 
 // ─── Populate the print-only cover page from current form data ───
@@ -978,6 +1255,7 @@ function populatePrintCover() {
   const v = id => { const el = byId(id); return el ? (el.value || el.textContent || '') : ''; };
   const set = (id, val) => { const el = byId(id); if (el) el.textContent = val || '—'; };
   // pull live values directly from inputs (most current)
+  set('pc_inspno', v('f_inspno'));
   set('pc_rp', v('f_rp') || v('f_site'));
   set('pc_emsd', v('f_emsdno'));
   set('pc_liftno', v('f_liftno'));
@@ -1185,12 +1463,13 @@ function renderAnnexC() {
     card.id = 'item-' + it.id;
     let subs = '';
     it.subs.forEach((sub, i) => {
-      const cid = `c_${it.id}_${i}`.replace(/\./g,'_');
       subs += `
-        <div class="c-sub">
-          <input type="checkbox" id="${cid}" data-itemid="${it.id}" data-idx="${i}" data-pts="${sub.points}">
-          <label for="${cid}">${esc(sub.text_en)}<span class="zh">${esc(sub.text_zh)}</span></label>
-          <span class="pts">${sub.points} pt${sub.points>1?'s':''}</span>
+        <div class="c-sub" data-idx="${i}">
+          <div class="c-sub-label">${esc(sub.text_en)} <span class="pts">${sub.points} pt${sub.points>1?'s':''}</span><span class="zh">${esc(sub.text_zh)}</span></div>
+          <div class="c-sub-yn">
+            <button class="cyn-btn" type="button" data-idx="${i}" data-val="yes">✓ Yes 是</button>
+            <button class="cyn-btn" type="button" data-idx="${i}" data-val="no">✗ No 否</button>
+          </div>
         </div>
       `;
     });
@@ -1198,14 +1477,19 @@ function renderAnnexC() {
       <div class="item-head"><span class="item-no">${it.no}</span><span class="points-tag">${it.max} pts max</span></div>
       <div class="item-name-en">${esc(it.name_en)}</div>
       <div class="item-name-zh">${esc(it.name_zh)}</div>
-      <div style="margin-top:6px">${subs}</div>
+      <div style="margin-top:8px">${subs}</div>
     `;
     wrap.appendChild(card);
-    if (!STATE.C[it.id]) STATE.C[it.id] = it.subs.map(() => false);
-    card.querySelectorAll('input[type=checkbox]').forEach(cb => cb.addEventListener('change', () => {
-      const idx = parseInt(cb.dataset.idx);
-      if (!STATE.C[it.id]) STATE.C[it.id] = it.subs.map(() => false);
-      STATE.C[it.id][idx] = cb.checked;
+    if (!STATE.C[it.id]) STATE.C[it.id] = it.subs.map(() => null);
+    card.querySelectorAll('.cyn-btn').forEach(btn => btn.addEventListener('click', () => {
+      const idx = parseInt(btn.dataset.idx);
+      const val = btn.dataset.val;
+      if (!STATE.C[it.id]) STATE.C[it.id] = it.subs.map(() => null);
+      STATE.C[it.id][idx] = val;
+      const subEl = btn.closest('.c-sub');
+      subEl.querySelectorAll('.cyn-btn').forEach(b => b.classList.remove('sel-yes','sel-no'));
+      btn.classList.add('sel-' + val);
+      autoSave();
       updateAll();
     }));
   });
@@ -1240,20 +1524,36 @@ function renderDItem(it) {
   const essMark = it.essential ? '<span class="item-essential">★ ESSENTIAL ⚠ ※</span>' : '';
   const noteHtml = it.note_en ? `<div class="item-note">${esc(it.note_en)}<br>${esc(it.note_zh||'')}</div>` : '';
 
+  // Format the EMSD reference values (探測能力/嚴重程度/可能性/風險類別) for a level
+  const detMap = {1:'①',2:'②',3:'③'};
+  const catMap = {'I':'Ⅰ','II':'Ⅱ','III':'Ⅲ'};
+  const refLine = lv => `<span class="lc-ref">探測 ${detMap[lv.d]||lv.d} · 嚴重 ${lv.s} · 可能性 ${lv.l} · 類別 ${catMap[lv.c]||lv.c}</span>`;
+
   const laBtn = `<button class="lc-btn" data-choice="La">
     <span class="lc-tag">▷ La · Good 良好</span>
     <span class="lc-desc">${esc(it.La.desc_en)}</span>
-    <span class="lc-desc lc-desc-zh">${esc(it.La.desc_zh)}</span></button>`;
+    <span class="lc-desc lc-desc-zh">${esc(it.La.desc_zh)}</span>
+    ${refLine(it.La)}</button>`;
 
+  // Lb only when the EMSD guideline defines a borderline level for this item (29 of 157 items)
   const lbBtn = it.Lb ? `<button class="lc-btn" data-choice="Lb">
-    <span class="lc-tag">▷ Lb · Borderline 極限</span>
+    <span class="lc-tag">▷ Lb · Fair 不良</span>
     <span class="lc-desc">${esc(it.Lb.desc_en)}</span>
-    <span class="lc-desc lc-desc-zh">${esc(it.Lb.desc_zh)}</span></button>` : '';
+    <span class="lc-desc lc-desc-zh">${esc(it.Lb.desc_zh)}</span>
+    ${refLine(it.Lb)}</button>` : '';
 
   const lcBtn = `<button class="lc-btn" data-choice="Lc">
-    <span class="lc-tag">▷ Lc · Unsafe 不安全</span>
+    <span class="lc-tag">▷ Lc · Failure 嚴重</span>
     <span class="lc-desc">${esc(it.Lc.desc_en)}</span>
-    <span class="lc-desc lc-desc-zh">${esc(it.Lc.desc_zh)}</span></button>`;
+    <span class="lc-desc lc-desc-zh">${esc(it.Lc.desc_zh)}</span>
+    ${refLine(it.Lc)}</button>`;
+
+  const naBtn = `<button class="lc-btn na-btn" data-choice="NA" title="Not applicable — part not present on this lift">
+    <span class="lc-tag">⊘ N/A 不適用</span></button>`;
+
+  // Defaults map for pre-filling risk params (Lb only if defined)
+  const choiceDefaults = { La: it.La, Lc: it.Lc };
+  if (it.Lb) choiceDefaults.Lb = it.Lb;
 
   card.innerHTML = `
     <div class="item-head">
@@ -1262,7 +1562,8 @@ function renderDItem(it) {
     <div class="item-name-en">${esc(it.name_en)}</div>
     <div class="item-name-zh">${esc(it.name_zh)}</div>
     ${noteHtml}
-    <div class="lc-buttons">${laBtn}${lbBtn}${lcBtn}</div>
+    <div class="lc-buttons">${laBtn}${lbBtn}${lcBtn}${naBtn}</div>
+    <div class="d-print-summary"></div>
     <div class="risk-block" style="display:none">
       <div class="risk-grid">
         <div class="risk-field">
@@ -1319,21 +1620,29 @@ function renderDItem(it) {
     </div>
   `;
 
-  // Hook up La/Lb/Lc buttons
+  // Hook up La/Lb/Lc/NA buttons
   const riskBlock = card.querySelector('.risk-block');
   card.querySelectorAll('.lc-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       const choice = btn.dataset.choice;
-      card.querySelectorAll('.lc-btn').forEach(b => b.classList.remove('act-La','act-Lb','act-Lc'));
+      card.querySelectorAll('.lc-btn').forEach(b => b.classList.remove('act-La','act-Lb','act-Lc','act-NA'));
       btn.classList.add('act-' + choice);
-      card.classList.remove('sel-La','sel-Lb','sel-Lc');
+      card.classList.remove('sel-La','sel-Lb','sel-Lc','sel-NA');
       card.classList.add('sel-' + choice);
-      // Pre-fill risk params from default
-      const def = it[choice];
-      const dSel = card.querySelector('.r-d'); dSel.value = def.d;
-      const sSel = card.querySelector('.r-s'); sSel.value = def.s;
-      const lSel = card.querySelector('.r-l'); lSel.value = def.l;
-      const cSel = card.querySelector('.r-c'); cSel.value = def.c;
+      if (choice === 'NA') {
+        // Not applicable — excluded from D calculation, no risk params
+        riskBlock.style.display = 'none';
+        STATE.D[it.id] = { choice: 'NA' };
+        autoSave();
+        updateAll();
+        return;
+      }
+      // Pre-fill risk params from default (La/Lb/Lc)
+      const def = choiceDefaults[choice];
+      card.querySelector('.r-d').value = def.d;
+      card.querySelector('.r-s').value = def.s;
+      card.querySelector('.r-l').value = def.l;
+      card.querySelector('.r-c').value = def.c;
       riskBlock.style.display = 'block';
       saveDItem(it.id, card);
       updateAll();
@@ -1463,9 +1772,14 @@ function calcSumC() {
   let sum = 0;
   DATA.annexC.forEach(it => {
     const arr = STATE.C[it.id] || [];
-    it.subs.forEach((sub, i) => { if (arr[i]) sum += sub.points; });
+    it.subs.forEach((sub, i) => { if (arr[i] === 'yes' || arr[i] === true) sum += sub.points; });
   });
   return sum;
+}
+// An Annex C item counts as "filled" only when EVERY sub has an explicit Yes/No answer
+function cItemDone(it) {
+  const a = STATE.C[it.id];
+  return !!(a && a.length === it.subs.length && a.every(v => v != null));
 }
 
 function calcOMTotal() {
@@ -1491,15 +1805,17 @@ function omGrade(total) {
 // If D ≥ 70 but ※-marked Cat I exists, grade = Level 4
 function calcDScore() {
   const items = [];
-  let countCatI = 0, countCatII = 0, countCatIII = 0;
+  let countCatI = 0, countCatII = 0, countCatIII = 0, countNA = 0, countMarked = 0;
   let hasUnmarkedCatI = false;   // Any non-※ Cat I → D = 0
   let hasMarkedCatI = false;     // ※-marked Cat I → forces Level 4 even if D ≥ 70
   Object.entries(STATE.D).forEach(([id, st]) => {
+    if (st.choice === 'NA') { countNA++; return; }  // Not applicable — fully excluded
     const cat = st.c;
     if (cat === 'I') {
       countCatI++;
       if (st.flagged) {
         hasMarkedCatI = true;
+        countMarked++;
         // ※ items excluded from D calculation
       } else {
         hasUnmarkedCatI = true;
@@ -1532,10 +1848,12 @@ function calcDScore() {
     grade = null;
     gradeEn = '—'; gradeZh = '—'; recEn = 'Insufficient data — complete more items.'; recZh = '資料不足 — 請完成更多項目。';
   } else if (hasMarkedCatI && D >= 70) {
+    // Level 4 because of a ※-marked Class Ⅰ (essential device lacking but lift still compliant).
+    // Per EMSD Table 8, this case recommends planning/optimising — NOT stopping the lift.
     grade = 4;
     gradeEn = 'Level 4'; gradeZh = '第四級';
-    recEn = 'Plan to eliminate or reduce risk and optimise lift; implement plan effectively. Recommend stopping lift use until protective measures in place.';
-    recZh = '應制定計劃，以消除或降低風險以及優化升降機；並有效實施該計劃。建議停用升降機。只有在採取防護措施以消除或降低風險後，才可恢復操作。';
+    recEn = 'Formulate a plan to eliminate or reduce risk and optimise the lift; implement the plan effectively.';
+    recZh = '應制定計劃，以消除或降低風險以及優化升降機；並有效實施該計劃。';
   } else if (D >= 90) {
     grade = 1; gradeEn = 'Level 1'; gradeZh = '第一級';
     recEn = 'Adopt protective measures to eliminate or reduce risk.';
@@ -1556,7 +1874,7 @@ function calcDScore() {
 
   return {
     D, grade, gradeEn, gradeZh, recEn, recZh,
-    countCatI, countCatII, countCatIII,
+    countCatI, countCatII, countCatIII, countNA, countMarked,
     totalRated, totalForCalc, sum,
     hasUnmarkedCatI, hasMarkedCatI,
     totalItems: DATA.totals.D,
@@ -1583,6 +1901,7 @@ function updateAll() {
   const om = calcOMTotal();
   const omG = omGrade(om.total);
   const d = calcDScore();
+  updateAutofillCount();
 
   $('#aSum').textContent = om.a;
   $('#bSum').textContent = om.b;
@@ -1602,7 +1921,7 @@ function updateAll() {
   // Filled count
   const filledA = Object.keys(STATE.A).length;
   const filledB = Object.keys(STATE.B).length;
-  const filledC = Object.keys(STATE.C).filter(k => (STATE.C[k]||[]).some(v => v)).length;
+  const filledC = DATA.annexC.filter(cItemDone).length;
   const filledD = Object.keys(STATE.D).length;
   const totalFilled = filledA + filledB + filledC + filledD;
   $('#filledTop').textContent = totalFilled + '/' + DATA.totals.ALL;
@@ -1612,6 +1931,7 @@ function updateAll() {
 
   // Render verdict
   renderVerdict(om, omG, d);
+  populateExecSummary();
 
   autoSave();
 }
@@ -1652,6 +1972,7 @@ function renderVerdict(om, omG, d) {
           <tr><td>· Class Ⅰ items 第Ⅰ類</td><td>${d.countCatI}${d.hasMarkedCatI ? ' (incl. ※ marked)' : ''}</td></tr>
           <tr><td>· Class Ⅱ items 第Ⅱ類</td><td>${d.countCatII}</td></tr>
           <tr><td>· Class Ⅲ items 第Ⅲ類</td><td>${d.countCatIII}</td></tr>
+          <tr><td>· N/A items 不適用（已剔除）</td><td>${d.countNA || 0}</td></tr>
           <tr><td>Σ vᵢ (sum)</td><td>${d.sum}</td></tr>
           <tr><td>n (items in calc)</td><td>${d.totalForCalc}</td></tr>
           <tr><td><strong>D = (Σ vᵢ / n) × 100</strong></td><td><strong>${dScoreDisp}</strong></td></tr>
@@ -1681,7 +2002,7 @@ function renderVerdict(om, omG, d) {
 
 // ─── INFO FORM ───
 function bindInfoInputs() {
-  const ids = ['f_site','f_address','f_rp','f_contractor','f_liftno','f_emsdno','f_mfr','f_type','f_speed','f_load','f_year','f_commyear','f_floors','f_araname','f_arareg','f_aracompany','f_araexpiry','f_inspdate','f_insptime','f_weather','f_rle','f_rlw','f_remarks','f_urgent','f_sig_ara','f_sig_date','f_prep','f_review','f_approve','f_seal'];
+  const ids = ['f_inspno','f_site','f_address','f_rp','f_contractor','f_liftno','f_emsdno','f_mfr','f_type','f_speed','f_load','f_year','f_commyear','f_floors','f_araname','f_arareg','f_aracompany','f_araexpiry','f_inspdate','f_insptime','f_weather','f_rle','f_rlw','f_remarks','f_urgent','f_sig_ara','f_sig_date','f_prep','f_review','f_approve','f_seal'];
   ids.forEach(id => {
     const el = $('#' + id);
     if (!el) return;
@@ -1692,6 +2013,10 @@ function bindInfoInputs() {
     const el = $('#rec_' + k);
     if (el) el.addEventListener('input', autoSave);
   });
+  const afD = $('#autofillD');
+  if (afD) afD.addEventListener('click', autofillAnnexD);
+  const fp = $('#filledPill');
+  if (fp) fp.addEventListener('click', showUnfilled);
 }
 
 // ─── SAVE / LOAD ───
@@ -1747,11 +2072,16 @@ function applyStateToUI() {
   // Annex C
   Object.entries(STATE.C).forEach(([id, arr]) => {
     const card = byId('item-' + id);
-    if (!card) return;
-    arr.forEach((checked, i) => {
-      const cid = `c_${id}_${i}`.replace(/\./g,'_');
-      const cb = card.querySelector('#' + cid);
-      if (cb) cb.checked = checked;
+    if (!card || !Array.isArray(arr)) return;
+    arr.forEach((val, i) => {
+      // normalise legacy boolean values to yes/no
+      const v = val === true ? 'yes' : val === false ? 'no' : val;
+      if (v !== 'yes' && v !== 'no') return;
+      const sub = card.querySelector(`.c-sub[data-idx="${i}"]`);
+      if (!sub) return;
+      sub.querySelectorAll('.cyn-btn').forEach(b => b.classList.remove('sel-yes','sel-no'));
+      const btn = sub.querySelector(`.cyn-btn[data-val="${v}"]`);
+      if (btn) btn.classList.add('sel-' + v);
     });
   });
 
@@ -1761,11 +2091,12 @@ function applyStateToUI() {
     if (!card) return;
     const btn = card.querySelector(`.lc-btn[data-choice="${st.choice}"]`);
     if (btn) {
-      card.querySelectorAll('.lc-btn').forEach(b => b.classList.remove('act-La','act-Lb','act-Lc'));
+      card.querySelectorAll('.lc-btn').forEach(b => b.classList.remove('act-La','act-Lb','act-Lc','act-NA'));
       btn.classList.add('act-' + st.choice);
       card.classList.add('sel-' + st.choice);
     }
     const riskBlock = card.querySelector('.risk-block');
+    if (st.choice === 'NA') { if (riskBlock) riskBlock.style.display = 'none'; return; }
     if (riskBlock) riskBlock.style.display = 'block';
     if (card.querySelector('.r-d')) card.querySelector('.r-d').value = st.d;
     if (card.querySelector('.r-s')) card.querySelector('.r-s').value = st.s;
@@ -1789,10 +2120,14 @@ async function exportJSON() {
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   const ts = new Date().toISOString().replace(/[:.]/g,'-').slice(0,19);
+  const inspno = (STATE.info.f_inspno || '').replace(/[^a-zA-Z0-9_-]/g, '_');
   const site = (STATE.info.f_site || 'lift').replace(/[^a-zA-Z0-9_-]/g, '_');
   const liftno = (STATE.info.f_liftno || '').replace(/[^a-zA-Z0-9_-]/g, '_');
   a.href = url;
-  a.download = `Lifthium_ARA_${site}_${liftno}_${ts}.json`;
+  // Filename uses Inspection No. (e.g. 26ARA0001); falls back to site/lift if not entered
+  a.download = inspno
+    ? `${inspno}${liftno ? '_' + liftno : ''}.json`
+    : `Lifthium_ARA_${site}_${liftno}_${ts}.json`;
   a.click();
   URL.revokeObjectURL(url);
   showToast('JSON exported · JSON 已匯出');
@@ -1852,6 +2187,8 @@ function init() {
   $('#loadBtn').addEventListener('click', importJSON);
   function doPrint() {
     populatePrintCover();
+    populateExecSummary();
+    prepPrintD();
     // Ensure all textarea content prints (mirror live value into DOM text)
     document.querySelectorAll('textarea').forEach(t => { t.textContent = t.value; });
     // Open all D accordions for print
