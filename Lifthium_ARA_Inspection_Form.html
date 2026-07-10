@@ -459,6 +459,16 @@ body:not(.app-unlocked){overflow:hidden;}
 #lockScreen .lock-foot{color:#8aa0b6;font-size:11px;margin-top:18px;}
 @media print{#lockScreen{display:none!important;}}
 </style>
+<style id="report-fixes-1-2">
+#frontExecHost{display:none}
+@media print{
+  #frontExecHost{display:block}
+  #printExec{display:none!important}                 /* Exec Summary moved to the front */
+  .exec-front-clone{page-break-before:auto!important;break-before:auto!important}
+  .rec-autofill{display:none!important}              /* auto-fill helper button not in report */
+  .rec-area::placeholder,textarea::placeholder{color:transparent!important}  /* no placeholder text */
+}
+</style>
 </head>
 <body>
 <div id="lockScreen" role="dialog" aria-label="Authorization required">
@@ -636,6 +646,7 @@ body:not(.app-unlocked){overflow:hidden;}
       <div class="rf-inner">© 2026 Lifthium Consultancy Limited 極樂公證行有限公司 · All rights reserved 版權所有</div>
     </td></tr></tfoot>
     <tbody class="print-tb"><tr><td class="print-cell">
+  <div id="frontExecHost"></div>
 
   <!-- PANEL: PROJECT INFO -->
   <section class="panel active" id="panel-info">
@@ -2847,6 +2858,21 @@ function init() {
   // Bind top bar buttons
   $('#saveBtn').addEventListener('click', exportJSON);
   $('#loadBtn').addEventListener('click', importJSON);
+function buildFrontExec(){
+  try{
+    if (typeof populateExecSummary === 'function') populateExecSummary();
+    const src = document.getElementById('printExec');
+    const host = document.getElementById('frontExecHost');
+    if(!src || !host) return;
+    const clone = src.cloneNode(true);
+    clone.removeAttribute('id');
+    clone.classList.add('exec-front-clone');
+    host.innerHTML = '';
+    host.appendChild(clone);
+  }catch(e){}
+}
+window.addEventListener('beforeprint', buildFrontExec);
+
   function doPrint() {
     populatePrintCover();
     populateExecSummary();
