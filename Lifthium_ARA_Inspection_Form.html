@@ -209,7 +209,8 @@ details.subsec .subsec-count{font-size:.72rem;color:rgba(255,255,255,.7);font-we
 .rec-label{font-family:var(--font-h);font-weight:700;font-size:.86rem;color:var(--navy);margin-bottom:6px;display:flex;align-items:center;gap:7px}
 .rec-label .zh{font-family:var(--font-zh);font-weight:400;color:var(--muted);font-size:.82rem}
 .rec-tag{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:5px;background:var(--gold);color:#fff;font-weight:700;font-size:.78rem;flex-shrink:0}
-.rec-area{width:100%;border:1px solid var(--border);border-radius:6px;padding:9px 11px;font-family:var(--font-b);font-size:.88rem;color:var(--text);resize:vertical;line-height:1.5}
+.rec-area{width:100%;border:1px solid var(--border);border-radius:6px;padding:9px 11px;font-family:var(--font-b);font-size:.88rem;color:var(--text);resize:none;overflow:hidden;line-height:1.5;min-height:4.5em}
+textarea{resize:none}
 .rec-area:focus{border-color:var(--blue);outline:none}
 .rec-autofill{display:inline-flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:8px;padding:7px 12px;border:1.5px solid var(--gold);background:rgba(212,175,55,.1);border-radius:6px;font-family:var(--font-h);font-weight:600;font-size:.76rem;color:var(--gold-dk);cursor:pointer;transition:.15s}
 .rec-autofill:hover{background:rgba(212,175,55,.2)}
@@ -1753,6 +1754,8 @@ function updateAutofillCount() {
   const btn = byId('autofillD');
   if (btn) btn.style.opacity = n ? '1' : '.5';
 }
+function growTA(el){ if(!el) return; el.style.height='auto'; el.style.height=el.scrollHeight+'px'; }
+function growAllRec(){ document.querySelectorAll('.rec-area').forEach(growTA); }
 function autofillAnnexD() {
   const lines = collectAnnexDRecs();
   const el = byId('rec_D');
@@ -1760,6 +1763,7 @@ function autofillAnnexD() {
   const auto = lines.join('\n');
   if (el.value.trim() && !confirm('Replace the Annex D box with guideline recommendations? You can edit and add your own opinion afterwards.\n用指引建議取代附件 D 框內容？之後仍可自由編輯及補充意見。')) return;
   el.value = auto;
+  growTA(el);
   STATE.recs.D = auto;
   autoSave();
   showToast('Inserted ' + lines.length + ' recommendation(s) · 已填入 ' + lines.length + ' 項建議');
@@ -2659,6 +2663,7 @@ function applyStateToUI() {
   if (STATE.urgent) $('#f_urgent').value = STATE.urgent;
   // Recommendations by annex
   if (STATE.recs) ['A','B','C','D'].forEach(k => { const el = $('#rec_' + k); if (el) el.value = STATE.recs[k] || ''; });
+  growAllRec();
 
   // Annex A
   Object.entries(STATE.A).forEach(([id, v]) => {
@@ -2968,6 +2973,7 @@ window.addEventListener('beforeprint', buildFrontExec);
 }
 
 document.addEventListener('DOMContentLoaded', init);
+document.addEventListener('DOMContentLoaded', () => { document.querySelectorAll('.rec-area').forEach(el => el.addEventListener('input', () => growTA(el))); setTimeout(growAllRec, 0); });
 </script>
 </body>
 </html>
