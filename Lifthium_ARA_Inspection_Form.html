@@ -469,6 +469,27 @@ body:not(.app-unlocked){overflow:hidden;}
   .rec-area::placeholder,textarea::placeholder{color:transparent!important}  /* no placeholder text */
 }
 </style>
+<style id="decl-styles">
+.decl-card p{line-height:1.6;font-size:.9rem;margin:8px 0;color:var(--navy)}
+.decl-open{margin-bottom:4px}
+.decl-inp{background:#FFF8E1;border:1px solid var(--gold);border-radius:5px;padding:2px 7px;font-family:inherit;font-size:.86rem;color:var(--navy);min-width:130px}
+.decl-inp-wide{min-width:210px}
+.decl-mirror{font-weight:700;color:var(--navy);border-bottom:1px solid var(--gold);padding:0 5px}
+.decl-sec{margin-top:11px}
+.decl-sec h4{font-size:.9rem;color:var(--blue);margin:0 0 2px}
+.decl-sigblock{margin-top:20px;border-top:2px solid var(--gold);padding-top:14px}
+.decl-sigrow{display:grid;grid-template-columns:330px 1fr;gap:6px 14px;align-items:center;margin:12px 0}
+.decl-siglabel{font-size:.82rem;color:var(--navy)}
+.decl-sigval{font-weight:700;border-bottom:1px solid #888;padding:2px 6px;min-height:1.4em}
+.decl-sigval-inp{padding:6px 8px;border:1px solid var(--gold);border-radius:6px;background:#FFF8E1;font-family:inherit;max-width:220px}
+.decl-sigline{border-bottom:1px solid #333;min-height:1.6em;display:block}
+.decl-hand::after{content:'（handwritten on printed copy 於列印本手寫簽署）';font-size:.7rem;color:var(--muted);font-weight:400}
+.decl-foot{margin-top:18px;font-style:italic;font-size:.82rem;color:var(--muted)}
+@media print{
+  .decl-hand::after{content:''}
+  .decl-inp,.decl-sigval-inp{background:transparent!important;border:none!important;border-bottom:1px solid #333!important;border-radius:0!important}
+}
+</style>
 </head>
 <body>
 <div id="lockScreen" role="dialog" aria-label="Authorization required">
@@ -803,31 +824,25 @@ body:not(.app-unlocked){overflow:hidden;}
 
   <!-- PANEL: DECLARATION -->
   <section class="panel" id="panel-decl">
-    <div class="card">
-      <div class="card-title">Risk Assessor's Declaration <span class="card-title-zh">風險評估員聲明</span></div>
-      <div class="decl-text">
-        I, the undersigned, hereby declare that I am a duly Accredited Risk Assessor (ARA) recognised by EMSD; that the lift listed above was not under my periodic inspection in the two (2) years preceding this risk assessment; that this risk assessment has been carried out independently, fairly and in accordance with the EMSD Guideline on Risk Assessment for Traction Lifts (December 2025); and that all observations, findings and recommendations herein reflect the actual condition observed on site to the best of my knowledge.
-        <span class="zh">本人為機電工程署認可之認可風險評估員（ARA）；本人在進行本風險評估前兩年內，並未負責本升降機之定期檢驗工作；本風險評估已按照《曳引式升降機風險評估指引》（2025年12月版）以獨立、公平之方式進行；本報告所有觀察、結論及建議均屬本人於現場實地視察所得之真實意見。</span>
+    <div class="card decl-card">
+      <div class="card-title">Declaration and Undertaking for Accredited Risk Assessor of Lifts</div>
+      <p class="decl-open">I, <span class="decl-mirror" id="decl_name">—</span>, serving as <input type="text" id="f_arapos" class="decl-inp" placeholder="Position / Title"> at <span class="decl-mirror" id="decl_company">—</span>, with the contact details <input type="text" id="f_aracontact" class="decl-inp decl-inp-wide" placeholder="Contact information">, on <input type="date" id="f_decl_date" class="decl-inp"> hereby solemnly declare and undertake as follows:</p>
+      <div class="decl-sec"><h4>Declaration of Independence</h4><p>I recognise that independence is crucial for maintaining the credibility of the risk assessment process and fostering trust among stakeholders. I confirm that, within the two years immediately preceding this risk assessment, I have not served as the registered lift engineer for the periodic examination of this lift. I further confirm that there is no conflict of interest in this assessment, and that I can objectively evaluate the lift’s condition and safety.</p></div>
+      <div class="decl-sec"><h4>Commitment to Accuracy</h4><p>I undertake to carry out the risk assessment with the utmost rigor, ensuring that all findings, measurement data and evaluation conclusions are accurate, correct and based on reliable information. I will strictly adhere to the relevant standards and guidelines issued by the Electrical and Mechanical Services Department (EMSD) and other governing bodies.</p></div>
+      <div class="decl-sec"><h4>Consequences of Breach</h4><p>I acknowledge that any breach of this Declaration and Undertaking may result in disciplinary action, including but not limited to suspension or revocation of my accreditation, as well as assumption of legal or professional liabilities.</p></div>
+      <div class="decl-sec"><h4>Truthfulness of Information</h4><p>I declare that the above information is true and complete to the best of my knowledge and belief. I understand that providing false or misleading information may lead to serious consequences, including legal liability and revocation of my accreditation.</p></div>
+      <div class="decl-sec"><h4>Notification of Ongoing Investigations</h4><p>I undertake to notify the EMSD of any ongoing investigations involving me that I cannot lawfully disclose, as soon as practicable upon the completion of such investigations. This commitment underscores my dedication to maintaining transparency and accountability in my professional conduct.</p></div>
+      <div class="decl-sec"><h4>Notification of Future Convictions</h4><p>I undertake to notify the EMSD of any criminal conviction or professional misconduct in the future, whether locally or overseas, as soon as practicable. This commitment is essential for upholding the integrity of the risk assessment process and the trust placed in my professional judgement.</p></div>
+      <div class="decl-sec"><h4>Authorisation for Data Retrieval</h4><p>I authorise the EMSD to collect my personal data from third parties, including government departments, public entities and other relevant organisations for the purposes of verification, registration, investigation and public use. I also consent to the transfer of such information to the EMSD by any individuals for the said purposes.</p></div>
+      <div class="decl-sec"><h4>Consent to Use of Personal Data</h4><p>I authorise the EMSD to use my personal data reasonably for performing its statutory duties in compliance with the provisions of the Personal Data (Privacy) Ordinance, Cap. 486, Laws of Hong Kong.</p></div>
+      <div class="decl-sec"><p>I understand that any breach of this Declaration and Undertaking may result in disciplinary action, including revocation of my eligibility to carry out risk assessments. I further acknowledge that my professional reputation and public safety hinge upon my adherence to these principles of independence, accuracy and ethical conduct.</p></div>
+      <div class="decl-sigblock">
+        <div class="decl-sigrow"><span class="decl-siglabel">Signature of Accredited Risk Assessor of Lift’s</span><span class="decl-sigline decl-hand"></span></div>
+        <div class="decl-sigrow"><span class="decl-siglabel">Registration No. of Accredited Risk Assessor of Lift’s</span><span class="decl-mirror decl-sigval" id="decl_reg">—</span></div>
+        <div class="decl-sigrow"><span class="decl-siglabel">Date</span><input type="date" id="f_sig_date" class="decl-sigval-inp"></div>
+        <div class="decl-sigrow"><span class="decl-siglabel">Location I.D. of the lift carried out risk assessment</span><span class="decl-mirror decl-sigval" id="decl_loc">—</span></div>
       </div>
-      <div class="info-grid" style="margin-top:14px">
-        <div class="field"><label>ARA Signature (typed) <span class="zh">評估員簽署（鍵入）</span></label><input type="text" id="f_sig_ara" placeholder="Type full name"></div>
-        <div class="field"><label>Signature Date <span class="zh">簽署日期</span></label><input type="date" id="f_sig_date"></div>
-      </div>
-      <div class="info-grid" style="margin-top:10px">
-        <div class="field"><label>Prepared by <span class="zh">編製</span></label><input type="text" id="f_prep" placeholder="Name + title"></div>
-        <div class="field"><label>Reviewed by <span class="zh">審核</span></label><input type="text" id="f_review" placeholder="Name + title"></div>
-      </div>
-      <div class="info-grid" style="margin-top:10px">
-        <div class="field"><label>Approved by <span class="zh">核准</span></label><input type="text" id="f_approve" placeholder="Name + title"></div>
-        <div class="field"><label>Official Seal Reference <span class="zh">公司印章編號</span></label><input type="text" id="f_seal" placeholder="Seal ref. (physical seal on PDF copy)"></div>
-      </div>
-      <div style="margin-top:14px;padding:10px;background:rgba(74,144,226,.08);border:1px dashed var(--blue);border-radius:6px;font-size:.78rem;color:var(--muted)">
-        <strong style="color:var(--navy);display:block;margin-bottom:3px">⚠ Submission Reminder · 提交提示</strong>
-        After completion, this report must be uploaded to the <strong>EMSD Digital Work Log System Management Platform</strong> by the ARA.
-        <span class="zh" style="font-family:var(--font-zh);display:block;margin-top:3px">本報告完成後，評估員須將其上載至機電署之 <strong>數碼工作日誌系統管理平台</strong>。</span>
-        Report shall be issued in <strong>triplicate</strong> (1 copy to Responsible Person, 1 to Contractor, 1 ARA archive).
-        <span class="zh" style="font-family:var(--font-zh)">報告須一式三份（負責人 1 份、承辦商 1 份、評估員存檔 1 份）。</span>
-      </div>
+      <p class="decl-foot">This form shall be submitted to the relevant parties in accordance with established requirements, so as to ensure the integrity and independence of the risk assessment process, thereby enhancing the safety and reliability of lift operations.</p>
     </div>
     <div class="nav-row">
       <button class="btn-secondary" data-goto="photos">← Back</button>
@@ -2488,7 +2503,12 @@ function nextInspectionInterval(d) {
 }
 
 // ─── UPDATE ALL ───
+function syncDecl(){
+  const set=(sp,src)=>{ const a=document.getElementById(sp), b=document.getElementById(src); if(a&&b) a.textContent=(b.value||'').trim()||'—'; };
+  set('decl_name','f_araname'); set('decl_company','f_aracompany'); set('decl_reg','f_arareg'); set('decl_loc','f_emsdno');
+}
 function updateAll() {
+  try{ syncDecl(); }catch(e){}
   const om = calcOMTotal();
   const omG = omGrade(om.total);
   const d = calcDScore();
@@ -2593,7 +2613,7 @@ function renderVerdict(om, omG, d) {
 
 // ─── INFO FORM ───
 function bindInfoInputs() {
-  const ids = ['f_reportno','f_inspno','f_site','f_address','f_rp','f_contractor','f_liftno','f_emsdno','f_mfr','f_type','f_speed','f_load','f_year','f_commyear','f_floors','f_araname','f_arareg','f_aracompany','f_araexpiry','f_inspdate','f_insptime','f_weather','f_rle','f_rlw','f_remarks','f_urgent','f_sig_ara','f_sig_date','f_prep','f_review','f_approve','f_seal'];
+  const ids = ['f_reportno','f_inspno','f_site','f_address','f_rp','f_contractor','f_liftno','f_emsdno','f_mfr','f_type','f_speed','f_load','f_year','f_commyear','f_floors','f_araname','f_arareg','f_aracompany','f_araexpiry','f_inspdate','f_insptime','f_weather','f_rle','f_rlw','f_remarks','f_urgent','f_arapos','f_aracontact','f_decl_date','f_sig_ara','f_sig_date','f_prep','f_review','f_approve','f_seal'];
   ids.forEach(id => {
     const el = $('#' + id);
     if (!el) return;
