@@ -491,6 +491,63 @@ body:not(.app-unlocked){overflow:hidden;}
   .decl-inp,.decl-sigval-inp{background:transparent!important;border:none!important;border-bottom:1px solid #333!important;border-radius:0!important}
 }
 </style>
+<style id="print-selected-emphasis">
+@media print{
+  /* SELECTED options stay SOLID & fully coloured */
+  .b-btn.sel,.ab-btn.sel-yes,.ab-btn.sel-no,
+  .cyn-btn.sel-yes,.cyn-btn.sel-no,
+  .lc-btn.act-La,.lc-btn.act-Lb,.lc-btn.act-Lc,.lc-btn.act-NA{
+    -webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;
+    opacity:1!important;font-weight:700!important;
+  }
+  /* UNSELECTED options are DIMMED */
+  .b-options .b-btn:not(.sel),
+  .ab-options .ab-btn:not(.sel-yes):not(.sel-no),
+  .c-sub-yn .cyn-btn:not(.sel-yes):not(.sel-no),
+  .lc-buttons .lc-btn:not(.act-La):not(.act-Lb):not(.act-Lc):not(.act-NA){
+    opacity:.35!important;filter:grayscale(35%)!important;
+  }
+}
+</style>
+<style id="bw-print-safe">
+@media print{
+  /* ===== B&W hard-copy legibility: severity = DARKNESS + symbols ===== */
+  .lc-btn.act-La,.lc-btn.act-Lb,.lc-btn.act-Lc,.lc-btn.act-NA,
+  .ab-btn.sel-yes,.ab-btn.sel-no,.cyn-btn.sel-yes,.cyn-btn.sel-no,
+  .b-btn.sel,.cat-display,.points-tag,.c-sub .pts{
+    -webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;
+  }
+  /* Annex D — La light / Lb medium / Lc dark + ✓ ▲ ✗ */
+  .lc-btn.act-La{background:#eef0f2!important;border:1.5px solid #333!important;color:#111!important}
+  .lc-btn.act-La .lc-tag::before{content:'✓ '}
+  .lc-btn.act-Lb{background:#c9ccd0!important;border:1.5px solid #333!important;color:#111!important}
+  .lc-btn.act-Lb .lc-tag::before{content:'▲ '}
+  .lc-btn.act-Lc{background:#464b52!important;border:1.5px solid #000!important}
+  .lc-btn.act-Lc,.lc-btn.act-Lc .lc-tag,.lc-btn.act-Lc .lc-desc,.lc-btn.act-Lc .lc-desc-zh,.lc-btn.act-Lc .lc-ref{color:#fff!important}
+  .lc-btn.act-Lc .lc-tag::before{content:'✗ '}
+  .lc-btn.act-NA{background:#e2e4e6!important;border:1.5px dashed #555!important;color:#222!important}
+  .lc-btn.act-NA .lc-tag::before{content:'– '}
+  /* Annex A Yes(light)/No(dark) — already has ✓/✗ in label */
+  .ab-btn.sel-yes{background:#eef0f2!important;color:#111!important;border:1.5px solid #333!important}
+  .ab-btn.sel-no{background:#464b52!important;color:#fff!important;border:1.5px solid #000!important}
+  /* Annex C Yes/No + symbols */
+  .cyn-btn.sel-yes{background:#eef0f2!important;color:#111!important;border:1.5px solid #333!important}
+  .cyn-btn.sel-yes::before{content:'✓ '}
+  .cyn-btn.sel-no{background:#464b52!important;color:#fff!important;border:1.5px solid #000!important}
+  .cyn-btn.sel-no::before{content:'✗ '}
+  /* Annex B selected band → dark solid */
+  .b-btn.sel{background:#3a3f45!important;color:#fff!important;border:1.5px solid #000!important}
+  /* Risk category — Cat I darkest (most severe) → Cat III lightest */
+  .cat-display.cat-I{background:#2b2f34!important;color:#fff!important}
+  .cat-display.cat-II{background:#8a9099!important;color:#fff!important}
+  .cat-display.cat-III{background:#dfe2e5!important;color:#111!important}
+  /* item left border by severity: thickness + darkness */
+  .item.sel-Lc{border-left:6px solid #000!important}
+  .item.sel-Lb{border-left:5px solid #555!important}
+  .item.sel-La{border-left:4px solid #b3b3b3!important}
+  .item.sel-NA{border-left:4px solid #888!important}
+}
+</style>
 </head>
 <body>
 <div id="lockScreen" role="dialog" aria-label="Authorization required">
