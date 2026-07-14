@@ -381,19 +381,21 @@ textarea{resize:none}
   .pc-head{text-align:center;border-bottom:2.5px solid var(--gold);padding-bottom:5mm;margin-bottom:8mm}
   .pc-title{font-size:21pt;font-weight:700;color:var(--navy);letter-spacing:2px;margin-bottom:2mm;font-family:var(--font-zh)}
   .pc-title-en{font-family:var(--font-h);font-size:11.5pt;color:var(--blue);letter-spacing:.5px;font-weight:600}
-  .pc-fields{width:86%;margin:0 auto 9mm}
+  .pc-fields{width:86%;margin:0 auto 7mm}
   .pc-row{display:flex;padding:5px 0;border-bottom:1px dotted #bbb}
   .pc-label{width:46%;font-weight:700;color:#333;font-size:10.5pt;font-family:var(--font-zh)}
   .pc-label .en{display:block;font-family:var(--font-h);font-weight:600;font-size:8pt;color:#999}
-  .pc-value{flex:1;color:#000;font-size:10.5pt;padding-left:6px}
-  .pc-sig{display:flex;gap:8mm;width:96%;margin:8mm auto 0}
+  .pc-value{flex:1;color:#000;font-size:10.5pt;padding-left:6px;min-height:1.2em}
+  .pc-sig{display:flex;gap:9mm;width:96%;margin:10mm auto 0}
   .pc-sigbox{flex:1}
-  .pc-sigtitle{font-weight:700;border-bottom:1.5px solid var(--navy);padding-bottom:4px;margin-bottom:9px;color:var(--navy);font-size:10pt;font-family:var(--font-zh)}
+  .pc-sigtitle{font-weight:700;border-bottom:1.5px solid var(--navy);padding-bottom:4px;margin-bottom:8px;color:var(--navy);font-size:10pt;font-family:var(--font-zh)}
   .pc-sigtitle .en{display:block;font-family:var(--font-h);font-size:7.5pt;color:#999;font-weight:600}
-  .pc-sigline{margin:8px 0;font-size:9.5pt}
+  .pc-sigspace{position:relative;height:20mm;border:1px solid #b3b3b3;border-radius:3px;background:#fbfbfb;margin:0 0 8px}
+  .pc-sigspace-lab{position:absolute;top:3px;left:5px;font-size:7pt;color:#aaa;font-family:var(--font-h);letter-spacing:.3px}
+  .pc-sigline{margin:7px 0;font-size:9.5pt}
   .pc-sigline .lab{display:inline-block;min-width:118px;color:#444}
-  .pc-sigline .un{display:inline-block;border-bottom:1px solid #999;min-width:120px;min-height:1em}
-  .pc-foot{text-align:center;margin-top:12mm;font-size:8.5pt;color:#999;font-family:var(--font-h)}
+  .pc-sigline .un{display:inline-block;border-bottom:1px solid #999;min-width:120px;min-height:1.1em}
+  .pc-foot{text-align:center;margin-top:9mm;font-size:8.5pt;color:#999;font-family:var(--font-h)}
 
   .pd-head{display:flex;align-items:center;gap:8px;border-bottom:2px solid var(--gold);padding-bottom:5px;margin-bottom:6mm}
   .pd-head .pd-hlogo{width:13mm;height:13mm;flex-shrink:0}
@@ -509,6 +511,34 @@ body:not(.app-unlocked){overflow:hidden;}
   }
 }
 </style>
+<style id="bw-print-safe">
+@media print{
+  .lc-btn.act-La,.lc-btn.act-Lb,.lc-btn.act-Lc,.lc-btn.act-NA,
+  .ab-btn.sel-yes,.ab-btn.sel-no,.cyn-btn.sel-yes,.cyn-btn.sel-no,
+  .b-btn.sel,.cat-display{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;}
+  .lc-btn.act-La{background:#eef0f2!important;border:1.5px solid #333!important;color:#111!important}
+  .lc-btn.act-La .lc-tag::before{content:'\2713 '}
+  .lc-btn.act-Lb{background:#c9ccd0!important;border:1.5px solid #333!important;color:#111!important}
+  .lc-btn.act-Lb .lc-tag::before{content:'\25B2 '}
+  .lc-btn.act-Lc{background:#464b52!important;border:1.5px solid #000!important}
+  .lc-btn.act-Lc,.lc-btn.act-Lc .lc-tag,.lc-btn.act-Lc .lc-desc,.lc-btn.act-Lc .lc-desc-zh,.lc-btn.act-Lc .lc-ref{color:#fff!important}
+  .lc-btn.act-Lc .lc-tag::before{content:'\2717 '}
+  .lc-btn.act-NA{background:#e2e4e6!important;border:1.5px dashed #555!important;color:#222!important}
+  .lc-btn.act-NA .lc-tag::before{content:'\2013 '}
+  .ab-btn.sel-yes{background:#eef0f2!important;color:#111!important;border:1.5px solid #333!important}
+  .ab-btn.sel-no{background:#464b52!important;color:#fff!important;border:1.5px solid #000!important}
+  .cyn-btn.sel-yes{background:#eef0f2!important;color:#111!important;border:1.5px solid #333!important}
+  .cyn-btn.sel-no{background:#464b52!important;color:#fff!important;border:1.5px solid #000!important}
+  .b-btn.sel{background:#3a3f45!important;color:#fff!important;border:1.5px solid #000!important}
+  .cat-display.cat-I{background:#2b2f34!important;color:#fff!important}
+  .cat-display.cat-II{background:#8a9099!important;color:#fff!important}
+  .cat-display.cat-III{background:#dfe2e5!important;color:#111!important}
+  .item.sel-Lc{border-left:6px solid #000!important}
+  .item.sel-Lb{border-left:5px solid #555!important}
+  .item.sel-La{border-left:4px solid #b3b3b3!important}
+  .item.sel-NA{border-left:4px solid #888!important}
+}
+</style>
 </head>
 <body>
 <script>
@@ -528,7 +558,7 @@ const COMPANIES = {
     excel:{GOLD:'FFD4AF37',BLUE:'FF4A90E2',NAVY:'FF1E3A5F',YEL:'FFFFF8E1',EN:'Century Gothic'},
     salt:'Lifthium-ARA-2026', ownerCode:'51220643',
     endpoint:'https://script.google.com/macros/s/AKfycbwg45FbtG3xyNSOarPN1zsu3dLibagYFf4-Hdz1Bk7hDCGxmvSs4RHvhwJ-mH5b_Vae/exec',
-    marker:'LIFTHIUM_ARA_DATA_TEMPLATE|v1', ara:{nameEn:'',nameZh:'',reg:''},
+    marker:'LIFTHIUM_ARA_DATA_TEMPLATE|v1', ara:{nameEn:'WAN KAI MAN, RAYMOND',nameZh:'尹啟文',reg:'RA250028'},
     logoMark:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="-50 -50 1100 1100" role="img" aria-label="Lifthium 極樂公證行">
   <title>Lifthium</title>
   <circle cx="500" cy="500" r="443.5" fill="none" stroke="#1E3A5F" stroke-width="113"></circle>
@@ -555,10 +585,9 @@ const COMPANIES = {
 };
 (function(){
   var p=new URLSearchParams(location.search), a=p.get('company');
-  if(!a){ try{a=localStorage.getItem('ara_active_company');}catch(e){} }
-  if(!a) a=DEFAULT_COMPANY;
-  if(!COMPANIES[a]) a='lifthium';
-  if(p.get('company')){ try{localStorage.setItem('ara_active_company',a);}catch(e){} }
+  if(!a) a=DEFAULT_COMPANY;              /* bare file (no ?company=) always resolves to the base company */
+  if(!COMPANIES[a]) a=DEFAULT_COMPANY;   /* unknown ?company= key also falls back to the base */
+  try{localStorage.removeItem('ara_active_company');}catch(e){}  /* clear any stale saved company from earlier testing so old browsers self-heal */
   window.BRAND=COMPANIES[a]; window.ARA_ACTIVE=a;
   var r=document.documentElement, css=window.BRAND.css; for(var k in css) r.style.setProperty(k,css[k]); /* colours/fonts before paint */
 })();
@@ -570,8 +599,14 @@ function applyBrand(b){
   var tl=document.querySelector('.topbar-logo'); if(tl) tl.title=b.companyBil;
   var ac=document.getElementById('f_aracompany');
   if(ac && (!ac.value || /Consultancy Limited|Engineering Company|有限公司/.test(ac.value))) ac.value=b.companyBil;
+  if(b.ara){
+    var an=document.getElementById('f_araname');
+    if(an && !an.value){ var nm=((b.ara.nameEn||'')+' '+(b.ara.nameZh||'')).trim(); if(nm) an.value=nm; }
+    var ar=document.getElementById('f_arareg');
+    if(ar && !ar.value && b.ara.reg) ar.value=b.ara.reg;
+  }
 }
-function switchCompany(k){ try{localStorage.setItem('ara_active_company',k);}catch(e){} var u=new URL(location.href); u.searchParams.set('company',k); location.href=u.href; }
+function switchCompany(k){ var u=new URL(location.href); u.searchParams.set('company',k); location.href=u.href; }
 function buildCompanySwitcher(){
   if(new URLSearchParams(location.search).get('admin')!=='1') return;
   var s=document.createElement('select'); s.id='companySwitch';
@@ -668,6 +703,7 @@ document.addEventListener('DOMContentLoaded',function(){ applyBrand(window.BRAND
       <div class="pc-sig">
         <div class="pc-sigbox">
           <div class="pc-sigtitle">風險評估員簽署 <span class="en">Risk Assessor's Signature</span></div>
+          <div class="pc-sigspace"><span class="pc-sigspace-lab">簽署 Signature</span></div>
           <div class="pc-sigline"><span class="lab">姓名 Name:</span><span class="un" id="pc_araname"></span></div>
           <div class="pc-sigline"><span class="lab">評估員編號 ARA No.:</span><span class="un" id="pc_arareg"></span></div>
           <div class="pc-sigline"><span class="lab">日期 Date:</span><span class="un"></span></div>
@@ -675,6 +711,7 @@ document.addEventListener('DOMContentLoaded',function(){ applyBrand(window.BRAND
         </div>
         <div class="pc-sigbox">
           <div class="pc-sigtitle">升降機負責人簽署 <span class="en">Responsible Person's Signature</span></div>
+          <div class="pc-sigspace"><span class="pc-sigspace-lab">簽署 Signature</span></div>
           <div class="pc-sigline"><span class="lab">姓名 Name:</span><span class="un"></span></div>
           <div class="pc-sigline"><span class="lab">日期 Date:</span><span class="un"></span></div>
           <div class="pc-sigline"><span class="lab">電話 Tel:</span><span class="un"></span></div>
@@ -1211,6 +1248,21 @@ https://github.com/nodeca/pako/blob/main/LICENSE
   function dv(list){ return { type:"list", allowBlank:true, formulae:['"'+list+'"'],
     showErrorMessage:true, errorStyle:"stop", errorTitle:"Invalid", error:"請由清單選擇 Pick from the list" }; }
 
+  // Conditional formatting: highlight EMPTY required cells red; clears live in Excel when filled.
+  // Uses LEN(cell)=0 (NOT ISBLANK): ExcelJS writes unfilled cells as an empty shared-string,
+  // which is NOT blank to Excel, so ISBLANK never fires — LEN()=0 catches both empty & blank.
+  // Solid CF fill needs fgColor (bgColor alone is hidden under patternType=solid).
+  // guard = the machine-key column (e.g. '$A'); its LEN>0 skips section-header rows (blank ID col).
+  function cfBlank(ws, col, r1, r2, guard){
+    if(!ws || r2<r1) return;
+    const first=col+r1;
+    const cond = guard ? 'AND(LEN('+first+')=0,LEN('+guard+r1+')>0)' : 'LEN('+first+')=0';
+    try{ ws.addConditionalFormatting({ ref: col+r1+':'+col+r2,
+      rules:[{ type:'expression', formulae:[cond], priority:1,
+        style:{ fill:{ type:'pattern', pattern:'solid',
+          fgColor:{argb:'FFF8C9C9'}, bgColor:{argb:'FFF8C9C9'} } } }] }); }catch(e){}
+  }
+
   // ─────────────────────────── BUILD (export) ───────────────────────────
   async function buildWorkbook(ExcelJS, DATA, STATE, VERDICT){
     STATE = STATE || {}; const info=STATE.info||{}, A=STATE.A||{}, B=STATE.B||{}, C=STATE.C||{}, D=STATE.D||{}, recs=STATE.recs||{};
@@ -1238,7 +1290,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
       r++;
     });
     ws.mergeCells(r+1,2,r+1,3); const note=ws.getCell(r+1,2);
-    note.value="① 只填黃色格 Fill YELLOW only　② 灰色請勿修改 Grey = do not edit"; note.font=F({size:9,color:{argb:BLUE}});
+    note.value="① 只填黃色格 Fill YELLOW only　② 灰色請勿修改 Grey = do not edit　③ 紅色 = 未填 Red = not yet filled"; note.font=F({size:9,color:{argb:BLUE}});
     await ws.protect("", { selectLockedCells:true, selectUnlockedCells:true });
 
     // Instructions
@@ -1383,6 +1435,15 @@ https://github.com/nodeca/pako/blob/main/LICENSE
       const vc=ws.getCell(rr,3); styleLocked(vc,true); vc.value=(recs&&recs[ann])?recs[ann]:""; ws.getRow(rr).height=60;
     });
     await ws.protect("", { selectLockedCells:true, selectUnlockedCells:true });
+
+    // Red "not yet filled" conditional formatting on required-answer columns
+    const nC = DATA.annexC.reduce((n,it)=>n+1+it.subs.length,0);
+    const nD = Object.values(DATA.annexD).reduce((n,x)=>n+1+x.items.length,0);
+    cfBlank(wb.getWorksheet("封面 Cover"),   'C', 5, 4+COVER_FIELDS.length);
+    cfBlank(wb.getWorksheet("附件A AnnexA"), 'G', 2, 1+DATA.annexA.length);
+    cfBlank(wb.getWorksheet("附件B AnnexB"), 'F', 2, 1+DATA.annexB.length);
+    cfBlank(wb.getWorksheet("附件C AnnexC"), 'F', 2, 1+nC, '$A');
+    cfBlank(wb.getWorksheet("附件D AnnexD"), 'I', 2, 1+nD, '$A');
 
     return wb;
   }
@@ -1938,8 +1999,9 @@ function populatePrintCover() {
   let d = v('f_inspdate');
   if (d) { try { const dt = new Date(d); d = dt.getFullYear() + ' 年 ' + (dt.getMonth()+1) + ' 月 ' + dt.getDate() + ' 日'; } catch(e){} }
   set('pc_date', d);
-  set('pc_araname', v('f_araname'));
-  set('pc_arareg', v('f_arareg'));
+  var araNm = v('f_araname') || (window.BRAND&&BRAND.ara ? ((BRAND.ara.nameEn||'')+' '+(BRAND.ara.nameZh||'')).trim() : '');
+  set('pc_araname', araNm);
+  set('pc_arareg', v('f_arareg') || (window.BRAND&&BRAND.ara&&BRAND.ara.reg) || '');
 }
 
 // ─── Save / Save as New (gated) ───
@@ -2567,8 +2629,9 @@ function calcDScore() {
     recZh = '應盡快採取防護措施，以消除或降低風險。';
   } else {
     grade = 4; gradeEn = 'Level 4'; gradeZh = '第四級';
-    recEn = 'Plan to eliminate or reduce risk and optimise lift; implement effectively. Recommend stopping lift use until protective measures in place.';
-    recZh = '應制定計劃，以消除或降低風險以及優化升降機；並有效實施該計劃。建議停用升降機。只有在採取防護措施以消除或降低風險後，才可恢復操作。';
+    // Per EMSD Guideline Table 8, the D < 70 column recommendation is the suspend-use sentence ONLY.
+    recEn = 'Recommend suspending use of the lift; operation may resume only after protective measures have been taken to eliminate or reduce the risk.';
+    recZh = '建議停用升降機。只有在採取防護措施以消除或降低風險後，才可恢復操作。';
   }
 
   return {
@@ -2858,12 +2921,15 @@ async function exportExcel() {
     const blob = new Blob([buf], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
-    const ts = new Date().toISOString().replace(/[:.]/g,'-').slice(0,19);
+    const _p = n => String(n).padStart(2,'0');
+    const _dt = new Date();
+    const ts = _dt.getFullYear() + _p(_dt.getMonth()+1) + _p(_dt.getDate()) + '_' + _p(_dt.getHours()) + _p(_dt.getMinutes()) + _p(_dt.getSeconds());
     const inspno = (STATE.info.f_inspno || '').replace(/[^a-zA-Z0-9_-]/g, '_');
     const site = (STATE.info.f_site || 'lift').replace(/[^a-zA-Z0-9_-]/g, '_');
     const liftno = (STATE.info.f_liftno || '').replace(/[^a-zA-Z0-9_-]/g, '_');
     a.href = url;
-    a.download = inspno ? `${inspno}${liftno ? '_' + liftno : ''}.xlsx` : `${(window.BRAND&&BRAND.fileTag)||'Lifthium'}_ARA_${site}_${liftno}_${ts}.xlsx`;
+    const _base = inspno ? `${inspno}${liftno ? '_' + liftno : ''}` : `${(window.BRAND&&BRAND.fileTag)||'Lifthium'}_ARA_${site}_${liftno}`;
+    a.download = `${_base}_${ts}.xlsx`;
     a.click(); URL.revokeObjectURL(url);
     showToast('Excel exported · Excel 已匯出');
     try { LiftLog.log('export_excel', buildSummary()); } catch (e) {}
@@ -2903,15 +2969,16 @@ async function exportJSON() {
   const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
-  const ts = new Date().toISOString().replace(/[:.]/g,'-').slice(0,19);
+  const _p = n => String(n).padStart(2,'0');
+  const _dt = new Date();
+  const ts = _dt.getFullYear() + _p(_dt.getMonth()+1) + _p(_dt.getDate()) + '_' + _p(_dt.getHours()) + _p(_dt.getMinutes()) + _p(_dt.getSeconds());
   const inspno = (STATE.info.f_inspno || '').replace(/[^a-zA-Z0-9_-]/g, '_');
   const site = (STATE.info.f_site || 'lift').replace(/[^a-zA-Z0-9_-]/g, '_');
   const liftno = (STATE.info.f_liftno || '').replace(/[^a-zA-Z0-9_-]/g, '_');
   a.href = url;
-  // Filename uses Inspection No. (e.g. 26ARA0001); falls back to site/lift if not entered
-  a.download = inspno
-    ? `${inspno}${liftno ? '_' + liftno : ''}.json`
-    : `${(window.BRAND&&BRAND.fileTag)||'Lifthium'}_ARA_${site}_${liftno}_${ts}.json`;
+  // Filename: Inspection No. + Lift No. (or site/lift fallback), always suffixed with local date_time for versioning
+  const _base = inspno ? `${inspno}${liftno ? '_' + liftno : ''}` : `${(window.BRAND&&BRAND.fileTag)||'Lifthium'}_ARA_${site}_${liftno}`;
+  a.download = `${_base}_${ts}.json`;
   a.click();
   URL.revokeObjectURL(url);
   showToast('JSON exported · JSON 已匯出');
