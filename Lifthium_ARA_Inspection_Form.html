@@ -135,6 +135,8 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-b);min-height
 
 .special-flag{display:flex;align-items:center;gap:6px;margin-top:6px;font-size:.76rem;color:var(--muted)}
 .special-flag input{width:14px;height:14px}
+.special-flag-opt{align-items:flex-start}
+.special-flag-opt .sf-hint{display:block;font-size:.68rem;line-height:1.45;color:var(--muted);margin-top:3px}
 
 /* Annex A YES/NO */
 .ab-options{display:flex;gap:6px}
@@ -174,9 +176,70 @@ details.subsec .subsec-zh{font-family:var(--font-zh);font-weight:500;font-size:.
 details.subsec .subsec-count{font-size:.72rem;color:rgba(255,255,255,.7);font-weight:400;margin-left:auto;background:rgba(255,255,255,.08);padding:2px 8px;border-radius:10px}
 
 /* PHOTOS */
-.photo-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:10px 0}
-@media(max-width:900px){.photo-grid{grid-template-columns:repeat(3,1fr)}}
-@media(max-width:600px){.photo-grid{grid-template-columns:repeat(2,1fr)}}
+/* photo-grid is a plain wrapper; each .photo-sheet is a 3-col grid = one print page */
+.photo-grid{display:block;margin:10px 0}
+.photo-sheet{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
+.photo-sheet.sheet-2up{grid-template-columns:repeat(2,1fr)}
+@media(max-width:900px){.photo-sheet{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.photo-sheet{grid-template-columns:repeat(1,1fr)}}
+/* Sheet header, spanning all columns — one printed page per sheet, 6 photos */
+.ph-sheet-head{grid-column:1/-1;font-family:var(--font-h);font-weight:700;font-size:.72rem;
+  color:var(--navy);border-bottom:2px solid var(--gold);padding-bottom:5px;margin-bottom:2px;letter-spacing:.03em}
+/* Findings photo checklist (Part 2) — auto-built from Lb/Lc Annex D ratings */
+.findings-panel{margin:0 0 14px}
+.fnd-head{display:flex;align-items:center;justify-content:space-between;gap:10px;
+  font-family:var(--font-h);font-weight:700;font-size:.82rem;color:var(--navy);
+  border-bottom:2px solid var(--gold);padding-bottom:6px;margin-bottom:8px}
+.fnd-count{font-size:.74rem;padding:2px 9px;border-radius:10px}
+.fnd-count.ok{background:#E4F6EC;color:#1a7a4a}
+.fnd-count.warn{background:#FFF0D9;color:#9a6a12}
+.fnd-empty{font-size:.8rem;color:var(--muted);padding:8px 10px;border:1px dashed var(--border);border-radius:7px}
+.fnd-row{display:flex;align-items:center;gap:9px;padding:7px 9px;border:1px solid var(--border);
+  border-radius:7px;margin-bottom:6px;background:#FFFBF2}
+.fnd-row.cov{background:#F2FBF6;border-color:#CDEAD9}
+.fnd-badge{flex-shrink:0;width:26px;text-align:center;font-family:var(--font-h);font-weight:700;
+  font-size:.72rem;color:#fff;border-radius:5px;padding:3px 0}
+.fnd-badge.lb{background:var(--gold-dk)} .fnd-badge.lc{background:var(--danger)}
+.fnd-main{flex:1;min-width:0}
+.fnd-name{font-family:var(--font-zh);font-weight:600;font-size:.8rem;color:var(--text)}
+.fnd-desc{font-size:.72rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fnd-status{flex-shrink:0;font-family:var(--font-h);font-weight:700;font-size:.72rem}
+.fnd-row .fnd-status{color:#9a6a12} .fnd-row.cov .fnd-status{color:#1a7a4a}
+.fnd-add{flex-shrink:0;padding:5px 10px!important;font-size:.7rem!important}
+.photo-cell-no .cell-fnd{font-family:var(--font-h);font-weight:700;font-size:.58rem;color:#fff;
+  background:var(--blue);border-radius:4px;padding:1px 5px;margin-left:6px}
+/* Shows where each printed sheet will break — 6 photos per sheet */
+.ph-sep{grid-column:1/-1;display:flex;align-items:center;gap:10px;margin:6px 0 2px;
+  font-family:var(--font-h);font-weight:700;font-size:.64rem;color:var(--muted);letter-spacing:.07em}
+.ph-sep::before,.ph-sep::after{content:'';flex:1;height:1px;background:var(--border)}
+.ph-caps{width:100%;min-height:76px;border:1px solid var(--border);border-radius:7px;padding:8px 10px;
+  font-family:'Consolas','Menlo',monospace;font-size:.74rem;line-height:1.5;color:var(--text);resize:vertical}
+.ph-caps:focus{outline:none;border-color:var(--blue)}
+.ph-row{display:flex;gap:9px;align-items:center;flex-wrap:wrap;margin-top:9px}
+.ph-btn{font-family:var(--font-h);font-weight:700;font-size:.8rem;border-radius:7px;padding:8px 14px;
+  cursor:pointer;border:1px solid transparent}
+.ph-btn-p{background:var(--navy);color:#fff}
+.ph-btn-p:hover{filter:brightness(1.15)}
+.ph-btn-s{background:#fff;color:var(--navy);border-color:var(--border);padding:5px 10px;font-size:.72rem}
+.ph-btn-s:hover{border-color:var(--gold)}
+.ph-btn-d{background:#fff;color:var(--danger);border-color:#F0C2C7;padding:5px 10px;font-size:.72rem}
+.ph-count{font-family:var(--font-h);font-weight:700;font-size:.76rem;color:var(--muted);margin-left:auto}
+.ph-meter{display:flex;align-items:center;gap:10px;font-size:.78rem;color:var(--muted);margin:0}
+.ph-bar{flex:1;height:7px;background:#E7ECF2;border-radius:4px;overflow:hidden}
+.ph-bar i{display:block;height:100%;background:var(--success);width:0}
+.ph-bar i.hi{background:var(--gold)} .ph-bar i.max{background:var(--danger)}
+.ph-log{margin-top:10px;font-size:.78rem;line-height:1.6;border-radius:7px;padding:9px 11px;display:none;
+  background:#F1F6FC;border:1px solid #CFE0F5}
+.ph-log.show{display:block}
+.ph-log .li{display:block}
+.ph-log b{font-family:var(--font-h)}
+.ph-log .ok{color:var(--success)} .ph-log .wa{color:var(--gold-dk)} .ph-log .er{color:var(--danger)}
+.ph-empty{border:2px dashed var(--border);border-radius:8px;padding:24px;text-align:center;
+  color:var(--muted);font-size:.82rem;margin-top:10px}
+.photo-cell-no .ph-fn{font-family:var(--font-b);font-weight:400;color:var(--muted);margin-left:auto;
+  font-size:.6rem;max-width:58%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.photo-desc.nomatch{border-color:var(--gold);background:#FFFBF2}
+.photo-desc-print{display:none}
 .photo-cell{display:flex;flex-direction:column;gap:5px;border:1px solid var(--border);border-radius:8px;padding:7px;background:#fff}
 .photo-cell-no{font-family:var(--font-h);font-weight:700;font-size:.66rem;color:var(--gold-dk);letter-spacing:.04em}
 .photo-slot{height:130px;border:2px dashed var(--border);border-radius:6px;display:flex;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;position:relative;background:var(--bg);font-size:.8rem;color:var(--muted)}
@@ -224,7 +287,8 @@ textarea{resize:none}
 .ex-card .ex-id{width:100%;border-collapse:collapse;margin:4px 0 14px;font-size:.8rem}
 .ex-card .ex-id td{border:1px solid var(--border);padding:5px 9px;font-family:var(--font-zh)}
 .ex-card .ex-id .exl{background:#f3f4f6;font-weight:700;color:var(--navy);width:23%;white-space:nowrap}
-.ex-card .ex-sec{font-family:var(--font-h);font-weight:700;font-size:.9rem;color:var(--navy);background:color-mix(in srgb, var(--gold) 14%, transparent);border-left:4px solid var(--gold);padding:6px 10px;margin:16px 0 0}
+.ex-card .ex-dnote td{font-family:var(--font-zh);font-size:7.6pt;line-height:1.45;color:var(--muted);padding:3px 8px 7px!important}
+.ex-sec{font-family:var(--font-h);font-weight:700;font-size:.9rem;color:var(--navy);background:color-mix(in srgb, var(--gold) 14%, transparent);border-left:4px solid var(--gold);padding:6px 10px;margin:16px 0 0}
 .ex-card .ex-sec span{font-weight:400;font-size:.76rem;color:var(--muted)}
 .ex-card .ex-table{width:100%;border-collapse:collapse;margin-bottom:4px;font-size:.82rem}
 .ex-card .ex-table td{border:1px solid var(--border);padding:5px 10px;font-family:var(--font-zh)}
@@ -238,10 +302,13 @@ textarea{resize:none}
 .ex-conc-label{font-family:var(--font-h);font-weight:700;font-size:.74rem;color:var(--gold-dk);text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px}
 .ex-conc-level{font-family:var(--font-h);font-weight:800;font-size:1.5rem;color:var(--navy);margin-bottom:8px}
 .ex-conc-rec{font-family:var(--font-zh);font-size:.84rem;line-height:1.6;color:#333}
-#printExec.lvl1 .ex-conc-level,#printExec.lvl2 .ex-conc-level{color:#1a7a4a}
-#printExec.lvl3 .ex-conc-level{color:#b8860b}
-#printExec.lvl4 .ex-conc-level{color:#c0392b}
-#printExec.lvl4 .ex-conclusion{border-color:#c0392b}
+.ex-conc-next{font-family:var(--font-zh);font-size:.82rem;line-height:1.5;color:var(--navy);font-weight:600;margin-top:9px;padding-top:8px;border-top:1px dashed #bbb}
+.ex-conc-next:empty{display:none}
+.ex-card.lvl1 .ex-conc-level,.ex-card.lvl2 .ex-conc-level{color:#1a7a4a}
+.ex-card.lvl3 .ex-conc-level{color:#b8860b}
+.ex-card.lvl4 .ex-conc-level{color:#c0392b}
+.ex-card.lvl4 .ex-conclusion{border-color:#c0392b!important}
+.ex-card.lvl4 .ex-conc-next{color:#c0392b;border-top-color:#e2a9a2}
 /* Clickable Filled pill + unfilled-items modal */
 .score-pill-click{cursor:pointer;transition:.15s}
 .score-pill-click:hover{background:rgba(255,255,255,.12)}
@@ -270,6 +337,8 @@ textarea{resize:none}
 
 /* TOAST */
 .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--navy);color:var(--gold);padding:12px 22px;border-radius:6px;font-family:var(--font-h);font-weight:600;font-size:.85rem;box-shadow:0 4px 20px rgba(0,0,0,.3);transition:transform .3s;z-index:200;letter-spacing:.04em}
+.toast-act{margin-left:4px;background:var(--gold);color:var(--navy);border:none;border-radius:4px;padding:4px 11px;font-family:var(--font-h);font-weight:700;font-size:.72rem;cursor:pointer;vertical-align:middle}
+.toast-act:hover{filter:brightness(1.12)}
 .toast.show{transform:translateX(-50%) translateY(0)}
 
 /* MODAL (auth + drafts) */
@@ -354,29 +423,103 @@ textarea{resize:none}
   .print-rf{display:table-footer-group}
   .print-rf td{display:table-cell;padding:6px 0 0 0}
   .rf-inner{border-top:1px solid var(--gold);padding-top:3px;text-align:center;font-family:var(--font-zh);font-size:7pt;color:#999;line-height:1.3}
+  .rf-inner .rf-ip{display:block;font-size:7pt;color:#999;line-height:1.3}
+  /* Form/tool copyright: ONCE, at the end of the report (老細, 2026-07-23).
+     It is ordinary flowed content at the tail of the table body, so it lands
+     on whatever turns out to be the last page — no page counting required,
+     which Chrome could not do anyway. Removing it from the repeating tfoot
+     also gives back ~2 lines of height on EVERY page. */
+  .ip-foot-last{display:block!important;margin-top:8mm;padding-top:3px;
+    border-top:1px solid var(--gold);text-align:center;
+    font-family:var(--font-zh);font-size:7pt;color:#999;line-height:1.3;
+    break-inside:avoid!important;page-break-inside:avoid!important}
+  /* The IP section opens its own sheet — it was orphaning its heading at the
+     foot of the Notice page with the clauses stranded overleaf */
+  .pd-sechead.pd-ip-head{break-before:page!important;page-break-before:always!important;
+    break-after:avoid!important;page-break-after:avoid!important}
   .rh-inner{display:flex;align-items:center;gap:8px;padding-bottom:5px;border-bottom:2px solid var(--gold)}
-  .rh-logo{width:13mm;height:13mm;flex-shrink:0}
+  .rh-logo{width:var(--logo-rh-w,13mm);height:var(--logo-rh-h,13mm);flex-shrink:0}
   .rh-logo svg{width:100%;height:100%;display:block}
   .rh-text{line-height:1.25}
   .rh-text .en{display:block;font-family:var(--font-h);font-weight:700;font-size:9.5pt;color:var(--navy)}
   .rh-text .zh{display:block;font-family:var(--font-zh);font-size:8pt;color:#666}
 
-  /* Photos: 2×2 grid = 4 large photos per page, description under each */
-  .photo-note,.photo-slot .remove{display:none!important}
+  /* ── Photos: 3×2 grid = exactly 6 photos per A4 sheet ──
+     HEIGHT BUDGET — recompute with scripts/print_budget.py before changing ANY
+     value here. The long-standing "only 3 photos per page" bug was caused by
+     budgeting against 277mm (A4 minus @page margins) and FORGETTING that the
+     running header (thead.print-rh) and running footer (tfoot.print-rf) reprint
+     on EVERY page and eat ~28.7mm. The real usable height is 242.3mm, not 277mm.
+
+       A4 297.0  − @page margins 26.0            = 271.0 mm content box
+       − running header  16.4  − running footer 12.3 = 242.3 mm USABLE
+       sheet = head 7.5 + gap 4 + 107 + gap 4 + 107  = 229.5 mm  ⇒ 12.8mm headroom
+
+     Cell 107mm = no(3.8) + slot(84) + desc(13) + gaps(2.4) + padding(3) = 106.2mm.
+     The 12.8mm headroom deliberately absorbs a footer that wraps to a 4th line
+     (brand footer text differs per white-label company).
+     object-fit:contain, never cover, so no evidence is cropped out of frame. */
+  .photo-note,.ph-meter,.ph-row,.ph-caps,.ph-log,.ph-empty,.ph-sep,.findings-panel,
+  .photo-cell-no .cell-fnd,
+  #panel-photos .ta-print,
+  .photo-slot .remove{display:none!important}
   .photo-cell.empty{display:none!important}
-  #panel-photos .card{padding:5px!important}
-  #panel-photos .card-title{margin-bottom:4px!important;padding-bottom:3px!important}
-  .photo-grid{grid-template-columns:repeat(2,1fr)!important;gap:4mm!important;margin:2mm 0!important}
-  .photo-cell{page-break-inside:avoid!important;border:1px solid #ccc!important;border-radius:6px!important;padding:2.5mm!important;height:auto!important}
-  .photo-cell-no{font-size:8.5pt!important;margin-bottom:1mm!important}
-  .photo-slot{height:80mm!important;aspect-ratio:auto!important;border:1px solid #999!important;background:#fff!important;border-radius:4px!important}
+  #panel-photos .card{padding:0!important;border:none!important;box-shadow:none!important;margin:0 0 3mm!important}
+  #panel-photos .card:first-of-type{display:none!important}   /* meter + buttons card */
+  /* Big card-title (PART 1/2) is hidden in print — each sheet now carries its own
+     header (.ph-sheet-head), so the per-sheet break-before can't orphan a title. */
+  #panel-photos .card-title{display:none!important}
+  /* A part with no photos prints nothing at all — no orphan heading */
+  #panel-photos .ph-part.ph-empty-part{display:none!important}
+  /* No part-level break: every sheet already breaks before itself, so Part 2's
+     first sheet starts a fresh page on its own. A part-level break would double up
+     and emit a blank page. */
+  .photo-grid{display:block!important;margin:0!important}
+  /* Each sheet is forced onto its own page with break-before (reliable in Chrome).
+     align-content:start keeps rows packed to the top. The in-sheet header spans
+     all three columns and can't be split from its photos. */
+  .photo-sheet{display:grid!important;grid-template-columns:repeat(3,1fr)!important;
+    gap:4mm!important;break-before:page!important;page-break-before:always!important;
+    break-inside:avoid!important;align-content:start!important}
+  .ph-sheet-head{grid-column:1/-1!important;font-family:var(--font-h)!important;font-size:9pt!important;
+    font-weight:700!important;color:var(--navy)!important;border-bottom:1.5px solid var(--gold)!important;
+    padding-bottom:1.5mm!important;margin-bottom:1mm!important;break-after:avoid!important;
+    page-break-after:avoid!important}
+  .photo-cell{break-inside:avoid!important;page-break-inside:avoid!important;height:107mm!important;
+    border:1px solid #999!important;border-radius:3px!important;padding:1.5mm!important;gap:1.2mm!important;
+    background:#fff!important}
+  .photo-cell-no{font-size:6.5pt!important;margin:0!important;height:3.8mm}
+  /* AMD-2026-07-17-01 — original photo filenames are NOT printed.
+     Camera/screenshot filenames embed their own dates (20260707_…, 螢幕擷取畫面
+     2026-07-17…) which contradict the Assessment Date on the face of the PDF, and
+     reveal a screenshot rather than a site photograph. They carry no information
+     value to the reader — the caption does.
+     Screen + JSON keep the filename for internal traceability (chase the source
+     photo); only the printed report hides it.
+     Rollback: restore the previous sizing rule
+       .photo-cell-no .ph-fn{font-size:5.5pt!important;color:#666!important;max-width:52%} */
+  .photo-cell-no .ph-fn{display:none!important}
+  /* PART 2 (findings) prints 2x2. Same 107mm cell box as Part 1, so the page
+     budget is unchanged, but the cell is 91mm wide instead of 59.3mm:
+       slot  88 x 72mm  -> a landscape photo renders 88x66mm (2.4x the area)
+       caption 25mm     -> 7 lines at 7.5pt, room for the bilingual finding text
+     internals 3 + 2.4 + 3.8 + 72 + 25 = 106.2mm <= 107mm box. */
+  .photo-sheet.sheet-2up{grid-template-columns:repeat(2,1fr)!important}
+  .sheet-2up .photo-slot{height:72mm!important}
+  .sheet-2up .photo-desc-print{height:25mm!important}
+  .photo-slot{height:84mm!important;aspect-ratio:auto!important;border:1px solid #999!important;
+    background:#fff!important;border-radius:2px!important}
   .photo-slot img{object-fit:contain!important;width:100%!important;height:100%!important}
-  .photo-desc{border:1px solid #999!important;min-height:13mm!important;font-size:8.5pt!important;margin-top:1.5mm!important;width:100%!important}
+  /* A textarea clips to a fixed height and cannot paginate — print the mirror div */
+  .photo-desc{display:none!important}
+  .photo-desc-print{display:block!important;white-space:pre-wrap;overflow-wrap:anywhere;
+    border:1px solid #999;border-radius:2px;padding:1mm 1.5mm;
+    font-size:7.5pt;line-height:1.35;color:#000;height:13mm;overflow:hidden}
 
   /* ---- COVER + DECLARATION (print only) ---- */
   .print-only{display:block}
   .print-page{page-break-after:always;position:relative}
-  .pc-logo{width:26mm;height:26mm;margin:0 auto 4mm}
+  .pc-logo{width:var(--logo-pc-w,26mm);height:var(--logo-pc-h,26mm);margin:0 auto 4mm}
   .pc-logo svg{width:100%;height:100%;display:block}
   .pc-head{text-align:center;border-bottom:2.5px solid var(--gold);padding-bottom:5mm;margin-bottom:8mm}
   .pc-title{font-size:21pt;font-weight:700;color:var(--navy);letter-spacing:2px;margin-bottom:2mm;font-family:var(--font-zh)}
@@ -396,6 +539,7 @@ textarea{resize:none}
   .pc-sigline .lab{display:inline-block;min-width:118px;color:#444}
   .pc-sigline .un{display:inline-block;border-bottom:1px solid #999;min-width:120px;min-height:1.1em}
   .pc-foot{text-align:center;margin-top:9mm;font-size:8.5pt;color:#999;font-family:var(--font-h)}
+  .pc-foot .pc-foot-ip{font-size:8.5pt;color:#999;line-height:1.3;margin-top:1.5mm;font-family:var(--font-h)}
 
   .pd-head{display:flex;align-items:center;gap:8px;border-bottom:2px solid var(--gold);padding-bottom:5px;margin-bottom:6mm}
   .pd-head .pd-hlogo{width:13mm;height:13mm;flex-shrink:0}
@@ -468,8 +612,35 @@ body:not(.app-unlocked){overflow:hidden;}
   #frontExecHost{display:block}
   #printExec{display:none!important}                 /* Exec Summary moved to the front */
   .exec-front-clone{page-break-before:auto!important;break-before:auto!important}
+  /* The Exec Summary closes its own sheet — PROJECT & LIFT INFORMATION was
+     starting immediately under the verdict box on the same page.
+     :not(:empty) guards it: the clone is only appended on beforeprint, and a
+     bare break-after on an empty host would emit a blank page. */
+  #frontExecHost:not(:empty){break-after:page!important;page-break-after:always!important}
   .rec-autofill{display:none!important}              /* auto-fill helper button not in report */
   .rec-area::placeholder,textarea::placeholder{color:transparent!important}  /* no placeholder text */
+}
+</style>
+<style id="textarea-print-mirror">
+/* A textarea clips its content to a fixed height when printed and cannot break
+   across pages, so long auto-filled Annex D recommendations were being cut off.
+   For print we hide the textarea and render its value into a plain div, which
+   wraps in full and flows naturally onto the next page.
+   Note: #panel-D .risk-block is already display:none in print, so the mirrors
+   inside Annex D item cards stay hidden with it (notes already print via
+   .d-print-summary). */
+.ta-print{display:none}
+@media print{
+  textarea{display:none!important}
+  .ta-print{
+    display:block!important;
+    white-space:pre-wrap; overflow-wrap:anywhere;
+    border:1px solid #999; border-radius:6px; padding:8px 10px;
+    font-family:var(--font-b); font-size:.86rem; line-height:1.55; color:#000;
+    min-height:3.2em;
+    break-inside:auto; page-break-inside:auto;
+  }
+  .rec-block{break-inside:auto; page-break-inside:auto}
 }
 </style>
 <style id="decl-styles">
@@ -511,6 +682,23 @@ body:not(.app-unlocked){overflow:hidden;}
   }
 }
 </style>
+<style id="screen-guard">
+/* Belt-and-braces: report-only content must NEVER appear in the on-screen app.
+   Reported from site 2026-07-23: after unlocking, the cover page + running
+   header + disclaimer rendered on screen at full size. The normal
+   .print-only{display:none} rule sits early in the main sheet, so any later
+   rule, injected style, extension stylesheet or partially-applied cascade can
+   out-specify it. These @media screen rules carry !important and sit in the
+   LAST stylesheet, so nothing in the document can override them.
+   They are inert when printing — @media screen simply does not apply. */
+@media screen{
+  .print-only{display:none!important}
+  .print-wrap>.print-rh,.print-wrap>.print-rf{display:none!important}
+  .print-page{display:none!important}
+  .ip-foot-last{display:none!important}
+  #frontExecHost{display:none!important}
+}
+</style>
 <style id="bw-print-safe">
 @media print{
   .lc-btn.act-La,.lc-btn.act-Lb,.lc-btn.act-Lc,.lc-btn.act-NA,
@@ -529,7 +717,12 @@ body:not(.app-unlocked){overflow:hidden;}
   .ab-btn.sel-no{background:#464b52!important;color:#fff!important;border:1.5px solid #000!important}
   .cyn-btn.sel-yes{background:#eef0f2!important;color:#111!important;border:1.5px solid #333!important}
   .cyn-btn.sel-no{background:#464b52!important;color:#fff!important;border:1.5px solid #000!important}
-  .b-btn.sel{background:#3a3f45!important;color:#fff!important;border:1.5px solid #000!important}
+  /* Annex B bands are a PERFORMANCE SCALE, not a compliance verdict, so the
+     selected band must NOT borrow the dark "severe/non-compliant" fill used by
+     .ab-btn.sel-no / .lc-btn.act-Lc — at full marks that read as a failure.
+     It now matches .ab-btn.sel-yes exactly; the points are printed in the label
+     and in the subtotal, so no information is lost. */
+  .b-btn.sel{background:#eef0f2!important;color:#111!important;border:1.5px solid #333!important}
   .cat-display.cat-I{background:#2b2f34!important;color:#fff!important}
   .cat-display.cat-II{background:#8a9099!important;color:#fff!important}
   .cat-display.cat-III{background:#dfe2e5!important;color:#111!important}
@@ -558,7 +751,12 @@ const COMPANIES = {
     excel:{GOLD:'FFD4AF37',BLUE:'FF4A90E2',NAVY:'FF1E3A5F',YEL:'FFFFF8E1',EN:'Century Gothic'},
     salt:'Lifthium-ARA-2026', ownerCode:'51220643',
     endpoint:'https://script.google.com/macros/s/AKfycbwg45FbtG3xyNSOarPN1zsu3dLibagYFf4-Hdz1Bk7hDCGxmvSs4RHvhwJ-mH5b_Vae/exec',
-    marker:'LIFTHIUM_ARA_DATA_TEMPLATE|v1', ara:{nameEn:'WAN KAI MAN, RAYMOND',nameZh:'尹啟文',reg:'RA250028'},
+    marker:'LIFTHIUM_ARA_DATA_TEMPLATE|v1', ara:{nameEn:'WAN KAI MAN, RAYMOND',nameZh:'尹啟文',reg:'RA250028',company:'Lifthium Consultancy Limited 極樂公證行有限公司'},
+    footLine1:'報告內容 Report content © 2026 Lifthium Consultancy Limited 極樂公證行有限公司',
+    footLine2:'表格格式及工具 Form format & tool © 2026 Lifthium Consultancy Limited 極樂公證行有限公司 · 未經授權不得複製作報告製作之用 Not to be reproduced for report production without licence',
+    // The format/tool is Lifthium's work on EVERY branded variant — this must not
+    // be re-pointed at the licensee, or their own reports become evidence against us.
+    ipOwnerEn:'Lifthium Consultancy Limited', ipOwnerZh:'極樂公證行有限公司',
     logoMark:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="-50 -50 1100 1100" role="img" aria-label="Lifthium 極樂公證行">
   <title>Lifthium</title>
   <circle cx="500" cy="500" r="443.5" fill="none" stroke="#1E3A5F" stroke-width="113"></circle>
@@ -579,14 +777,47 @@ const COMPANIES = {
     excel:{GOLD:'FFDCE9F4',BLUE:'FF5B9BD5',NAVY:'FF1C3F5A',YEL:'FFEAF3FB',EN:'Arial'},
     salt:'Graceful-ARA-2026', ownerCode:'00000000', endpoint:'',
     marker:'GRACEFUL_ARA_DATA_TEMPLATE|v1', ara:{nameEn:'',nameZh:'',reg:''},
+    footLine1:'報告內容 Report content © 2026 Graceful Engineering Company Ltd. 雋逸工程有限公司',
+    footLine2:'表格格式及工具 Form format & tool © 2026 Lifthium Consultancy Limited 極樂公證行有限公司 — 經授權使用 Used under licence',
+    ipOwnerEn:'Lifthium Consultancy Limited', ipOwnerZh:'極樂公證行有限公司',
     logoMark:`<img src="data:image/png;base64,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" alt="Graceful Engineering" style="width:100%;height:100%;object-fit:contain;display:block">`,
     logoLock:`<img src="data:image/png;base64,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" alt="Graceful Engineering" style="height:74px;display:block;margin:0 auto 8px;object-fit:contain"><div style="font-size:24px;color:#fff">Graceful Engineering</div>`
+  },
+  TK: {
+    key:'TK', companyEn:'TK Elevator Hong Kong Limited', companyZh:'蒂升電梯（香港）有限公司',
+    companyBil:'TK Elevator Hong Kong Limited 蒂升電梯（香港）有限公司', companyShort:'TK Elevator', fileTag:'TKElevator',
+    /* Palette sampled from the supplied TKE logo: purple #6F00BF -> orange #EE680F.
+       TYPOGRAPHY IS PURPLE, ORANGE IS ACCENT ONLY (老細, 2026-07-22).
+         --text   #3D0069  body text            14.97:1 on white
+         --muted  #6A5A85  secondary text        6.15:1 on white  (was grey)
+         --gold-dk #4A0080 accent text on white 13.10:1 on white  (was orange)
+         --navy   #3D0069  headings + dark grounds
+       --gold STAYS ORANGE and is NOT typography: every color:var(--gold) rule
+       sits on a deep-purple ground (.topbar, .verdict-card, .ex-level-row td,
+       #lockScreen, .tab.active, .toast). Purple text on purple = invisible.
+       Orange on #3D0069 = 4.72:1, so it is the only legible accent there. */
+    css:{'--gold':'#EE680F','--gold-dk':'#4A0080','--blue':'#6F00BF','--blue-dk':'#55008F','--navy':'#3D0069','--navy-dp':'#2A0049','--text':'#3D0069','--muted':'#6A5A85','--btn-fg':'#FFFFFF','--font-en':"'Arial','Helvetica Neue',Helvetica,sans-serif",'--font-h':"'Arial','Helvetica Neue',Helvetica,sans-serif",'--logo-rh-w':'34mm','--logo-rh-h':'9.6mm','--logo-pc-w':'60mm','--logo-pc-h':'17mm'},
+    excel:{GOLD:'FFEE680F',BLUE:'FF6F00BF',NAVY:'FF3D0069',YEL:'FFFDF0E6',EN:'Arial'},
+    salt:'TKE-ARA-2026', ownerCode:'00000000', endpoint:'',
+    marker:'TKE_ARA_DATA_TEMPLATE|v1', ara:{nameEn:'',nameZh:'',reg:'',company:''},
+    footLine1:'報告內容 Report content © 2026 TK Elevator Hong Kong Limited 蒂升電梯（香港）有限公司',
+    footLine2:'表格格式及工具 Form format & tool © 2026 Lifthium Consultancy Limited 極樂公證行有限公司 — 經授權使用 Used under licence',
+    ipOwnerEn:'Lifthium Consultancy Limited', ipOwnerZh:'極樂公證行有限公司',
+    logoMark:`<img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMDAgQDAwMEBAQFBgoGBgUFBgwICQcKDgwPDg4MDQ0PERYTDxAVEQ0NExoTFRcYGRkZDxIbHRsYHRYYGRj/2wBDAQQEBAYFBgsGBgsYEA0QGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBj/wAARCACsAmIDASIAAhEBAxEB/8QAHQAAAwACAwEBAAAAAAAAAAAAAAIDBAcFBggBCf/EAFYQAAIBAwEDBQYQCggFBAMAAAACAwEEBQYHERIIEyJSkhQhMTJTkxUYMzdBQlFVVmJxcnWUstIjVGF0gYKisbPRFhc2Y5GhwcIkJScoNTRkc6ODhOL/xAAcAQACAwADAQAAAAAAAAAAAAAAAgMEBQEGBwn/xAA4EQACAgECAgUJBwUBAQAAAAAAAgEDBAURElETISIxcQYUFSMyQVOBkRY0QlKhscEzYdHh8ENi/9oADAMBAAIRAxEAPwDR6zS+VbtFFml8q3aMNWKKx6/bUevGbz03lW7Y6zS+VbtGGrFlYo2VDqZSzS+VbtFFml6zGGrFFYpW1EplLNL1mLLNL5Vu0YasUM+ysYyuel8o3bKLNL1mMVWKKxUtrJDI56Xyjdsos0vlW7RjjFGyoYyuel6zdopzsnWcxVYorFJqhjJ56byrdsdZpfKt2jFKFNlGMhZpfKt2inOTddu0YpRWKjKSGRzkvlW7Q3OydZyIxUZSQyFkbrN2hucl8q3aMcorFZlAtzkvlW7RTnH679oxxisyjGRzkvlW7QyyN1m7REYrMoxbnH679oZZG6zEVYYrMoxkc43WYOcbrMRKFZlGLc43WYbnG6zGOUUgZRi3OydZw52TrOTAgZSQyOcbrMNzjdZjHKEDKBTnG6zDc43WYmBCyjFucfrv2hucm67doiMQMMU5ybrt2hucm67domBAygWWRusw3ON1mIjKxGwxTnG6zDc43WYmBEwFOcbrMNzjdZiYxEMU4m6zBzjdZiYwrANzjdZhucbrMTAjGKc43WYbibrMTAVgKcTdZg4m6zCgRjFOcbrMHON1mFAUBucbrMNzjdZiYABTnG6zBzjdZhQIwG5xusw3E3WYmAoFOJuswcTdZhQFAbibrMHON1mFAUCnE3WYOJusxMYO0A3E3WYOJuswoBxANxN1mDibrMKAcQDcTdZg4m6zCgHEA3E3WYBQDiA84qxRWMdWKKx9AbajoqsZCsUVjHViisZttRIZSsMrGOrFlYo2VDqxZWKKxjqxRWKNtRKZCsUVjHViilCysYyFYpxGOrFFYp21EhZSisRUZSlZUMZCsMRViisUrEGLDKRKFNlGLKxQx1KKxUZSYsMTGKjKMWVhiJRWKzKMUVihEYrMoxYZWJjFZlGKDKTVhisyjFgJlCsyjFBiJRSBlAYYUCsykhYYiUIGUYYYUCNlAoMTGIGUYYYUCBlGKKwxMZWI2UBhhQImUYoAoxEAwCjEbKADCgKMMMKBFwgUAUDgYYAAUAGFAjAYAAUAGFAUBgAAAAABRhgFGFAAAAAAAAAAAAA80qxRWMVWLKx9ErajoJkKxRWMdWKKxQtqGVjIViisY6sUVjNtqJDKVhlYx1YsrFGyodSysUVjHViisUbaiUyFYorGOrFFKFlYxkKxQ2Rsw2JZvajgrrKYrNWVjHbz9ztHcRs9W6NG4uj8p31uSDrGnf8A6V4ivyQyGXdbXDcMyZ9us4lDzXY/XB58KKx6B9KJq/4U4rzMg3pRdX/CnFeZkKbWJzF9P4H5zQCsMegPSj6w+FWK8xIffSkav+FGK8zIVmZJG+0OB+c0EMrG/fSmav8AhRifMSDelN1d8J8X5mT+ZXZFG+0WB8Q0IrFDfPpTtW/CjF+Zk/mP6VHVvwlxfmHKzVDfaPA+IaFGN7elR1h8JcR5mQavJU1dRat/SXE97+5crNQw32i0/wCKaLVhi2Ux8uJ1BfYqWRZJLO4aBmXxWZTHViiym3W/GnGUVihE5rTGmsvq7UkGGw1u0tzLTe718WNes3xSu1XH3HNt6Upx2T2TjRlY3fTkuasqv9o8X5l/5j+ld1Z8IsX5lwbBt5GR9pNO+KaPGU3f6V/V3wjxnmXPq8l/VfttRYzzLkDabfyG+02nfFNJgbw9LBqj4SY3zLjeli1P8JMb5mQhbTb+QfaXTvi/uaRGN2elk1R8I8b5lz76WXVPwjxvmXIG0rJ5HP2m074v7mkhjaOrNhmd0jpW8z15nLK5itYqvVIoqrVjVhnZONZQ21kGrhahRmxL47bwWGIlCiyl8YY5LTuEm1Hqe0wVvNHDLdNVKSOm+inYNdbOMroGlk9/dQXSXe9FkiWq8NV9r0how7Hrm6I7MFN9QoqvXGZu3J08Y5DTmEu9Taps8FZNSktxWtFkrTfRfjMdg13s6yWgKWPohkLa5rdVai0iWqcPD8pD5nc9c3RHZgZ8/HS9ceW7U+46eMcpp3TuX1Tm48XhrZpZq9Jn8RY16zMbVi5OmTa2/DantVuGXxKQ1qv+HGFGl5F6cdcblfL1rExH6O59mNMKwx2DWGh87onIpbZeFWhlruiuoelG/wD/AGZmhNCXeu7q8trHJW1tNaUV2SVKvxKxX8yum3oJjtcix6Sx4o854vV8zqYxW+s5sflLnHXC7pbaZoXr+VWCwtJsjlrWwtl3yzzLCnzmKjUPx9GW+nTo+k37IgHatc6CvNB3FnbZDJW1zNc0rVViWq8NF9t0qnYtM7Fc3qbTNpmrXMWcEV1HSSiSRV3rvLCaXkvZNUJ1wZ9ut4lVC3y/Yb3mtQNv+l7znHw/0jxvm6nBau2SZTR+nZsvd5qzuY43VObhjqtek3Cc3aJl1pNkr1QRU+UWnWutddnXPia9GFAxzcGGFAjZQKAKAowwAAoAMKBGAwAAoAMKAoDAAAAAACjDAKMKAAAAAAAAB5fViisRrQZWPpFZWeemUrFFYxVYsrGfbUSGQrFFYx1YorFC2oZWMhWKKxjqxRWM22okMpWGVjHViysUbKh1LKxRWMdWKKxRtqJT2byOfW1zv0nX+Gh6TPNHI7lRNmmc4mVf+Z18Lf3aHpLuiDf6rH2qHSM5Z6djy/WUnzyzq95fv+4Hf9wj3RD5WPtUDuiHysfaoVOGTK4G5Fu/7gd/3CPdEPlY+1QO6IfKx9qgcMhwTyLd/wBwO/7hHuiDyqdoO6IfKp2g2k54G5Fj5uJd0Q+WTtDK6vTosrfIcHHDMd5QR/U2+QcR/U2+QAjvPzs1n65uoPpCb7RwpzGtPXM1H9JzfaJ6Y01l9XalgwmEtGmu5fZ9rGvtmZvaqZtlW7HtdN6U4q2Wd2xbTGmcxq/UcGCwdvz1zL47e1jX2zN8U9tbOdm2H2e6bpY2arPeS04rq7ZelM/+lPyC7NtmuH2d6apY2dFmvJuldXjJ0pm/20+Kd771KeEs0Y8V9cnm+va++c/RV9VcfqP4aHzvBv3U3nBvqfDpq2PTdbxGyUkLXFIFrxcMa13cTe53yydcVWbuOdA+b6BvoBwG/wDIG/8AITaaNPHdF+Vj53TB5aPtnG8HPA3Ir+gN/eJd0QeWj7Qd0QeWTthxQc8DcjoG2v1j9QV/uV+1Q8ZHsnbTLC2xHPIsqb+ZX23xqHjQ6pr3Xavgen+RCzGK+/P+IGGFA60yndzu2yenFtp06vu3NafsMb2212sOo9AZiKCnFd4OZJq0/Iy/df8AyNEbJa8O2rTre5c1+wxvGHIRTcpLVGk7zd3NlsdD0a+yyR13/sv+ydh02VnEatvfO36HQfKCZXUluX8Cw369f6HQdgVhDb5zM6xvf/S4u14aN7la+N+yhzvKRlWa303db+FZKTV/ZUxMtj7jZvyb3w09ObyGWv2hf3d3O/cX/Mtyiu9g9K/Ml+yoW19Dgvj/ANon6yQVWzkatXlx3TMxHhEf5M/SNItnPJsm1aka1yN7TnUq1PCzV4Y6f6mi58zl7vJ1yV3lLuS9q3E1xzzcXEbu2mb4+THpuKHvR1W24vNmgjJ1e16ZrpTuiIN3ydpryemybI7UtP05HorTl8+1Hk/5LGZX8PkbLelJd3SZlXiR/newa12O5yuF2u42szcKXnFaP+t4v7Sqd55ONWeHVEb06FVhr+yxpSaZrHUM1zbNwtb3TSRuvxXHyrZVMbK9/wDiSth4kNZm6evs98fODv223C+g+1q5lVd0WQjW5X53i1F2JYb0X2tWcrrSsNjG102/3fFp/mx3bbZDHqLZdp7WtuqtReHjanUkX724NiMEentmuodY3a8NK1alG+JGv894eZR6U393t/yRekZ9B8H4/Y+fd+x0TbHm/Rva3kKRNxQ2arap+r437RsC+ubi35Hdm0E0sbrBH0424W9UNDXF1JfXk19O3FNcSNPJ85ukelsDHpuXkwY6PVz1TFUt051qM6ez3vF6RHpjNlZGTPF3xI2t1rg4uJXw78Ex8zzn6LZX31yHn2Fkvr64i5qe+u54+rJMzqbmrjuTrw/+Ql3/APz3BrnXcWjIM3Aui5eds2h/CVq8j9Pi+N8UyMvT7aq+Nronwk2sHUqci+K1odfFdjrICjGCynYgGFAUYYYUCNlAoAoCjDAACgAwoEYDAACgAwoCgMAAAAAAKMMAowoAAAAHlsAA+lB52UViisRrQZWIbKxjKViisYqsWVjPtqJDIViisY6sUVihbUMrGQrFFYx1YorGbbUSGUrDKxjqxZWKNlQ/EZkN1cwpwwXM8St7WOR0LLfX3vhd/WGOPViisZ1tEDcKz7jkO7r73wu/POUW+vvx6788xx6scrgMVPn9V47B2kscc9/dLbxyyeKrN1ijbVEHHBUicbwIt9ffj1355ind19+PXfnmN6U5Imva0o39IcJ/9n3SnpRdefCHCf4SfdMlraeZn+mNOj8UfQ0T3dffj1355ii315+PXfnnO77StkGf2X2dhc5vJWN1S+laJFtaPTh4V4ulxmvuITgVl4lNHHsoyK+kqjeDOW8vPx658857L5LEssuxOZ5ZZJG9Epek7cXtVPFSse0eSnX/AKHTfSU37qFG5eyYflSixh9Ue+De4snqbfINTwHxqcSVp7tCoecwfn5f6ay+rtuWbwOEtWmupcjN36+LGvH0mbqqexdmuzTDbONM0srJKT381OO7vWTc0zf7afFoZ2kdBYHR8mRusdDSS9yNy1zdXclPwjszcXDv9haewp27v76+wcKsQbuq62+Wi0p1Iv6nzfwbqUofe9T9IVrTd4aVNR7YdsNjs9xtcdj+bu89OlawwVr3oqeUf8nxfCwM20GRi4lmVZFVUbyNtg2u2OgcVXGY5o7rPXCV5qHf0YKeUk/J8Xwsah5Ol/e5XbvkchkbuS7u7ixeSaWSvfavGppO/wAjkMrlp8pkbuS6u55Ocmmkbvsx3bZDrrHaA13Nncnb3EsTW1YeG3Ra14mcz2t3siZPRU8n4xdPsrr7Vkwe793yBu+Q0T6afRfvPmPNL94PTS6L96Mx2F++WvOE5nSfQOofCk1nyirm5i22OkN1PGq2MVeFJGTrmqVvLz8cufPMb1zmislt3zdNc6avbeys5I6W9Ir6NqSb0r3/ABTjqcmPWVZKr6OYnvez0932THyca22yWSDvmn6ng4uNXj5DbMsdZp3uq8/HLrzzDd1XX45c+eY3H6WPWnvzif8AF/5H30sms/ffE/4v90qNg5PIv+ndL+JH0NO90TsnC1zOy9VpGJnKan07d6S1Zd6fvp4Zp7Zlq0kVN1G414jizLurdW4XN2h0dFer2WKDESilVlJjuuyXv7a9O0/9zX7DHa9p2dudM8px87bLxyWiwPzdG9UXm+kvZNe6KzltpnX+Nz11FLLFaS8dY4vGr0DO2g6ottY6/udQWkE0EUscaqk1NzV4acJbS9a8ThT2t9zBvwmu1LjdfV8G36nKbQtpN3tEv8Y8uPpZRWj9GOknOcTMy982FyjP/EaU+ZJ9lTQatwyq3VZXNjbTdoVhrq0w0Nla3cDWNGo/O0Wm/iVfuiLl9JTb0k9qdhLtM6DKxox09Wm/6wbGsoH2h8lBLKyrSbI49FjpGvhpJC1Ny/4UPPPFw8XF0eHxlb2h2nQWvsroLNvc2a0uLO4ruurN33Uk+OvVY2i+1XZFe3NctkNFSNkvGrI9nG9d/wA7eFi059as1m0x1dZAk5WkXWLXT0iNO8be7f3GZsws20LsMzOrsqr20t1SssMcvRrwUXhj7Va/5nn3jZuJm8Zm42O9bRNqF/rmqWEEHcGJjbelvVulJX2Kt9w6GZ+q3o3R01dyGhomFdV0mTkR6yyfpyg3/s8q+teTZmdKPSktzZLJHCv/ANkf+Y+uuc0XyacRpitObur5I45l/bk/1Nc7L9oEWgc9fXF3BNPaXkSUaOGm9lZfAw+1DaDDr3NWM9nBNDaWkbUWOam6rVZu/X7Jo+kKfMeLf1u23yMT0PkRqnDw+p4uP57f5OjcRvzJs1ORhaK1OjSGH+JQ0Cbo0vtg0xitm1hpfLYG5vlt4aRyVaNXjq2/4xmaLbUvSxY23FEwa3lHRe602U18XC8SaZ5xesoysre2U3hXa1swrX+wFKf/AK8JwOrtoOh83pa6xuG0l3BdSpSiTczGvB0vilazTaFVpW6J+pNTq2Y1iq2LMfODWICjGEdjGAUYjZQAYUBRhhhQI2UBhhQFGGAAFABhQIwGAAFABhQFAYAAAAAAUYYBQADy6AAfSo85AAAjGKKxRWI1oMrENlYxlKxRWMVWLKxn21EhkKxRWMdWKKxQtqGVjIViisY6sUVjNtqJDKVhlYx1YsrFGyodSysdv2XN/wBbtJfStv8AaOmKx3HZZ69+kPpaH7Zl5Nfq2I8z+g3gfpmnqa/IMKnqa/IMdCPI5PL/ACyP/AaT/Op/4dDyierOWV/Z/Sf51P8Aw6Hk9WNrDX1MHpvk19xX5/uWPanJS9YqX6Rm/wBDxSp7W5KXrFP9Izf6EOWvYIfKn7n84N8U8ABTwAZZ5uG6gV8AAAGs9sm0C+2eaDrlMZi3urmV6QxzVp+Ct2bwNJ+Q8PX+RvcvlZ8plLuS6vbiTnJppG77VP0eyWNsctjpsdkbeK4tZ0rHJDIvFRqV9g8WbYtj99s8yz5PFpLcabnfoSbuKtrXycnxeqxFau53bySzsWqZqeNnn38zV4xM5LDYLM6gv2s8FjZ8hcKnONFBTfVF6xSao9AexK043kxVYY7V/VTtI+BeW82P/VXtI+BeW82V2x3K3pLG+Kv1PTPJu9ZOHdu391Tb/k4zcG6ir+Q0Rse1Bhdn2zWHBazyFthcrSWSWtney0jk5tn6LcJsL+tjZz41daYfd1e6U/malTKqQu55TqmPbblWWVrMrM8ju2+vuH3f8p0r+tjZt8McR9ZT+Yf1r7NvhjiPrKfzOelT8xT9H5Pw5+knljbh0dvOd+WP+Gp0PiO4bXMpYZrbLlsnjL2C6tJax83NC/Grfg1OlnUsteKxj2fSuJMOpW5R+xYCZQoMppFOIYiUIGUBhhQKzKSFhiPS6rdkp+q3ZImrY4405jDC+MH6rEDV9Y3FHeUGJ/qt2Rv1W7IjVNyOOlTmMMKBWZCXijuKKwxMZW+d2SNkn3BxKMMKUWGeSLnY4J2jX2yxtwka1NPccs6r7UgAoxDwz3HPFG24wCjEbVyHFHeAwodLqt2Tjhbu2OeNYjfcYYXiAiepl74OVaG9koAoCDjAACgAwoEYDAACgAwoCgMAAAAAAKMeXQAD6VHnIAAAAAAEYxRWKKxGtBlYhsrGMpWKKxiqxZWM+2okMhWKKxjqxRWKFtQysZCsUVjHViisZtlRIZSsdw2Wevjo/wClYftHSVY7nso9fTSH0tD9oys6v1TEeV/QbwP05T1NfkGFT1NfkGPNTyaTy5yzP7P6T/Op/wCHQ8mKx6x5Z39n9J/nU/8ADoeSjsmmrvRB6X5NfcV+f7mQrHtrkm+sU/0lcfvoeIVY9u8k31iH+krj96lbUl4UIfKn7nHib5Eau5a1/IOI/qbfIYkHnUd55/0Jt1Su1PNaE1jcRo0eSlgx17Xo0ZOPoxv8bqt7Jv1X3791O94aflPzf1939rWpvpSb7Z6A2E7eeerbaK1vd75G/BWOSlfx/cjkbrdVvZLFlO0bwds1XQNqFysf5wepN3eMLJ4yyy2Nmx+Qto7i1nSscsMi8SstfYqZ1K0alK0r3j4VzqStKTvB4d2w7IL3Z3mGyWLSW405O/4GTdxVta+Tf/axzPJd3f1x3nF4PQ6v21PXWTxdhmcXPjclbR3NpMnBLFIvFRlr7BpXQGyG72c7er3IWPHPp+8sXWCardKBuNfwbe78VvlEZe1vB3Gryg84wLMe+e3t38/9m+t1PcoHCvuUPtPAfK+Ac6ceMOUlTdt0fd4O4Yv9xqU9f7Q9g0W0DW9dRSakmx9WhSKsK26vXo16286vTkoWvFu/pnc7vd7kX+ZmX41jNup6TpflBgU4lddrdqI5Seahj0r6VG1+Glx9UX7welRtfhpP9UX7xVbDun3Gj9qNO/N+knm4ZWN1652AW+j9D5DUSajubzuSOr0jrCq0r3/lNJFG/GaptmNfA1HHzk48ed4goUIqwxSZTRLATKFZlGKA3qTExn9SYryvWL+GT1fkdUWOhNhenMy+FgyNZobeLhWipWnFH4d+46lBygdOXMy2+V0OsVrVuB2pVJOH5U3HNa30zmdTcnTTdngrKt5PSO2kaKjqnR5s1RZbE9ot7ex20uEW1ibxppZ0rSNTsOTZkrYsVL2do9x59ptGnW1PZlv2t5/Fsdo2z6Ew2Nw2P1tpuKKC0vWVZooqfg+lTiWReqchycILafKah5+FH4YoN3GvF1yW2rUWJsdE4fZ1jbuK7nsObrctG3Hwc2veX5zdUyeTRufJajrXyUP+8qwtfpKOD/p2LLWXToLtZM9/Vz236i13t/x1rkri2poiOvNTNFxc4vS4X4OqQflCWEsVaf0Ghp/+dfunVMhsV2jzZq8niwUbJJcSSI3dMfitX5xwue2Z610xhpctmsUttaxNSjvSeNqrRm4KeL8tCpdkZ6y07T9P9FzGwNFthF444p/+/wDZx2B1DLgtcQahjhWsaTtJJDVeKlY2fv07JtHbnp20uLbF68wyRVs7uNYZ3jXvVo3Sjf8A2/pNJG+NkOTtdY7OMts1y0nE8cNWtmr5Jur81inp8rctmM/v7vEva2j4llefV3J1N4T/AINU6M03PqvWthg40ascr8c1V9rGvhY2HtyzmPjylno3DxRRQ2KLJPzaL4eHor+hftHPaAwtdlWz/Pay1HBzeQ42t4kr7ZEbhXh+cxoe/v7nI5O6yV7Jzk9w7TOzdZji+vzLE6P/ANH7/ATGs9J6h5ws+rr6o/vPv+htTZBoTG5e3utXalVK4qzq3Ak3ivVfGdvi0Oan2/WlneNaYbSkT46KvCrPIsbOvxV4dymTmKtgOSBaRW1dzXcUaO1Pbc43E3+poVR8nKbTa66aI2mY3mfEr4WAmsXXZGVMyqttEb8jeus9MYDX2zmTX+kbdYbqFGeeCNKJzlF9UR161Dp+xJI5dsliskayRtBL0WXi9g7hyerqSex1HhZWo0NVjkovzuKlf3HWdj0FLTlApbV8EVLmPs1qM1aXXY2Uq7cc9fjBXiy3Gx83Clt4SOrwmDuu3nR8cmIg1VjYUpW0bmrlYlp6m3s/qt+81DoNFl2oYFGVWVr1OJWN7Y/PW9/tj1XoHK7msr9ect1fwb+b/CL/ALjT2Dwlzpzb7jMFdePbZCio3XX2rdk41TGRsuvJq9mZ2nxif5ONGy7K8G3Eu9qE4l8Jj+DmtvEUcG023jgjRKdxL3lpw+2Y2Fgs3Z6W5NWP1FJiY72SKJdyVVVZuKTh8b9J0LlA03bU4fzCn72OyZNf+zWzr/dx/wAYar1Obk2L3rEkOQs26bg1v3M0fyQt9sej8zJSx1NpCOC0fotLzdJFX5eide2nbPsdgbWDU+l5ePB3PDxojcXMs3gZG6tTWJvnQLV1DyZ81h7qlJKWqyxpRvDReHnF/eUMTJ9KpZj5EdrbeJNLOwvQj15eK0wu8Q0b7x1miBia9JVGOotG07HdVnfrKAKAg4wAAoAMKBGAwAAoAMKAoDAAAB5dAAPpQedgAAAAAAAAAARjFFYorEa0GViGysYylYorGKrFlYz7aiQyFYorGOrFFYz7ahlYyFY7nsp9ffSH0tD9o6QrHddktd+3bR9W99YvtGRqFfqW8CPJ/ot4H6fJv4F+QbvkVuIeCn4VPB1hu6IfKp2jyeVk8rlW5Hl3ln/2e0l+dT/w6HkhWPWnLOda6d0pwOtf+Kn/AIdDyOrHbNKTfGg9H8nfuS/P9zI4j3ByTPWJf6SuP30PDase4+Sa6JsF6TrT/mE/s/IVtXTaoi8pvuceJvsR615tvkF5+HyidoV54ebb8Ing6x1yFk89hZ37j829oHrtam+kpvtHBcRzmvvXa1N9KTfbOvqxrtX2D2PDX1C7nqPYTt5rVrbRWt7re1eGOxyUzeP1Y5G+y3snqTotTevfpU/Lw9ObCNvPBW20Rre6376LHY5KVvD1Y5G+y3slG6n3nT9f8n9t8jGjxg9V08HgDd+QlS4grT1VO0HdEPlU7RVOl8E8i3f9wO/7hLn4fKp2g5+LyidoA4Z5FP0B+gn3RD5VO0HdEPlU7QBwTyK7qBuoS56Lyido+89F5RP8aAHCxrzbj6wuof8A4KfaU8RHtrbhJHXYPqKnOJv5ins/GoeIeIxtQXdz0ryLjbFfx/iCwysTGMllO6lCnERVhisyjFgb1Jvmkxm9SYryoP7MnqTW2p9QaU5O2m8jg7ultcNHbRVbgV+jWPwdI1PbbdNpFtcLO2VguFXxoZrdaUbsG5c1om515sB05ibTI29rLHDbS8cvSp0Y/inRrXk1ZXnkrf6qsI4Pb1giqzV7ZtZS5TOvQ77bQed6ZfpldbrmRHFvPu3L7S8LhNU7G7HahjrGOwvnWj3MaLw0ejtwtRvjcXtinJo40yGpGTw8zF+9xdr2ptO4HZlZ7MtOXK3MkVY0uK0bj5uNel0m6zNuPvJorX0R1GlJKUrWKHw/K5F2PPk4e/3+OxM0WehbeKJ4eLs78t42Ol3+13aLBmbyCLVEqxx3EiqvMR+LxN8Q4jM7RdZ6hxT47MZt7u1l3ccTRolW4enTxFNi3vJ2zs+UubhdSY2izTNIq1jr7ZuIg/Jxz6JxV1Jiuw5nX4me0tHX9TVx9Q0SpVaIji8P9Gmjsehcpd4faRhr6yk4XrdRxv8AHVuiynCX9m2OzN5j5GWSS2maBmXxX4W4TM0z/bfD/nsP2jGo4671OzZcJbiv+VoN0cpHLXHduFw8cnDasjXMlOtVe9T95ofxkN08o5lpqnBcNaV/4STwfLQ0sTa1PFlsZPkxXEabXt/3WegdR0bM8jzGXVt3620UTScPscDcLf6mgjcWx7WeLbBXmz7UksaWN7Vu55Jm4F6fjR/F+Kfb/k8Zlcs0eLzlh3C1ehJNSvOJT9Xxi1mYj6hXXbj9fVtPyM/T86rSbrsfKnaOKZj+8ScnydbZkXUmXm6MKrHFxfN4q1OtbH56XfKCpcr4k1bmVf1t52zVWVxGynZdJofC3dLnLXatSWRa9JeLxnbq+4tPkOj7Dt39cljvru4YJe/+gk3WmzGxd+uJ6/mVYh8mjNzduy8bR4RHefNpWRucPygb/J2bbpraaOZKe7wops/P4231NqbRG0bEpxJLPFHccPsI3g4vmtvp+k1NtcajbZs01K76VrH9g77sA1XSs0+j76RWjpWtzbUb3PDWn+XF+k4wb0nNtx7PZmf1iTnUsWyNOpy6PaRNp8JjrOF5QPrpw/mFPtVOxZRv+zWzT+6j/inWuUAyttTh4W307hp4PnMd/wAPpx9V8lywwdteQ2800KVWR+/Rd0nEc1Jx5uVWvfMSV7rOj03BsfuVo/k84G+dm1JMNycM9lbilFjn5+SOre2Xdw/a3nHWWwTua8pPqPUlulknSkWFaLVl+dXxTC2p69xFxp+DQuj6J6F23Ck00Vd6tw+LGvW8HhM7Dw20xbMnInadtojnMmnqGcmsvXh4kbxvEzPuiINSL4lBhQOqN3ndljaNhhhQImOSgCgKMMAAKADCgRgMAAKAAAAMeXwAD6THnIAAAAAAAAAAAAAAEYxRWKKxGtBlYhsrGMpWKKxiqxZWM+2okMhWLQzSwyrLFK0citxrIjcDIYqsUVjPtqGOaXUGe9/sv9ck+8MuoM97/ZT65J944dWKKxk2Yqcjnoq+RyVxkshfKqX2Qu7tV8Xnpmk4O0RVjHViysVWp2Ja42LKxyFrlMnaxc1Z5O9to/G5uC4ZF/ZOLViisULatyWVhu85j0cznv5kvrUn3hlzmc9+sl9ak+8cSrFFYo2UwL0NfIyGkeSVpZGZmbpMzN0nKKxjqUVilZUWSxTiIqMVLKhjlFzGXXo+i+Q4fzqT7xT0bzXvzkvrUn3ji1YorFFqhOhr5HKejea9+cl9ak+8N6OZr36yX1qT7xxZQqMo/QV8jlFzWa9+sl9ak+8N6NZv34yH1qT75xZRWKjKN0NfI5Rc1ml8XNZL61J94b0cznvzkvrUn3jjRisyknQ1/lOQky2VuLdop8neyxt40UtwzqxjkSisVGUkrWE7iisUIjKxUZSYsMrExiBlGKFCKsMVmUY5KPMZeOJYosrkFVV4FVbhuFP2gbLZWROGXK5Blb2rXD/eOPUoV2Z+ZF0Ff5RlMq3vLy1dms7ye24vG5mR04+yYZQgaJ7ybhWY4WOQ9Gsx78ZD61J98b0azXvzkPrUn3jjwIWazmceb1/kLcTs/EzMzN4zMMrMrqysysviupEoVWUsf2Mia8vLpla8uZ7ll8VppHfg7RMUCJ13FRYTuKHJRZ7OwwcxDm8nHF5OlzItPtHFjESs9fsHFlNdn9SCjMzOzMzMzdJnZuk5SGae3l52CeWCTrxNwMRArs077kkKu3CWaaW4laWeWWWRvGaVuNmKRzSwyrLBLLFIvitG3AxjjKxG0z7Y3DG2xaa4nuJeduZ5J5OtKzOxaPJZCGJYoMhdxRr4qrMyKhigLxP3nHRVzG2xlTXl5dLw3N5czr1ZJmciKMQOzN7UjV1LX3QMAoxCyjAMKAowwwoEbKBQBQFGGAAFABhQIwGAUAA8wgAH0kPOwAAAAAAAAAAAAAAAAAAIxiisUViNaDKxDZWMZSsUVjFViysZ9tRIZCsUVjHViisZ9tQysZCsUVjHViysZ1tRIZCsMrGOrFlYo2VDqWViysYqsUVijbUSmQrFFYx1YorFC2oYyFYorGOrFFYo2VEhbiKKxEZWKllQxkKwxFWKKxSZBiwysRKFNlGLKxQxyisVGUmLDExioyjFlYYiUViqyjFFYoRGViuyjFhlYmMVmUYoU4iKsMVmUYsAqjFZlGKKMRKEDKAwwoFZlJCwxEoQMowwwoELKBQYmMQMoxQBQImUYorDExlYjZQGGFAiZRigCjEQDAKMRsoAMKAowwwoEbKBQBRhRgAAFAAAAA8wgAH0gPOwAAAAAAAAAAAAAAAAAAAAAAIxiisUViFfCOpVsQYylYorGOpRShZWSGQrFFYx1KKZ9qDKZCsUViKlFKFqkhkKwysRUopSsUdSysWVjHUoZ9qkpZWKKxFRlKNijGQrFOIiMpStUkLKxRWIlCpYoxZWGJqMpRZRiw3ERUoVLVGLKxQiUUpspMUGJjFRlGLKwxEopUZRiisUIjFZlGLDKxMYrMoxQpxEVGIGUYsAqjFZlGKKwxNRisygMMKMQspIUGIr45QgZRhhhQIGUCgwoEAxQBRiNlGGVhiZRSNgAYUCJlGKAKMRAMAoxGwAMKAowwwoxEwDAKMcDAAAKB//2Q==" alt="TK Elevator" style="width:100%;height:100%;object-fit:contain;display:block">`,
+    logoLock:`<img src="data:image/jpeg;base64,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" alt="TK Elevator" style="height:60px;display:block;margin:0 auto 8px;object-fit:contain"><div style="font-size:20px;color:#fff">TK Elevator Hong Kong</div>`
   }
 };
 (function(){
   var p=new URLSearchParams(location.search), a=p.get('company');
   if(!a) a=DEFAULT_COMPANY;              /* bare file (no ?company=) always resolves to the base company */
-  if(!COMPANIES[a]) a=DEFAULT_COMPANY;   /* unknown ?company= key also falls back to the base */
+  /* Keys are matched case-INSENSITIVELY: ?company=TK, tk and Tk all resolve to
+     the same block. Without this a wrong-case key fell through to the default
+     and silently served the WRONG COMPANY'S BRANDING to a client. */
+  if(!COMPANIES[a]){
+    var _k=String(a).toLowerCase();
+    for(var _c in COMPANIES){ if(_c.toLowerCase()===_k){ a=_c; break; } }
+  }
+  if(!COMPANIES[a]) a=DEFAULT_COMPANY;   /* still unknown -> fall back to the base */
   try{localStorage.removeItem('ara_active_company');}catch(e){}  /* clear any stale saved company from earlier testing so old browsers self-heal */
   window.BRAND=COMPANIES[a]; window.ARA_ACTIVE=a;
   var r=document.documentElement, css=window.BRAND.css; for(var k in css) r.style.setProperty(k,css[k]); /* colours/fonts before paint */
@@ -597,9 +828,19 @@ function applyBrand(b){
   document.querySelectorAll('[data-logoslot="lock"]').forEach(function(el){el.innerHTML=b.logoLock;});
   document.querySelectorAll('[data-brand]').forEach(function(el){var k=el.getAttribute('data-brand'); if(b[k]!=null) el.textContent=b[k];});
   var tl=document.querySelector('.topbar-logo'); if(tl) tl.title=b.companyBil;
-  var ac=document.getElementById('f_aracompany');
-  if(ac && (!ac.value || /Consultancy Limited|Engineering Company|有限公司/.test(ac.value))) ac.value=b.companyBil;
+  /* 評估機構 Assessment Organization is DELIBERATELY NOT bound to the brand.
+     It names the organisation the ARA works for and it feeds the statutory
+     Declaration page ("I, <name>, serving as <post> at <organisation>").
+     Binding it to the active white-label would auto-populate the LICENSEE'S
+     name — and a licensee is frequently the lift's maintenance contractor, so
+     the form would generate a declaration asserting that the contractor is the
+     independent assessor. That is a false statement on a statutory declaration
+     and a direct conflict of interest (Guideline §5.2, §5.3.3).
+     Value comes from BRAND.ara.company (the ARA's OWN firm) if configured, and
+     is NEVER overwritten once it holds anything. */
   if(b.ara){
+    var ac=document.getElementById('f_aracompany');
+    if(ac && !ac.value && b.ara.company) ac.value=b.ara.company;
     var an=document.getElementById('f_araname');
     if(an && !an.value){ var nm=((b.ara.nameEn||'')+' '+(b.ara.nameZh||'')).trim(); if(nm) an.value=nm; }
     var ar=document.getElementById('f_arareg');
@@ -697,7 +938,7 @@ document.addEventListener('DOMContentLoaded',function(){ applyBrand(window.BRAND
         <div class="pc-row"><div class="pc-label">地址 <span class="en">Address</span></div><div class="pc-value" id="pc_address"></div></div>
         <div class="pc-row"><div class="pc-label">升降機製造商 <span class="en">Lift Manufacturer</span></div><div class="pc-value" id="pc_mfr"></div></div>
         <div class="pc-row"><div class="pc-label">保養承辦商 <span class="en">Maintenance Contractor</span></div><div class="pc-value" id="pc_contractor"></div></div>
-        <div class="pc-row"><div class="pc-label">評估機構 <span class="en">Assessment Organisation</span></div><div class="pc-value" id="pc_org"></div></div>
+        <div class="pc-row"><div class="pc-label">評估機構 <span class="en">Assessment Organization</span></div><div class="pc-value" id="pc_org"></div></div>
         <div class="pc-row"><div class="pc-label">評估日期 <span class="en">Assessment Date</span></div><div class="pc-value" id="pc_date"></div></div>
       </div>
       <div class="pc-sig">
@@ -717,7 +958,11 @@ document.addEventListener('DOMContentLoaded',function(){ applyBrand(window.BRAND
           <div class="pc-sigline"><span class="lab">電話 Tel:</span><span class="un"></span></div>
         </div>
       </div>
-      <div class="pc-foot">© 2026 <span data-brand="companyBil">Lifthium Consultancy Limited 極樂公證行有限公司</span> · All rights reserved 版權所有</div>
+      <div class="pc-foot">
+        <div data-brand="footLine1">報告內容 Report content © 2026 Lifthium Consultancy Limited 極樂公證行有限公司</div>
+        <div class="pc-foot-ip" data-brand="footLine2">表格格式及工具 Form format &amp; tool © 2026 Lifthium Consultancy Limited 極樂公證行有限公司 · 未經授權不得複製作報告製作之用 Not to be reproduced for report production without licence</div>
+      </div>
+      </div>
     </div>
 
     <!-- ═══ PRINT-ONLY: DECLARATION PAGE ═══ -->
@@ -752,6 +997,11 @@ document.addEventListener('DOMContentLoaded',function(){ applyBrand(window.BRAND
       <div class="pd-item"><div class="pd-num">5</div><div class="pd-txt">本報告及其建議僅適用於被評估升降機的現狀；如評估後升降機及其使用環境有任何變化，本評估報告中的相關條款及結論可能不再適用。<span class="en">This report and its recommendations apply only to the current condition of the assessed lift. If the lift or its operating environment changes after the assessment, the relevant terms and conclusions may no longer apply.</span></div></div>
       <div class="pd-item"><div class="pd-num">6</div><div class="pd-txt">在任何情況下，若需引用本報告中的結果或數據，均應保持原意，不得添加、修改、偽造或否認事實。<span class="en">Under any circumstances, when citing the results or data in this report, the original meaning must be preserved; no addition, modification, falsification or denial of facts is permitted.</span></div></div>
       <div class="pd-item"><div class="pd-num">7</div><div class="pd-txt">本報告需一式三份，評估機構留存一份，升降機負責人留存兩份。<span class="en">This report shall be made in triplicate: one copy retained by the assessment organisation and two copies by the responsible person.</span></div></div>
+      <div class="pd-sechead pd-ip-head">知識產權<span class="en">Intellectual Property</span></div>
+      <div class="pd-item"><div class="pd-num">8</div><div class="pd-txt">本報告的格式、版面編排、內容的編選及編排方式，連同用以製作本報告的軟件工具，均為<span data-brand="ipOwnerZh">極樂公證行有限公司</span>的原創作品；其版權及一切其他知識產權由<span data-brand="ipOwnerZh">極樂公證行有限公司</span>獨家擁有，並受《版權條例》（香港法例第 528 章）保障。<span class="en">The format, layout, and the selection and arrangement of the contents of this report, together with the software tool used to produce it, are the original work of <span data-brand="ipOwnerEn">Lifthium Consultancy Limited</span>. The copyright and all other intellectual property rights therein are owned exclusively by <span data-brand="ipOwnerEn">Lifthium Consultancy Limited</span> and are protected under the Copyright Ordinance (Cap. 528 of the Laws of Hong Kong).</span></div></div>
+      <div class="pd-item"><div class="pd-num">9</div><div class="pd-txt">上款不適用於引錄自《曳引式升降機風險評估指引》及其他政府刊物的法定條文、評估項目、風險矩陣及計分方法；該等內容的權利由其各自擁有人保留。<span class="en">The preceding item does not extend to the statutory provisions, assessment items, risk matrices and scoring methodology reproduced from the Guideline on Risk Assessment for Traction Lifts and other Government publications, rights in which remain with their respective owners.</span></div></div>
+      <div class="pd-item"><div class="pd-num">10</div><div class="pd-txt">升降機負責人獲授予非獨家、不可轉讓的許可，可就其法定合規、樓宇管理、保險及專業諮詢用途，使用、保存及複製本報告（包括按指引規定須保留的副本）。本項不限制機電工程署或任何其他監管機構為履行法定職能而使用本報告。<span class="en">The responsible person for the lift is granted a non-exclusive, non-transferable licence to use, retain and reproduce this report (including the copies required to be kept under the Guideline) for its own statutory compliance, building management, insurance and professional advisory purposes. Nothing in this item restricts the use of this report by the Electrical and Mechanical Services Department or any other regulatory authority in the discharge of its statutory functions.</span></div></div>
+      <div class="pd-item"><div class="pd-num">11</div><div class="pd-txt">未經<span data-brand="ipOwnerZh">極樂公證行有限公司</span>事先書面同意，不得複製或改編本報告的格式、版面或其製作工具，以製作任何其他風險評估報告或類似文件，亦不得為此目的向第三方提供。<span class="en">Save with the prior written consent of <span data-brand="ipOwnerEn">Lifthium Consultancy Limited</span>, the format, layout or production tool of this report shall not be copied or adapted for the production of any other risk assessment report or similar document, nor supplied to any third party for that purpose.</span></div></div>
     </div>
 
     </div>
@@ -791,7 +1041,13 @@ document.addEventListener('DOMContentLoaded',function(){ applyBrand(window.BRAND
       </div>
     </td></tr></thead>
     <tfoot class="print-rf"><tr><td>
-      <div class="rf-inner">© 2026 <span data-brand="companyBil">Lifthium Consultancy Limited 極樂公證行有限公司</span> · All rights reserved 版權所有</div>
+      <!-- Only footLine1 (the REPORT CONTENT copyright, which belongs to the
+           company issuing the report) repeats on every page. The form/tool
+           copyright line moved to #ipFootLast so it prints ONCE at the end of
+           the report — see .ip-foot-last below. -->
+      <div class="rf-inner">
+        <span data-brand="footLine1">報告內容 Report content © 2026 Lifthium Consultancy Limited 極樂公證行有限公司</span>
+      </div>
     </td></tr></tfoot>
     <tbody class="print-tb"><tr><td class="print-cell">
   <div id="frontExecHost"></div>
@@ -817,7 +1073,7 @@ document.addEventListener('DOMContentLoaded',function(){ applyBrand(window.BRAND
       </div>
       <div class="info-grid-3" style="margin-top:10px">
         <div class="field"><label>Lift Type <span class="zh">升降機類型</span></label>
-          <select id="f_type"><option value="">Select…</option><option>Passenger 載客</option><option>Service 服務</option><option>Goods 載貨</option><option>Fireman's 消防</option><option>Disabled 殘疾人士</option></select></div>
+          <select id="f_type"><option value="">Select…</option><option>Passenger</option><option>Service</option><option>Goods</option><option>Fireman's</option><option>Disabled</option></select></div>
         <div class="field"><label>Rated Speed (m/s) <span class="zh">額定速度</span></label><input type="text" id="f_speed" placeholder="e.g. 1.75"></div>
         <div class="field"><label>Rated Load (kg) <span class="zh">額定載重</span></label><input type="text" id="f_load" placeholder="e.g. 1000"></div>
       </div>
@@ -833,7 +1089,7 @@ document.addEventListener('DOMContentLoaded',function(){ applyBrand(window.BRAND
       <div class="info-grid">
         <div class="field"><label>ARA Name <span class="zh">評估員姓名</span></label><input type="text" id="f_araname" placeholder="Risk Assessor name"></div>
         <div class="field"><label>ARA Registration No. <span class="zh">註冊編號</span></label><input type="text" id="f_arareg" placeholder="EMSD ARA reg. no."></div>
-        <div class="field"><label>ARA Company <span class="zh">評估機構</span></label><input type="text" id="f_aracompany" value="Lifthium Consultancy Limited 極樂公證行有限公司"></div>
+        <div class="field"><label>Assessment Organization <span class="zh">評估機構</span></label><input type="text" id="f_aracompany" value="Lifthium Consultancy Limited 極樂公證行有限公司"></div>
         <div class="field"><label>ARA Reg. Expiry Date <span class="zh">註冊屆滿日期</span></label><input type="date" id="f_araexpiry"></div>
       </div>
       <div class="info-grid-3" style="margin-top:10px">
@@ -843,7 +1099,15 @@ document.addEventListener('DOMContentLoaded',function(){ applyBrand(window.BRAND
       </div>
       <div class="info-grid" style="margin-top:10px">
         <div class="field"><label>Registered Lift Engineer Present <span class="zh">在場註冊升降機工程師</span></label><input type="text" id="f_rle" placeholder="RLE name + reg. no."></div>
-        <div class="field"><label>Registered Lift Engineering Worker Present <span class="zh">在場註冊升降機工程人員</span></label><input type="text" id="f_rlw" placeholder="RLW name + reg. no."></div>
+        <div class="field"><label>Registered Lift Worker Present <span class="zh">在場註冊升降機工程人員</span></label><input type="text" id="f_rlw" placeholder="RLW name + reg. no."></div>
+        <div class="field" style="grid-column:1/-1">
+          <label style="display:flex;align-items:flex-start;gap:8px;cursor:pointer;font-weight:400">
+            <input type="checkbox" id="f_closewatch" style="margin-top:3px;flex-shrink:0;width:auto">
+            <span>Risk Assessor considers close monitoring necessary — forces a 3-year re-assessment interval (Guideline §6.2(d))
+              <span class="zh" style="display:block;font-family:var(--font-zh)">風險評估員認為有必要密切監控 — 下次風險評估間隔將定為 3 年（指引 §6.2(d)）</span>
+            </span>
+          </label>
+        </div>
       </div>
     </div>
 
@@ -931,10 +1195,51 @@ document.addEventListener('DOMContentLoaded',function(){ applyBrand(window.BRAND
   <section class="panel" id="panel-photos">
     <div class="card">
       <div class="card-title">Site Photos <span class="card-title-zh">場地相片</span></div>
-      <p class="photo-note" style="font-size:.8rem;color:var(--muted);margin-bottom:10px">Tap any slot to upload. Stored locally as base64; export with the JSON backup. Max 24 photos. <span class="zh" style="font-family:var(--font-zh)">點任意空格上傳。相片以 base64 儲存本機，可隨 JSON 一同匯出。最多 24 張。</span></p>
-      <div class="photo-grid" id="photoGrid"></div>
+      <p class="photo-note" style="font-size:.8rem;color:var(--muted);margin-bottom:8px">
+        Paste the caption list, then click <b>Add photos</b> and press <b>Ctrl+A</b> in the file dialog. Captions attach automatically by filename. Videos are skipped. Max 200 photos — Part 1 prints 6 per sheet, Part 2 prints 4 per sheet (bigger photos + bilingual finding text).
+        <span class="zh" style="font-family:var(--font-zh)">貼上註解清單，㩒「加入相片」後喺檔案視窗㩒 Ctrl+A。註解會按檔名自動配對，影片會略過。最多 200 張；第一部分每頁印 6 張，第二部分每頁印 4 張（相片更大，並附中英雙語發現說明）。</span>
+      </p>
+      <div class="ph-meter photo-note">
+        <span id="phTotal" style="font-family:var(--font-h);font-weight:700">0 / 200</span>
+        <div class="ph-bar"><i id="phBar"></i></div>
+        <span id="phSize">0 MB</span>
+        <button class="ph-btn ph-btn-s" id="phPrint" type="button">🖨 Print preview 列印預覽</button>
+        <button class="ph-btn ph-btn-d" id="phClear" type="button">Delete all 全部刪除</button>
+      </div>
+    </div>
+
+    <div class="card ph-part">
+      <div class="card-title"><span class="rec-tag">1</span> Part 1 — General Outlook <span class="card-title-zh">第一部分 · 整體外觀</span></div>
+      <p class="photo-note" style="font-size:.78rem;color:var(--muted);margin-bottom:8px">Caption list for Part 1 <span class="zh" style="font-family:var(--font-zh)">第一部分註解清單</span></p>
+      <textarea class="ph-caps" id="phCaps1" rows="3" placeholder='"C:\path\L17\20260620_120445.jpg", outlook of control panel'></textarea>
+      <div class="ph-row">
+        <button class="ph-btn ph-btn-p" data-phadd="1" type="button">＋ Add photos 加入相片</button>
+        <button class="ph-btn ph-btn-s" data-phrematch="1" type="button">↻ Re-match captions 重新配對註解</button>
+        <span class="ph-count" id="phCount1">0</span>
+      </div>
+      <div class="ph-log" id="phLog1"></div>
+      <div class="photo-grid" id="phGrid1"></div>
+      <div class="ph-empty" id="phEmpty1">No photos yet <span class="zh" style="font-family:var(--font-zh)">尚未加入相片</span></div>
+    </div>
+
+    <div class="card ph-part">
+      <div class="card-title"><span class="rec-tag" style="background:var(--blue)">2</span> Part 2 — Findings <span class="card-title-zh">第二部分 · 發現事項</span></div>
+      <div class="findings-panel" id="findingsPanel"></div>
+      <p class="photo-note" style="font-size:.78rem;color:var(--muted);margin-bottom:8px">Caption list for Part 2 <span class="zh" style="font-family:var(--font-zh)">第二部分註解清單</span></p>
+      <textarea class="ph-caps" id="phCaps2" rows="3" placeholder='"C:\path\L17\IMG_4842.jpg", serious oil leakage from the gear box'></textarea>
+      <div class="ph-row">
+        <button class="ph-btn ph-btn-p" data-phadd="2" type="button">＋ Add photos 加入相片</button>
+        <button class="ph-btn ph-btn-s" data-phrematch="2" type="button">↻ Re-match captions 重新配對註解</button>
+        <span class="ph-count" id="phCount2">0</span>
+      </div>
+      <div class="ph-log" id="phLog2"></div>
+      <div class="photo-grid" id="phGrid2"></div>
+      <div class="ph-empty" id="phEmpty2">No photos yet <span class="zh" style="font-family:var(--font-zh)">尚未加入相片</span></div>
+    </div>
+
+    <div class="card">
       <input type="file" id="fileInput" accept="image/*" multiple style="display:none">
-      <div class="field" style="margin-top:14px">
+      <div class="field">
         <label>Overall Site Remarks <span class="zh">場地整體備註</span></label>
         <textarea id="f_remarks" rows="4" placeholder="General observations, environment, notable conditions…"></textarea>
       </div>
@@ -988,16 +1293,13 @@ document.addEventListener('DOMContentLoaded',function(){ applyBrand(window.BRAND
         <tr><td class="exl">場地 Site</td><td id="ex_site"></td><td class="exl">升降機編號 Lift No.</td><td id="ex_liftno"></td></tr>
       </table>
 
-      <div class="ex-sec">運作及保養表現 · Operation &amp; Maintenance Performance <span>（滿分 max 150）</span></div>
-      <table class="ex-table">
-        <tr><td>附件 A 升降機優化水平 · Annex A Optimisation Level</td><td id="ex_a">—</td></tr>
-        <tr><td>附件 B 升降機運作記錄 · Annex B Operating Records</td><td id="ex_b">—</td></tr>
-        <tr><td>附件 C 升降機管理記錄 · Annex C Management Records</td><td id="ex_c">—</td></tr>
-        <tr class="ex-total"><td>運作及保養表現總分 · O&amp;M Total Score</td><td id="ex_om">—</td></tr>
-        <tr class="ex-level-row"><td>表現等級 · Performance Level</td><td id="ex_omlevel">—</td></tr>
-      </table>
-
-      <div class="ex-sec">3.3 升降機整體安全標準 · Overall Safety Standard of the Lift Installation <span>（附件 D · Annex D）</span></div>
+      <div class="ex-conclusion" id="ex_concbox">
+        <div class="ex-conc-label">1. 結論：整體安全等級及建議 · Conclusion — Overall Safety Level &amp; Recommendation</div>
+        <div class="ex-conc-level" id="ex_level">—</div>
+        <div class="ex-conc-rec" id="ex_rec">—</div>
+        <div class="ex-conc-next" id="ex_next"></div>
+      </div>
+<div class="ex-sec">2. 升降機整體安全標準 · Overall Safety Standard of the Lift Installation（指引 3.3） <span>（附件 D · Annex D）</span></div>
       <table class="ex-table">
         <tr><td>已評估風險項目總數 · Total risk items assessed [A]</td><td id="ex_A">—</td></tr>
         <tr><td class="exsub">− 第 Ⅰ 類風險數目 · No. of Category Ⅰ risk [B]</td><td id="ex_B">—</td></tr>
@@ -1008,15 +1310,22 @@ document.addEventListener('DOMContentLoaded',function(){ applyBrand(window.BRAND
         <tr><td>第 Ⅰ 類分配總值 · Total assigned value, Cat Ⅰ [H = B × 0]</td><td id="ex_H">—</td></tr>
         <tr><td>第 Ⅱ 類分配總值 · Total assigned value, Cat Ⅱ [I = C × −1]</td><td id="ex_I">—</td></tr>
         <tr><td>第 Ⅲ 類分配總值 · Total assigned value, Cat Ⅲ [J = E × 1]</td><td id="ex_J">—</td></tr>
-        <tr class="ex-total"><td>整體得分 · Overall ranking　D = [(H+I+J) / G] × 100</td><td id="ex_D">—</td></tr>
+        <tr><td>計算所得比值 · Computed ratio [(H+I+J) / G] × 100</td><td id="ex_ratio">—</td></tr>
+        <tr class="ex-total"><td>整體安全得分 · Overall safety score　D（指引公式 (1)）</td><td id="ex_D">—</td></tr>
+        <tr class="ex-dnote"><td colspan="2" id="ex_Dnote"></td></tr>
         <tr><td>是否存在標記 "※" 的第 Ⅰ 類風險 · Any Cat Ⅰ risk marked "※"?</td><td id="ex_marked">—</td></tr>
       </table>
 
-      <div class="ex-conclusion" id="ex_concbox">
-        <div class="ex-conc-label">整體安全等級及建議 · Overall Safety Standard &amp; Recommendation</div>
-        <div class="ex-conc-level" id="ex_level">—</div>
-        <div class="ex-conc-rec" id="ex_rec">—</div>
-      </div>
+      <div class="ex-sec">3. 運作及保養表現 · Operation &amp; Maintenance Performance <span>（滿分 max 150）</span></div>
+      <table class="ex-table">
+        <tr><td>附件 A 升降機優化水平 · Annex A Optimisation Level</td><td id="ex_a">—</td></tr>
+        <tr><td>附件 B 升降機運作記錄 · Annex B Operating Records</td><td id="ex_b">—</td></tr>
+        <tr><td>附件 C 升降機管理記錄 · Annex C Management Records</td><td id="ex_c">—</td></tr>
+        <tr class="ex-total"><td>運作及保養表現總分 · O&amp;M Total Score</td><td id="ex_om">—</td></tr>
+        <tr class="ex-level-row"><td>表現等級 · Performance Level</td><td id="ex_omlevel">—</td></tr>
+      </table>
+
+      
     </div>
 
     <div class="card rec-card">
@@ -1051,8 +1360,15 @@ document.addEventListener('DOMContentLoaded',function(){ applyBrand(window.BRAND
       <button class="btn-secondary" id="importXlsxBtn">⤒ Import Excel 匯入</button>
       <button class="btn-danger" id="newAssessBtn">⌫ New 新評估</button>
     </div>
-  </section>
-
+  
+      <!-- Printed ONCE at the very end of the report. It sits INSIDE the last
+           panel deliberately: @media print sets .panel{page-break-after:always},
+           so anything placed after the panel close tag was pushed onto a page of
+           its own and the report gained a near-empty final sheet. -->
+      <div class="ip-foot-last print-only" id="ipFootLast">
+        <span data-brand="footLine2">表格格式及工具 Form format &amp; tool © 2026 Lifthium Consultancy Limited 極樂公證行有限公司 · 未經授權不得複製作報告製作之用 Not to be reproduced for report production without licence</span>
+      </div>
+    </section>
     </td></tr></tbody>
   </table>
 </main>
@@ -1291,6 +1607,12 @@ https://github.com/nodeca/pako/blob/main/LICENSE
     });
     ws.mergeCells(r+1,2,r+1,3); const note=ws.getCell(r+1,2);
     note.value="① 只填黃色格 Fill YELLOW only　② 灰色請勿修改 Grey = do not edit　③ 紅色 = 未填 Red = not yet filled"; note.font=F({size:9,color:{argb:BLUE}});
+    // IP notice — this workbook leaves the office, so it carries the notice itself
+    ws.mergeCells(r+3,2,r+3,3); const ipn=ws.getCell(r+3,2);
+    ipn.value="表格格式及編排 © 2026 極樂公證行有限公司 Lifthium Consultancy Limited．版權所有。未經事先書面同意，不得複製或改編本工作簿格式以製作其他評估表格或報告。\n"+
+              "Form format & arrangement © 2026 Lifthium Consultancy Limited. All rights reserved. Not to be copied or adapted to produce other assessment forms or reports without prior written consent. See 使用說明 Instructions.";
+    ipn.font=F({size:8,color:{argb:"FF999999"}}); ipn.alignment={wrapText:true,vertical:"top"};
+    ws.getRow(r+3).height=42;
     await ws.protect("", { selectLockedCells:true, selectUnlockedCells:true });
 
     // Instructions
@@ -1338,7 +1660,15 @@ https://github.com/nodeca/pako/blob/main/LICENSE
      ["4. 附件 D：La 良好 / Lb 不良 / Lc 嚴重 / NA 不適用。Annex D: La/Lb/Lc/NA.",false],
      ["5. 完成後儲存，於表單按「⤒ 匯入 Excel」載入。Save, then 'Import Excel' in the form.",false],
      ["",false],
-     ["相片在表單內加入；分數由表單自動計算。Photos & scores are handled by the form.",false]
+     ["相片在表單內加入；分數由表單自動計算。Photos & scores are handled by the form.",false],
+     ["",false],
+     ["知識產權 Intellectual Property",true],
+     ["本工作簿的格式、版面編排，以及評估項目的編選及編排方式，均為極樂公證行有限公司的原創作品，其版權及一切知識產權由極樂公證行有限公司獨家擁有，並受《版權條例》（香港法例第 528 章）保障。",false],
+     ["The format, layout, and the selection and arrangement of the assessment items in this workbook are the original work of Lifthium Consultancy Limited, which owns exclusively the copyright and all intellectual property rights therein, protected under the Copyright Ordinance (Cap. 528).",false],
+     ["上述不適用於引錄自《曳引式升降機風險評估指引》的法定條文、評估項目、風險矩陣及計分方法，該等內容的權利由其擁有人保留。",false],
+     ["The above does not extend to the statutory provisions, assessment items, risk matrices and scoring methodology reproduced from the Guideline on Risk Assessment for Traction Lifts, rights in which remain with their owner.",false],
+     ["本工作簿僅供獲授權人員為本次風險評估輸入資料之用。未經極樂公證行有限公司事先書面同意，不得複製或改編其格式，以製作任何其他評估表格或報告，亦不得為此目的向第三方提供。",false],
+     ["This workbook is supplied solely for authorised personnel to enter data for this risk assessment. Save with the prior written consent of Lifthium Consultancy Limited, its format shall not be copied or adapted to produce any other assessment form or report, nor supplied to any third party for that purpose.",false]
     ].forEach(([txt,b],i)=>{ const c=ws.getCell(i+1,1); c.value=txt; c.font=F({size:(b&&i===0)?12:10,bold:b}); c.alignment={wrapText:true}; });
     await ws.protect("", { selectLockedCells:true, selectUnlockedCells:true });
 
@@ -1403,11 +1733,11 @@ https://github.com/nodeca/pako/blob/main/LICENSE
     // Annex D
     ws = wb.addWorksheet("附件D AnnexD");
     ws.getColumn(1).hidden=true; ws.getColumn(1).width=10;
-    [8,30,24,34,28,34,14,11,26].forEach((w,i)=>ws.getColumn(i+2).width=w);
-    headerRow(ws,1,["ID","No 編號","Item 項目 (EN)","項目 (中文)","La 良好","Lb 不良","Lc 嚴重","Ref 類別","Rating 評級","Remarks 備註"]);
+    [8,30,24,34,28,34,14,11,10,26].forEach((w,i)=>ws.getColumn(i+2).width=w);
+    headerRow(ws,1,["ID","No 編號","Item 項目 (EN)","項目 (中文)","La 良好","Lb 不良","Lc 嚴重","Ref 類別","Rating 評級","※ 標記","Remarks 備註"]);
     r=2;
     Object.entries(DATA.annexD).forEach(([secId,sec])=>{
-      ws.getCell(r,1).value=""; const hc=ws.getCell(r,2); ws.mergeCells(r,2,r,10);
+      ws.getCell(r,1).value=""; const hc=ws.getCell(r,2); ws.mergeCells(r,2,r,11);
       hc.value=secId+"　"+sec.title_zh+" / "+sec.title_en; hc.fill=fill(GOLD); hc.font=F({bold:true}); hc.alignment={wrapText:true}; hc.border=BORDER; r++;
       sec.items.forEach(it=>{
         const hasLb=it.Lb!=null;
@@ -1419,7 +1749,14 @@ https://github.com/nodeca/pako/blob/main/LICENSE
         const a=ws.getCell(r,9); styleLocked(a,true); a.alignment={horizontal:"center",vertical:"center"};
         a.dataValidation=dv(hasLb?"La,Lb,Lc,NA":"La,Lc,NA");
         const st=D[it.id]; a.value = st&&st.choice?st.choice:"";
-        const rc=ws.getCell(r,10); styleLocked(rc,true); rc.value = st&&st.notes?st.notes:"";
+        /* ※ column — the assessor's Guideline 5.4.3.7 determination.
+             Without it every Excel round-trip cleared ※ and forced F = 0,
+             which drops D to 0 whenever a Category I risk is present. */
+          const mk=ws.getCell(r,10); styleLocked(mk,true);
+          mk.alignment={horizontal:"center",vertical:"center"};
+          mk.dataValidation=dv("Yes,No");
+          mk.value = st ? (isMarkedD(it.id,st) ? "Yes" : "No") : "";
+          const rc=ws.getCell(r,11); styleLocked(rc,true); rc.value = st&&st.notes?st.notes:"";
         r++;
       });
     });
@@ -1449,14 +1786,20 @@ https://github.com/nodeca/pako/blob/main/LICENSE
   }
 
   // ─────────────────────────── PARSE (import) ───────────────────────────
-  function cellStr(ws, r, c){ const v=ws.getCell(r,c).value; if(v==null) return ""; if(typeof v==="object"){ if(v.text!=null) return String(v.text); if(v.result!=null) return String(v.result); if(v.richText) return v.richText.map(x=>x.text).join(""); return ""; } return String(v).trim(); }
+  /* The four essential-device ids auto-carry ※ when rated Lc (Guideline 5.4.3.7
+   Table 7 note). Derived from DATA so it can never drift from the UI rule. */
+const ESSENTIAL_D = (()=>{ const t=new Set(); try{ Object.values(DATA.annexD)
+  .forEach(sec=>sec.items.forEach(it=>{ if(it.essential) t.add(it.id); })); }catch(e){} return t; })();
+function isMarkedD(id, st){ if(!st) return false; if(st.unmark===true) return false;
+  if(st.mark===true) return true; return ESSENTIAL_D.has(id) && st.choice==="Lc"; }
+function cellStr(ws, r, c){ const v=ws.getCell(r,c).value; if(v==null) return ""; if(typeof v==="object"){ if(v.text!=null) return String(v.text); if(v.result!=null) return String(v.result); if(v.richText) return v.richText.map(x=>x.text).join(""); return ""; } return String(v).trim(); }
 
   function parseWorkbook(wb, DATA){
     const out={ info:{}, A:{}, B:{}, C:{}, D:{}, recs:{}, _errors:[], _counts:{A:0,B:0,C:0,D:0,info:0} };
     // marker check on Cover
     const cover = wb.getWorksheet("封面 Cover") || wb.worksheets[0];
     let marker=""; if(cover){ marker=cellStr(cover,1,3)||cellStr(cover,1,2); }
-    if(marker.indexOf((((window.BRAND&&BRAND.marker)||"LIFTHIUM_ARA_DATA_TEMPLATE|v1").split("|")[0]))<0){ out._errors.push("此檔案不是 "+(((window.BRAND&&BRAND.companyShort)||"Lifthium"))+" ARA 範本，或封面被更改。Not a "+(((window.BRAND&&BRAND.companyShort)||"Lifthium"))+" ARA template (marker missing)."); out._fatal=true; return out; }
+    var _mWant=(((window.BRAND&&BRAND.marker)||"LIFTHIUM_ARA_DATA_TEMPLATE|v1")).split("|");var _mGot=String(marker||"").trim().split("|");var _mBrand=(_mGot[0]||"").trim();var _mVer=(_mGot[1]||"").trim();var _mFamilyOK=/(^|_)ARA_DATA_TEMPLATE$/.test(_mBrand);var _mVerOK=(_mVer===((_mWant[1]||"v1").trim()));if(!_mFamilyOK||!_mVerOK){ out._errors.push("此檔案不是 ARA 資料範本，或封面被更改／版本不符。Not an ARA data template (marker missing, altered, or version mismatch)."); out._fatal=true; return out; }out._srcBrand=_mBrand.replace(/_?ARA_DATA_TEMPLATE$/,"")||"UNKNOWN";out._crossBrand=(_mBrand!==((_mWant[0]||"").trim()));
     // Cover fields
     if(cover){ cover.eachRow((row,rn)=>{ const key=cellStr(cover,rn,1); if(/^f_/.test(key)){ const val=cellStr(cover,rn,3); if(val!==""){ out.info[key]=val; out._counts.info++; } } }); }
 
@@ -1487,12 +1830,26 @@ https://github.com/nodeca/pako/blob/main/LICENSE
     ws=wb.getWorksheet("附件D AnnexD");
     if(ws){ const flat={}; Object.values(DATA.annexD).forEach(sec=>sec.items.forEach(it=>flat[it.id]=it));
       ws.eachRow((row,rn)=>{ const id=cellStr(ws,rn,1); if(!/^D\./.test(id)) return; const it=flat[id]; if(!it) return;
-        const rating=cellStr(ws,rn,9); const notes=cellStr(ws,rn,10);
+        const rating=cellStr(ws,rn,9);
+        const markCell=cellStr(ws,rn,10).trim().toLowerCase();
+        const notes=cellStr(ws,rn,11);
         if(rating===""){ return; }
         const valid = rating==="NA" || (rating==="Lb"? it.Lb!=null : (rating==="La"||rating==="Lc"));
         if(!valid){ out._errors.push("附件D "+id+" 評級不合法：\""+rating+"\""); return; }
         if(rating==="NA"){ out.D[id]={ choice:"NA", notes:notes||"", flagged:false }; }
-        else { const src=it[rating]; out.D[id]={ choice:rating, d:src.d, s:src.s, l:src.l, c:src.c, notes:notes||"", flagged:false }; }
+        else {
+          const src=it[rating];
+          /* Translate the ※ column into the SAME explicit flags the UI writes,
+             so a sheet edited by the engineer round-trips without losing the
+             assessor's determination. Blank = fall back to the automatic rule. */
+          const autoMark = ESSENTIAL_D.has(id) && rating==="Lc";
+          const want = (markCell==="yes"||markCell==="y"||markCell==="是"||markCell==="true") ? true
+                     : (markCell==="no" ||markCell==="n"||markCell==="否"||markCell==="false") ? false : null;
+          out.D[id]={ choice:rating, d:src.d, s:src.s, l:src.l, c:src.c, notes:notes||"",
+            flagged:(want===null?autoMark:want),
+            mark:  (want===true  && !autoMark),
+            unmark:(want===false &&  autoMark) };
+        }
         out._counts.D++; }); }
 
     // Recommendations
@@ -1526,7 +1883,10 @@ https://github.com/nodeca/pako/blob/main/LICENSE
   /* ═══════════════════════════════════════════════════════════════════════════════ */
 
   const APP_VERSION = "P2.0";
-  const OWNER_CODE  = (window.BRAND&&BRAND.ownerCode) || "51220643";            // built-in admin — always works, even offline
+  const OWNER_CODE  = (window.BRAND&&BRAND.ownerCode) || "51220643";            // per-company admin
+  // Lifthium master owner — 老細 must be able to unlock EVERY white-label build,
+  // even one whose per-company ownerCode is a placeholder (e.g. Graceful 00000000).
+  const MASTER_OWNER_CODE = "51220643";
   const OWNER_NAME  = "Owner 老細";
 
   const ROSTER_KEY = "lifthium_ara_roster_v1";
@@ -1572,7 +1932,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
   async function validateCode(code) {
     code = (code || "").trim();
     if (!code) return null;
-    if (code === OWNER_CODE) return { name: OWNER_NAME, role: "owner", hash: await sha256hex(code) };
+    if (code === OWNER_CODE || code === MASTER_OWNER_CODE) return { name: OWNER_NAME, role: "owner", hash: await sha256hex(code) };
     const hash = await sha256hex(code);
     let roster = getRoster();
     let hit = roster.users.find(u => u.hash === hash);
@@ -1906,6 +2266,27 @@ function updateAutofillCount() {
 }
 function growTA(el){ if(!el) return; el.style.height='auto'; el.style.height=el.scrollHeight+'px'; }
 function growAllRec(){ document.querySelectorAll('.rec-area').forEach(growTA); }
+// Mirror each textarea's live value into a sibling div that the print stylesheet
+// shows in its place, so long content prints in full and can break across pages.
+function prepPrintTextareas(){
+  document.querySelectorAll('textarea').forEach(ta => {
+    // .ph-caps  = the caption paste box — working input, must never appear in the report
+    // .photo-desc = already has its own sized mirror (.photo-desc-print); a second
+    //               generic mirror printed the description twice per photo
+    if (ta.classList.contains('ph-caps') || ta.classList.contains('photo-desc')) {
+      const stale = ta.nextElementSibling;
+      if (stale && stale.classList && stale.classList.contains('ta-print')) stale.remove();
+      return;
+    }
+    let m = ta.nextElementSibling;
+    if (!m || !m.classList || !m.classList.contains('ta-print')) {
+      m = document.createElement('div');
+      m.className = 'ta-print';
+      ta.parentNode.insertBefore(m, ta.nextSibling);
+    }
+    m.textContent = ta.value || '';
+  });
+}
 function autofillAnnexD() {
   const lines = collectAnnexDRecs();
   const el = byId('rec_D');
@@ -1937,7 +2318,7 @@ function prepPrintD() {
     const lv = it[ch] || {};
     const desc_zh = lv.desc_zh || '';
     const desc_en = lv.desc_en || '';
-    const flagged = st.flagged ? '　<b>※</b>' : '';
+    const flagged = isMarkedD(it.id, st) ? '　<b>※</b>' : '';
     const ref = '探測 ' + (detMap[st.d]||st.d) + ' · 嚴重 ' + st.s + ' · 可能性 ' + st.l + ' · 風險類別 ' + (catMap[st.c]||st.c);
     out.innerHTML = '<span class="dps-tag">' + tagMap[ch] + '</span>' + flagged + '　' + esc(desc_zh) + ' / ' + esc(desc_en) +
       '<span class="dps-ref">' + ref + (st.notes ? '　｜ 備註 Notes: ' + esc(st.notes) : '') + '</span>';
@@ -1972,10 +2353,74 @@ function populateExecSummary() {
   set('ex_H', '0');
   set('ex_I', (-d.countCatII));
   set('ex_J', d.countCatIII);
+  /* The guideline states D two ways and they disagree whenever an unmarked
+     Category I risk exists:
+       · Annex E report table 3.3 :  D = [(H+I+J) / G]     -> the ratio
+       · 5.4.3.7 Formula (1)      :  D = 0 if any v_i = 0  -> governs
+     Printing only the 0 makes the four values immediately above it look
+     miscalculated; printing only the ratio breaks Formula (1). So print BOTH:
+     the arithmetic the reader can verify, then the governing score plus the
+     reason it differs. Grading/Table 8 continue to use D, intervals Dratio. */
+  set('ex_ratio', d.Dratio === null ? '—' : d.Dratio.toFixed(1));
   set('ex_D', d.D === null ? '—' : (d.D.toFixed(1)));
+  var _dn = document.getElementById('ex_Dnote');
+  if (_dn) {
+    var _msg = '';
+    if (d.D !== null && d.Dratio !== null && d.D !== d.Dratio) {
+      if (d.hasUnmarkedCatI) {
+        var _ids = (d.unmarkedCatIds || []).join('\u3001');
+        _msg = '\u2235 下列第 \u2160 類風險項目未標記 \u203B（v\u1D62 = 0）：' + (_ids || '\u2014')
+          + '\u3002依指引 5.4.3.7 公式 (1)，D 須為 0。'
+          + '\u82E5 該項屬四項必須安全裝置於安裝時缺失，應標記 \u203B（\u203B 項目不計入 D）；'
+          + '否則 D = 0 為正確結果。'
+          + '\u3000Formula (1): D = 0 — Category \u2160 risk(s) without \u203B: ' + (_ids || '\u2014')
+          + '. If the item is one of the four essential safety devices absent since installation it should carry \u203B; otherwise D = 0 is correct.';
+      }
+      else if (d.sum < 0) _msg = '\u2235 \u03A3v\u1D62 < 0，依指引 5.4.3.7 公式 (1)，D 須為 0。'
+        + '\u3000Formula (1): D = 0 because \u03A3v\u1D62 < 0.';
+    } else if (d.countMarked) {
+      _msg = '標有 \u203B 的 ' + d.countMarked + ' 個項目已按指引 5.4.3.7 註釋從 D 的計算中剔除。'
+        + '\u3000The ' + d.countMarked + ' item(s) marked \u203B are excluded from the calculation of D.';
+    }
+    _dn.textContent = _msg;
+    _dn.parentNode.style.display = _msg ? '' : 'none';
+  }
   set('ex_marked', d.hasMarkedCatI ? '是 Yes' : '否 No');
-  set('ex_level', d.grade === null ? '—' : (d.gradeEn + ' · ' + d.gradeZh));
+  /* Prefix the headline grade with its full name. The report carries TWO
+     "Level N" figures — the operation & maintenance PERFORMANCE level (Annex
+     A+B+C, /150, Guideline Table 1) and this OVERALL SAFETY level (Annex D,
+     score D, Table 8). Shown as a bare "Level 4" the two read as the same
+     scale and get conflated, which is exactly the confusion reported from
+     site. Reordering the blocks would not fix it; naming them does. */
+  set('ex_level', d.grade === null ? '—'
+      : ('整體安全等級 Overall Safety Level ' + String(d.gradeEn).replace(/^Level\s*/i, '') + ' · ' + d.gradeZh));
   set('ex_rec', d.grade === null ? '資料不足，請完成更多項目。 Insufficient data — complete more items.' : (d.recZh + '　' + d.recEn));
+  // Next Assessment / 下一次風險評估 (EMSD Guideline §6.2 conclusion field)
+  const nextEl = byId('ex_next');
+  if (nextEl) {
+    if (d.grade === null) { nextEl.textContent = ''; }
+    else {
+      const det = nextInspectionDetail(d);
+      // due date = Assessment Date + interval (falls back to today if not entered)
+      const rawDate = ($('#f_inspdate') && $('#f_inspdate').value) || '';
+      const base = rawDate ? new Date(rawDate) : new Date();
+      let dueStr = '';
+      if (!isNaN(base.getTime())) {
+        const due = new Date(base.getTime());
+        due.setFullYear(due.getFullYear() + det.yr);
+        const p = n => String(n).padStart(2, '0');
+        dueStr = '（' + p(due.getDate()) + '/' + p(due.getMonth() + 1) + '/' + due.getFullYear() + ' 或之前 on or before）';
+      }
+      /* Always state the §6.2 basis — for the 3-year outcome list what fired,
+         for the 5-year outcome list what cleared. */
+      const why = det.yr === 3
+        ? ('\u3000觸發 3-年間隔之條件（指引 §6.2）：' + det.reasons.join('；'))
+        : '';   /* 老細 2026-07-23: 5-year outcome prints the date only — listing
+                   every §6.2 condition that did NOT fire made the box unreadable.
+                   det.basis is still returned, so it can be shown elsewhere. */
+      nextEl.textContent = '下一次風險評估 Next Risk Assessment：不遲於 within ' + det.yr + ' 年 years ' + dueStr + why;
+    }
+  }
   const box = byId('printExec');
   if (box) box.className = 'card ex-card' + (d.grade ? ' lvl' + d.grade : '');
 }
@@ -1994,7 +2439,10 @@ function populatePrintCover() {
   set('pc_address', v('f_address'));
   set('pc_mfr', v('f_mfr'));
   set('pc_contractor', v('f_contractor'));
-  set('pc_org', v('f_aracompany') || (window.BRAND&&BRAND.companyBil) || 'Lifthium Consultancy Limited 極樂公證行有限公司');
+  // Assessment organisation: printed exactly as entered. NO brand fallback —
+  // see applyBrand(). A blank field must print blank (set() renders '—') so the
+  // omission is visible, rather than silently naming the white-label company.
+  set('pc_org', v('f_aracompany') || (window.BRAND&&BRAND.ara&&BRAND.ara.company) || '');
   // format date nicely if present
   let d = v('f_inspdate');
   if (d) { try { const dt = new Date(d); d = dt.getFullYear() + ' 年 ' + (dt.getMonth()+1) + ' 月 ' + dt.getDate() + ' 日'; } catch(e){} }
@@ -2089,9 +2537,13 @@ async function loadDraft(id) {
   const dr = await dbGet(id);
   if (!dr) return;
   Object.assign(STATE, dr.state);
+  phMigrate();                       // normalise photo shape (id/part) incl. legacy drafts
   CURRENT_DRAFT_ID = id;
   applyStateToUI();
   updateAll();
+  // The draft carries the photo bytes; write them into the photo store so they
+  // survive a later page reload (autoSave keeps only metadata in localStorage).
+  phPersistAll().then(() => renderPhotos()).catch(() => {});
   $('#draftsModal').classList.remove('show');
   showToast('Draft loaded · 草稿已載入');
   goTab('info');
@@ -2111,7 +2563,23 @@ const $$ = s => document.querySelectorAll(s);
 // getElementById handles IDs containing dots (e.g. item-D.1.1) which querySelector cannot
 const byId = id => document.getElementById(id);
 const esc = s => String(s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const showToast = msg => { const t = $('#toast'); t.textContent = msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'), 2400); };
+let _toastTimer = null;
+const showToast = msg => {
+  const t = $('#toast'); t.textContent = msg; t.classList.add('show');
+  clearTimeout(_toastTimer); _toastTimer = setTimeout(()=>t.classList.remove('show'), 2400);
+};
+// Toast carrying one action button — used by the Annex D remark auto-clear so a
+// cleared remark is always recoverable rather than silently lost.
+function showToastAction(msg, label, fn){
+  const t = $('#toast');
+  t.textContent = msg + '  ';
+  const b = document.createElement('button');
+  b.type = 'button'; b.className = 'toast-act'; b.textContent = label;
+  b.addEventListener('click', () => { t.classList.remove('show'); clearTimeout(_toastTimer); fn(); });
+  t.appendChild(b);
+  t.classList.add('show');
+  clearTimeout(_toastTimer); _toastTimer = setTimeout(()=>t.classList.remove('show'), 8000);
+}
 
 function bootLockScreen() {
   const ls = document.getElementById('lockScreen');
@@ -2148,6 +2616,9 @@ function goTab(name) {
   const tab = document.querySelector('.tab[data-tab="' + name + '"]');
   if (panel) panel.classList.add('active');
   if (tab) tab.classList.add('active');
+  // A hidden panel reports scrollHeight 0, so any grow done while it was hidden
+  // collapsed the box — recompute now that it is visible.
+  growAllRec();
   window.scrollTo({top: 0, behavior: 'smooth'});
 }
 
@@ -2365,10 +2836,10 @@ function renderDItem(it) {
         </div>
       </div>
       <div class="cat-display"></div>
-      ${it.essential ? `<div class="special-flag">
-        <input type="checkbox" class="essential-mark" id="ess-${it.id}">
-        <label for="ess-${it.id}">Mark with ※ — installed without this essential safety device <span style="font-family:var(--font-zh)">標記為 ※（安裝時欠缺此必須安全裝置）</span></label>
-      </div>` : ''}
+      <div class="special-flag${it.essential ? '' : ' special-flag-opt'}">
+      <input type="checkbox" class="essential-mark" id="ess-${it.id}">
+      <label for="ess-${it.id}">Mark with ※ — Category Ⅰ risk arising from a safety protection function absent at installation <span style="font-family:var(--font-zh)">標記為 ※（因安裝時缺乏安全保護功能而存在的第 Ⅰ 類風險）</span><span class="sf-hint">※ items are excluded from D (Guideline 5.4.3.7); a Category Ⅰ risk left unmarked forces D = 0. Tick only where the risk existed from installation. ※ 項目不計入 D；未標記的第 Ⅰ 類風險會令 D 歸零。僅在該風險源於安裝時已缺乏保護功能時勾選。</span></label>
+    </div>
       <div class="improvement">
         <strong>Improvement Recommendation · 改善建議</strong>
         ${esc(it.improvement_en)}
@@ -2386,18 +2857,33 @@ function renderDItem(it) {
   card.querySelectorAll('.lc-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       const choice = btn.dataset.choice;
+      // A remark written for the previous rating contradicts the new one, and a
+      // stale remark is worse than none in a statutory report. Clear it on a
+      // GENUINE change only (not on re-clicking the same rating, and never on
+      // import/restore — those set the button classes directly, they don't click).
+      const prev = STATE.D[it.id] && STATE.D[it.id].choice;
+      const notesEl = card.querySelector('.r-notes');
+      const oldNote = notesEl ? notesEl.value : '';
+      const clearedNote = !!(prev && prev !== choice && oldNote.trim());
+      if (clearedNote && notesEl) notesEl.value = '';
       card.querySelectorAll('.lc-btn').forEach(b => b.classList.remove('act-La','act-Lb','act-Lc','act-NA'));
       btn.classList.add('act-' + choice);
       card.classList.remove('sel-La','sel-Lb','sel-Lc','sel-NA');
       card.classList.add('sel-' + choice);
       if (choice === 'NA') {
         // Not applicable — excluded from D calculation, no risk params
+        const emNA = card.querySelector('.essential-mark');
+        if (emNA) emNA.checked = false;
         riskBlock.style.display = 'none';
         STATE.D[it.id] = { choice: 'NA' };
         autoSave();
         updateAll();
+        if (clearedNote) showToast('Remark cleared — rating changed to N/A · 評級改為不適用，備註已清除');
         return;
       }
+      // ※ auto-marks on Lc for the four essential-device items; assessor may untick
+      const emAuto = card.querySelector('.essential-mark');
+      if (emAuto) emAuto.checked = (choice === 'Lc');
       // Pre-fill risk params from default (La/Lb/Lc)
       const def = choiceDefaults[choice];
       card.querySelector('.r-d').value = def.d;
@@ -2407,6 +2893,20 @@ function renderDItem(it) {
       riskBlock.style.display = 'block';
       saveDItem(it.id, card);
       updateAll();
+      if (clearedNote) {
+        showToastAction(
+          'Remark cleared · 備註已清除 (' + prev + ' → ' + choice + ')',
+          'Undo 復原',
+          () => {
+            const nEl = card.querySelector('.r-notes');
+            if (!nEl) return;
+            nEl.value = oldNote;
+            saveDItem(it.id, card);
+            updateAll();
+            showToast('Remark restored · 備註已復原');
+          }
+        );
+      }
     });
   });
 
@@ -2425,6 +2925,8 @@ function saveDItem(id, card) {
   const btnSel = card.querySelector('.lc-btn.act-La, .lc-btn.act-Lb, .lc-btn.act-Lc');
   if (!btnSel) return;
   const choice = btnSel.dataset.choice;
+  const em = card.querySelector('.essential-mark');
+  const marked = em ? em.checked : false;
   STATE.D[id] = {
     choice,
     d: parseInt(card.querySelector('.r-d').value),
@@ -2432,7 +2934,12 @@ function saveDItem(id, card) {
     l: card.querySelector('.r-l').value,
     c: card.querySelector('.r-c').value,
     notes: card.querySelector('.r-notes').value,
-    flagged: card.querySelector('.essential-mark') ? card.querySelector('.essential-mark').checked : false,
+    flagged: marked,
+    // Auto-※ covers the four essential devices rated Lc. BOTH directions are stored
+    // explicitly so an Excel round-trip (the sheet has no ※ column) can never
+    // silently change the assessor's determination.
+    unmark: (D_ESSENTIAL_IDS.has(id) && choice === 'Lc' && !marked),
+    mark: (!(D_ESSENTIAL_IDS.has(id) && choice === 'Lc') && marked),
   };
   // Update Category badge
   const catDisp = card.querySelector('.cat-display');
@@ -2444,78 +2951,412 @@ function saveDItem(id, card) {
 }
 
 // ─── PHOTOS ───
-function renderPhotos() {
-  const grid = $('#photoGrid');
-  grid.innerHTML = '';
-  const MAX = 24;
-  for (let i = 0; i < MAX; i++) {
-    const p = STATE.photos[i] || {};
-    const cell = document.createElement('div');
-    cell.className = 'photo-cell' + (p.dataUrl ? '' : ' empty');
-    const imgHtml = p.dataUrl
-      ? `<img src="${p.dataUrl}" alt=""><span class="remove" data-rm="${i}">✕</span>`
-      : '+ Add 加入相片';
-    cell.innerHTML = `
-      <div class="photo-cell-no">Photo ${i + 1} · 相片 ${i + 1}</div>
-      <div class="photo-slot" data-idx="${i}">${imgHtml}</div>
-      <textarea class="photo-desc" data-idx="${i}" rows="2"
-        placeholder="Description / Finding 描述／發現…">${esc(p.desc || '')}</textarea>
-    `;
-    grid.appendChild(cell);
-  }
-  // Image slot click → upload, or remove
-  grid.querySelectorAll('.photo-slot').forEach(s => s.addEventListener('click', e => {
-    if (e.target.classList.contains('remove')) {
-      const idx = parseInt(e.target.dataset.rm);
-      // Keep the description, clear only the image
-      if (STATE.photos[idx]) { delete STATE.photos[idx].dataUrl; delete STATE.photos[idx].name; }
-      renderPhotos();
-      autoSave();
-      return;
-    }
-    const idx = parseInt(s.dataset.idx);
-    $('#fileInput').dataset.targetIdx = idx;
-    $('#fileInput').click();
+/* ─── PHOTOS ───
+   Photo bytes live in IndexedDB, NOT localStorage. localStorage caps at ~5MB and
+   its setItem quota error was being swallowed silently — at ~350KB per photo the
+   draft stopped saving after roughly a dozen photos while appearing to work.
+   localStorage now holds only light metadata; IndexedDB holds the images. */
+const PH_MAX = 200;
+/* Photos per printed sheet, PER PART.
+   Part 1 (general outlook) = 6 up (3x2) — many short captions.
+   Part 2 (findings) = 4 up (2x2) — bilingual finding text needs room, and the
+   wider cell makes a landscape photo 2.4x bigger (5808mm2 vs 2380mm2).
+   Both use the same 107mm cell box, so the page budget is IDENTICAL
+   (+12.9mm headroom) — see scripts/print_budget.py. */
+const PH_PER_SHEET_BY_PART = { 1: 6, 2: 4 };
+const PH_PER_SHEET = 6;                       // legacy default / Part 1
+function phPerSheet(part){ return PH_PER_SHEET_BY_PART[part] || PH_PER_SHEET; }
+const PH_VIDEO_EXT = ['mp4','mov','avi','m4v','3gp','mkv'];
+const PH_HEIC_EXT = ['heic','heif'];
+const PH_DB = 'lifthium_ara_photos';
+let phUid = Date.now();
+
+function phDb() {
+  return new Promise((res, rej) => {
+    const r = indexedDB.open(PH_DB, 1);
+    r.onupgradeneeded = () => r.result.createObjectStore('photos', { keyPath: 'id' });
+    r.onsuccess = () => res(r.result);
+    r.onerror = () => rej(r.error);
+  });
+}
+async function phPut(rec) {
+  const d = await phDb();
+  return new Promise((res, rej) => {
+    const t = d.transaction('photos', 'readwrite');
+    t.objectStore('photos').put({ id: rec.id, dataUrl: rec.dataUrl });
+    t.oncomplete = res; t.onerror = () => rej(t.error);
+  });
+}
+async function phAll() {
+  const d = await phDb();
+  return new Promise((res, rej) => {
+    const t = d.transaction('photos', 'readonly');
+    const q = t.objectStore('photos').getAll();
+    q.onsuccess = () => res(q.result || []); q.onerror = () => rej(q.error);
+  });
+}
+async function phDel(id) {
+  const d = await phDb();
+  return new Promise((res, rej) => {
+    const t = d.transaction('photos', 'readwrite');
+    t.objectStore('photos').delete(id);
+    t.oncomplete = res; t.onerror = () => rej(t.error);
+  });
+}
+async function phClear() {
+  const d = await phDb();
+  return new Promise((res, rej) => {
+    const t = d.transaction('photos', 'readwrite');
+    t.objectStore('photos').clear();
+    t.oncomplete = res; t.onerror = () => rej(t.error);
+  });
+}
+/* Write every in-memory photo to IndexedDB (used after a JSON import) */
+async function phPersistAll() {
+  for (const p of (STATE.photos || [])) { if (p.dataUrl) { try { await phPut(p); } catch (e) {} } }
+}
+/* Merge image bytes back in after a reload; drops metadata whose bytes are gone */
+async function phHydrate() {
+  let rows = [];
+  try { rows = await phAll(); } catch (e) { return; }
+  const byId = new Map(rows.map(r => [r.id, r.dataUrl]));
+  STATE.photos = (STATE.photos || []).filter(p => {
+    if (p.dataUrl) return true;
+    const d = byId.get(p.id);
+    if (d) { p.dataUrl = d; return true; }
+    return false;
+  });
+}
+/* Older drafts stored a fixed 24-slot array with no id/part */
+function phMigrate() {
+  STATE.photos = (STATE.photos || []).filter(p => p && (p.dataUrl || p.desc));
+  STATE.photos.forEach(p => {
+    if (!p.id) p.id = 'p' + (++phUid);
+    if (p.part !== 1 && p.part !== 2) p.part = 1;
+  });
+}
+
+const phExt = n => (n.split('.').pop() || '').toLowerCase();
+const phStem = n => n.replace(/\.[^.]+$/, '').toLowerCase();
+/* Captions are typed in lower case on site; the report reads better with a
+   capital. Only the leading a–z is touched — CJK, digits and text that is
+   already capitalised (CCTV, IMG…) are left exactly as written. */
+const phCapFirst = s => (s || '').replace(/^[a-z]/, c => c.toUpperCase());
+/* Caption list: "C:\path\file.jpg", caption   |   C:\path\file.jpg, caption
+   The PATH IS IGNORED — only the filename matters, so a list from the engineer's
+   PC, a server drive or a Mac all match. Indexed by full name AND by stem, because
+   converting HEIC→JPG renames IMG_4842.HEIC to IMG_4842.jpg while the list still
+   says .HEIC; stem matching keeps those captions attached. */
+function phParseCaptions(text) {
+  const full = new Map(), stem = new Map();
+  (text || '').split(/\r?\n/).forEach(line => {
+    const s = line.trim();
+    if (!s) return;
+    let m = s.match(/^"([^"]+)"\s*(?:,\s*([\s\S]*))?$/);
+    if (!m) m = s.match(/^([^,]+?)\s*(?:,\s*([\s\S]*))?$/);
+    if (!m) return;
+    const file = m[1].trim().split(/[\\/]/).pop();
+    if (!file) return;
+    const cap = phCapFirst((m[2] || '').trim());
+    full.set(file.toLowerCase(), cap);
+    stem.set(phStem(file), cap);
+  });
+  // undefined = filename absent from the list; '' = listed but no caption given
+  return { get(name) { const f = full.get(name.toLowerCase()); return f !== undefined ? f : stem.get(phStem(name)); } };
+}
+/* Decode via object URL. Chrome fires onerror for HEIC — that is how HEIC is
+   caught and reported instead of the photo vanishing silently. */
+function phLoadImage(file) {
+  return new Promise((res, rej) => {
+    const url = URL.createObjectURL(file);
+    const img = new Image();
+    img.onload = () => { URL.revokeObjectURL(url); res(img); };
+    img.onerror = () => { URL.revokeObjectURL(url); rej(new Error('decode')); };
+    img.src = url;
+  });
+}
+function phCompress(img, maxDim = 1200, q = 0.6) {
+  let w = img.naturalWidth, h = img.naturalHeight;
+  if (w > maxDim || h > maxDim) { const r = maxDim / Math.max(w, h); w = Math.round(w * r); h = Math.round(h * r); }
+  const c = document.createElement('canvas');
+  c.width = w; c.height = h;
+  c.getContext('2d').drawImage(img, 0, 0, w, h);
+  return c.toDataURL('image/jpeg', q);
+}
+function phLog(part, html) {
+  const el = byId('phLog' + part);
+  if (!el) return;
+  el.className = 'ph-log show';
+  el.innerHTML = html;
+}
+function phOf(part) { return (STATE.photos || []).filter(p => p.part === part); }
+
+/* ── Findings photo checklist ──
+   Every Annex D item rated Lb/Lc is a finding that should be photographed in
+   Part 2. Photos are HARD-LINKED to a finding via rec.finding = itemId. */
+function findingsList() {
+  const out = [];
+  Object.values(DATA.annexD).forEach(sec => sec.items.forEach(it => {
+    const st = STATE.D[it.id];
+    if (!st || (st.choice !== 'Lb' && st.choice !== 'Lc')) return;
+    const src = it[st.choice] || {};
+    /* Bilingual caption: ZH and EN on their own lines. .photo-desc-print is
+       white-space:pre-wrap, so the \n renders as a real line break in the PDF. */
+    const nm = [it.name_zh, it.name_en].filter(Boolean).join('  ');
+    const fd = [src.desc_zh, src.desc_en].filter(Boolean).join('  ');
+    const defCap = it.id + ' · ' + nm + (fd ? '\n' + fd : '');
+    /* The Chinese-only form used before 2026-07-22 — kept so an untouched
+       caption can be auto-upgraded, while a hand-edited one is left alone. */
+    const legacyCapZh = it.id + ' · ' + (it.name_zh || it.name_en || '') +
+      (src.desc_zh ? ' — ' + src.desc_zh : '');
+    out.push({ id: it.id, name_en: it.name_en, name_zh: it.name_zh, choice: st.choice,
+      findingZh: src.desc_zh || '', findingEn: src.desc_en || '', defCap, legacyCapZh });
   }));
-  // Description typing → save in place (preserve photo)
-  grid.querySelectorAll('.photo-desc').forEach(t => t.addEventListener('input', () => {
-    const idx = parseInt(t.dataset.idx);
-    if (!STATE.photos[idx]) STATE.photos[idx] = {};
-    STATE.photos[idx].desc = t.value;
+  return out;   // already in Annex D order
+}
+function findingCovered(id) { return (STATE.photos || []).some(p => p.part === 2 && p.finding === id); }
+
+/* Finding captions were Chinese-only before 2026-07-22. Upgrade a caption to the
+   bilingual form ONLY when it still exactly matches the old ZH-only default; a
+   hand-typed or edited caption never matches, so it is never overwritten.
+   Idempotent — once upgraded, desc no longer equals legacyCapZh. */
+function phUpgradeFindingCaps() {
+  const F = {}; findingsList().forEach(f => { F[f.id] = f; });
+  const hit = [];
+  (STATE.photos || []).forEach(p => {
+    if (p.part !== 2 || !p.finding) return;
+    const f = F[p.finding];
+    if (f && p.desc === f.legacyCapZh && p.desc !== f.defCap) { p.desc = f.defCap; hit.push(p); }
+  });
+  if (hit.length) {
+    (async () => { for (const p of hit) { try { await phPut(p); } catch (e) {} } })();
     autoSave();
+  }
+  return hit.length;
+}
+
+function renderFindings() {
+  const panel = byId('findingsPanel');
+  if (!panel) return;
+  const list = findingsList();
+  if (!list.length) {
+    panel.innerHTML = '<div class="fnd-empty">尚無 Lb／Lc 發現 · No Lb/Lc findings yet — 評定附件 D 後將在此自動列出，提醒你為每個發現拍照。</div>';
+    return;
+  }
+  const covered = list.filter(f => findingCovered(f.id)).length;
+  const cls = covered >= list.length ? 'ok' : 'warn';
+  let html = '<div class="fnd-head"><span>發現拍照清單 Findings Photo Checklist</span>' +
+    '<span class="fnd-count ' + cls + '">已拍 ' + covered + ' / ' + list.length + ' photographed</span></div>';
+  list.forEach(f => {
+    const cov = findingCovered(f.id);
+    html += '<div class="fnd-row' + (cov ? ' cov' : '') + '">' +
+      '<span class="fnd-badge ' + f.choice.toLowerCase() + '">' + f.choice + '</span>' +
+      '<div class="fnd-main"><div class="fnd-name">' + esc(f.id) + ' · ' + esc(f.name_zh || '') + ' ' + esc(f.name_en || '') + '</div>' +
+      '<div class="fnd-desc" title="' + esc(f.findingZh || f.findingEn) + '">' + esc(f.findingZh || f.findingEn) + '</div></div>' +
+      '<span class="fnd-status">' + (cov ? '✓ 已拍' : '⚠ 待拍') + '</span>' +
+      '<button class="ph-btn ph-btn-s fnd-add" data-finding="' + esc(f.id) + '" type="button">＋ 相片 Photo</button>' +
+      '</div>';
+  });
+  panel.innerHTML = html;
+  panel.querySelectorAll('.fnd-add').forEach(b => b.addEventListener('click', () => {
+    const fi = $('#fileInput');
+    fi.dataset.part = '2';
+    fi.dataset.finding = b.dataset.finding;
+    fi.click();
   }));
 }
 
-$('#fileInput').addEventListener('change', e => {
-  const files = Array.from(e.target.files || []);
-  const targetIdx = parseInt(e.target.dataset.targetIdx || '0');
-  files.forEach((file, i) => {
-    const reader = new FileReader();
-    reader.onload = ev => {
-      // Compress if too big — basic resize via canvas
-      const img = new Image();
-      img.onload = () => {
-        const maxDim = 1600;
-        let w = img.width, h = img.height;
-        if (w > maxDim || h > maxDim) {
-          const r = maxDim / Math.max(w, h);
-          w = Math.round(w * r); h = Math.round(h * r);
-        }
-        const canvas = document.createElement('canvas');
-        canvas.width = w; canvas.height = h;
-        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-        const compressed = canvas.toDataURL('image/jpeg', 0.7);
-        const slot = targetIdx + i;
-        // Preserve any existing description on that slot
-        STATE.photos[slot] = { ...(STATE.photos[slot] || {}), dataUrl: compressed, name: file.name };
-        renderPhotos();
-        autoSave();
-      };
-      img.src = ev.target.result;
-    };
-    reader.readAsDataURL(file);
+async function phAddFiles(part, fileList, finding) {
+  const files = Array.from(fileList).sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true }));
+  if (!files.length) return;
+  const caps = phParseCaptions((byId('phCaps' + part) || {}).value || '');
+  const fndMeta = finding ? (findingsList().find(f => f.id === finding) || { id: finding, defCap: finding }) : null;
+  const r = { added: 0, matched: 0, nocap: [], video: [], heic: [], failed: [], over: 0, tagged: 0 };
+  for (const f of files) {
+    const e = phExt(f.name);
+    if (PH_VIDEO_EXT.includes(e)) { r.video.push(f.name); continue; }
+    if (STATE.photos.length >= PH_MAX) { r.over++; continue; }
+    let img;
+    try { img = await phLoadImage(f); }
+    catch (err) { (PH_HEIC_EXT.includes(e) ? r.heic : r.failed).push(f.name); continue; }
+    const cap = caps.get(f.name);
+    let desc;
+    if (cap !== undefined) { desc = cap; if (cap) r.matched++; }
+    else if (fndMeta) { desc = fndMeta.defCap; }       // finding supplies the caption
+    else { desc = ''; r.nocap.push(f.name); }
+    const rec = { id: 'p' + (++phUid), name: f.name, desc: desc || '', dataUrl: phCompress(img), part };
+    if (finding) { rec.finding = finding; r.tagged++; }
+    STATE.photos.push(rec);
+    try { await phPut(rec); } catch (err) {}
+    r.added++;
+  }
+  autoSave();
+  renderPhotos();
+  const L = [];
+  L.push('<span class="li ok"><b>✓ ' + r.added + '</b> photo(s) added 已加入' +
+    (r.tagged ? '　|　<b>' + r.tagged + '</b> linked to finding 已綁定發現 ' + esc(finding) : '　|　<b>' + r.matched + '</b> caption(s) matched 已配對註解') + '</span>');
+  if (r.nocap.length) L.push('<span class="li wa"><b>⚠ ' + r.nocap.length + '</b> not in the caption list — description left blank 未列於註解清單，描述留空：' + esc(r.nocap.slice(0, 6).join(', ')) + (r.nocap.length > 6 ? ' …' : '') + '</span>');
+  if (r.video.length) L.push('<span class="li wa"><b>⚠ ' + r.video.length + '</b> video(s) skipped — cannot go in a PDF 影片已略過：' + esc(r.video.slice(0, 4).join(', ')) + (r.video.length > 4 ? ' …' : '') + '</span>');
+  if (r.heic.length) L.push('<span class="li er"><b>✕ ' + r.heic.length + ' HEIC file(s) could not be read by Chrome</b> — convert to JPG and add again · Chrome 讀唔到 HEIC，請轉成 JPG 後再加入：' + esc(r.heic.slice(0, 4).join(', ')) + (r.heic.length > 4 ? ' …' : '') + '</span>');
+  if (r.failed.length) L.push('<span class="li er"><b>✕ ' + r.failed.length + '</b> file(s) failed to decode 無法解讀：' + esc(r.failed.slice(0, 4).join(', ')) + '</span>');
+  if (r.over) L.push('<span class="li er"><b>✕ ' + r.over + '</b> rejected — ' + PH_MAX + '-photo limit reached 已達 ' + PH_MAX + ' 張上限</span>');
+  phLog(part, L.join(''));
+}
+
+// Re-apply the caption list to photos ALREADY uploaded in this part — used when a
+// caption was typed wrong and corrected in the list after upload. "List wins":
+// where the list now has a (different) caption for a filename, it overwrites the
+// card. Filenames absent from the list are left untouched, so hand-typed captions
+// on photos that were never in the list are never wiped. Fully undoable.
+function phRematch(part) {
+  const caps = phParseCaptions((byId('phCaps' + part) || {}).value || '');
+  const arr = phOf(part);
+  const changed = [];        // {id, from} for undo
+  let updated = 0, notInList = 0, unchanged = 0;
+  arr.forEach(p => {
+    const cap = caps.get(p.name);         // undefined = filename not in list
+    if (cap === undefined) { notInList++; return; }
+    if (cap === (p.desc || '')) { unchanged++; return; }
+    changed.push({ id: p.id, from: p.desc || '' });
+    p.desc = cap;
+    updated++;
   });
+
+  if (!updated) {
+    phLog(part, '<span class="li wa"><b>0</b> caption(s) changed · 冇註解需要更新（' +
+      unchanged + ' 相同，' + notInList + ' 唔喺清單）</span>');
+    return;
+  }
+
+  // persist the new captions
+  (async () => { for (const p of arr) { try { await phPut(p); } catch (e) {} } })();
+  autoSave();
+  renderPhotos();
+
+  phLog(part,
+    '<span class="li ok"><b>✓ ' + updated + '</b> caption(s) updated from the list · 已依清單更新</span>' +
+    '<span class="li wa"><b>' + unchanged + '</b> unchanged 相同　|　<b>' + notInList + '</b> not in list — kept as-is 唔喺清單，保留原狀</span>');
+
+  showToastAction(
+    (updated) + ' caption(s) updated · 已更新 ' + updated + ' 個註解',
+    'Undo 復原',
+    () => {
+      const byId2 = {}; phOf(part).forEach(p => { byId2[p.id] = p; });
+      changed.forEach(c => { if (byId2[c.id]) byId2[c.id].desc = c.from; });
+      (async () => { for (const p of phOf(part)) { try { await phPut(p); } catch (e) {} } })();
+      autoSave();
+      renderPhotos();
+      showToast('Captions restored · 註解已復原');
+    }
+  );
+}
+
+function renderPhotos() {
+  try { phUpgradeFindingCaps(); } catch (e) {}
+  [1, 2].forEach(part => {
+    const grid = byId('phGrid' + part);
+    if (!grid) return;
+    grid.innerHTML = '';
+    const arr = phOf(part);
+    const emptyEl = byId('phEmpty' + part);
+    if (emptyEl) emptyEl.style.display = arr.length ? 'none' : 'block';
+    const cnt = byId('phCount' + part);
+    if (cnt) cnt.textContent = arr.length + ' photo(s) 張';
+    const partCard = grid.closest('.ph-part');
+    if (partCard) partCard.classList.toggle('ph-empty-part', arr.length === 0);
+    // Group into sheets of 6. Each sheet gets break-before:page in print (which
+    // Chrome honours reliably) and carries its own header inside it, so forcing
+    // the page break never orphans a title. This replaces break-inside:avoid on
+    // a grid container, which Chrome ignores (→ the recurring 3-per-page bug).
+    let sheet = null;
+    const partLabel = (part === 1)
+      ? 'PART 1 · GENERAL OUTLOOK 第一部分 · 整體外觀'
+      : 'PART 2 · FINDINGS 第二部分 · 發現事項';
+    const per = phPerSheet(part);
+    arr.forEach((p, i) => {
+      if (i % per === 0) {
+        const n = i / per + 1;
+        sheet = document.createElement('div');
+        sheet.className = 'photo-sheet' + (i === 0 ? ' first-sheet' : '') +
+          (per === 4 ? ' sheet-2up' : '');
+        const hd = document.createElement('div');
+        hd.className = 'ph-sheet-head';
+        hd.textContent = partLabel + ' — Sheet ' + n + ' 第 ' + n + ' 頁（' +
+          Math.min(per, arr.length - i) + ' 張）';
+        sheet.appendChild(hd);
+        grid.appendChild(sheet);
+      }
+      const cell = document.createElement('div');
+      cell.className = 'photo-cell';
+      const no = String(i + 1).padStart(2, '0');
+      const fndBadge = (part === 2 && p.finding) ? '<span class="cell-fnd" title="連結發現 linked finding">🔗 ' + esc(p.finding) + '</span>' : '';
+      cell.innerHTML =
+        '<div class="photo-cell-no">P' + part + '-' + no + fndBadge + '<span class="ph-fn" title="' + esc(p.name || '') + '">' + esc(p.name || '') + '</span></div>' +
+        '<div class="photo-slot"><img src="' + p.dataUrl + '" alt=""><span class="remove" data-rm="' + p.id + '">✕</span></div>' +
+        '<textarea class="photo-desc' + (p.desc ? '' : ' nomatch') + '" data-id="' + p.id + '" rows="2" placeholder="Description / Finding 描述／發現…">' + esc(p.desc || '') + '</textarea>' +
+        '<div class="photo-desc-print" data-pr="' + p.id + '">' + esc(p.desc || '') + '</div>';
+      sheet.appendChild(cell);
+    });
+  });
+
+  const n = STATE.photos.length;
+  // Part 2 opens a new sheet only if Part 1 printed something before it
+  const g2 = byId('phGrid2');
+  const p2card = g2 && g2.closest('.ph-part');
+  if (p2card) p2card.classList.toggle('ph-newpage', phOf(1).length > 0 && phOf(2).length > 0);
+  const tot = byId('phTotal'); if (tot) tot.textContent = n + ' / ' + PH_MAX;
+  let bytes = 0; STATE.photos.forEach(p => { bytes += (p.dataUrl || '').length; });
+  const sz = byId('phSize'); if (sz) sz.textContent = (bytes / 1048576).toFixed(1) + ' MB in IndexedDB';
+  const bar = byId('phBar');
+  if (bar) { bar.style.width = Math.min(100, n / PH_MAX * 100) + '%'; bar.className = n >= PH_MAX ? 'max' : (n > PH_MAX * .8 ? 'hi' : ''); }
+
+  document.querySelectorAll('#panel-photos .remove').forEach(b => b.addEventListener('click', async () => {
+    const id = b.dataset.rm;
+    STATE.photos = STATE.photos.filter(x => x.id !== id);
+    try { await phDel(id); } catch (e) {}
+    autoSave(); renderPhotos();
+  }));
+  document.querySelectorAll('#panel-photos .photo-desc').forEach(t => t.addEventListener('input', () => {
+    const rec = STATE.photos.find(x => x.id === t.dataset.id);
+    if (!rec) return;
+    rec.desc = t.value;
+    const pr = document.querySelector('.photo-desc-print[data-pr="' + t.dataset.id + '"]');
+    if (pr) pr.textContent = t.value;
+    t.classList.toggle('nomatch', !t.value.trim());
+    autoSave();
+  }));
+  try { renderFindings(); } catch (e) {}   // keep coverage ✓/⚠ in sync with photos
+}
+
+document.querySelectorAll('[data-phadd]').forEach(b => b.addEventListener('click', () => {
+  $('#fileInput').dataset.part = b.dataset.phadd;
+  $('#fileInput').click();
+}));
+document.querySelectorAll('[data-phrematch]').forEach(b => b.addEventListener('click', () => {
+  phRematch(+b.dataset.phrematch);
+}));
+$('#fileInput').addEventListener('change', async e => {
+  const part = +e.target.dataset.part || 1;
+  const finding = e.target.dataset.finding || null;   // set by a Findings-checklist ＋Photo button
+  const btn = finding
+    ? document.querySelector('.fnd-add[data-finding="' + finding + '"]')
+    : document.querySelector('[data-phadd="' + part + '"]');
+  const old = btn ? btn.textContent : '';
+  if (btn) { btn.textContent = 'Reading… 讀取中…'; btn.disabled = true; }
+  await phAddFiles(part, e.target.files, finding);
+  if (btn) { btn.textContent = old; btn.disabled = false; }
   e.target.value = '';
+  delete e.target.dataset.finding;
+});
+$('#phPrint').addEventListener('click', () => doPrint());
+$('#phClear').addEventListener('click', async () => {
+  if (!STATE.photos.length) return;
+  if (!confirm('Delete ALL ' + STATE.photos.length + ' photos from both parts? This cannot be undone.\n刪除兩個部分全部 ' + STATE.photos.length + ' 張相片？此操作無法復原。')) return;
+  STATE.photos = [];
+  try { await phClear(); } catch (e) {}
+  autoSave(); renderPhotos();
+  [1, 2].forEach(p => { const el = byId('phLog' + p); if (el) el.className = 'ph-log'; });
+  showToast('All photos deleted · 已刪除全部相片');
 });
 
 // ─── SCORING ENGINE ───
@@ -2563,23 +3404,46 @@ function omGrade(total) {
 // v_i: Cat I = 0 (or ※ excluded), Cat II = -1, Cat III = 1
 // D = (Σ vi / n) × 100  if ∀vi ≠ 0 and Σvi ≥ 0
 // D = 0 if ∃vi = 0 (non-※ Cat I exists) OR Σvi < 0
+// ── ※ auto-mark ─────────────────────────────────────────────────────────────
+// The four "essential safety device" items (car door lock, ACOP, UCMP, double
+// brake) carry ※ AUTOMATICALLY whenever they are rated Lc, because Lc on these
+// items means the device was absent at installation — exactly the guideline's
+// 「因安裝時缺乏安全保護功能而存在第Ⅰ類風險」. Per 5.4.3.7:「標有 ※ 的項目不
+// 包括在 D 的計算中」.
+// This MUST be derived, never clicked: the Excel Annex D sheet has no ※ column,
+// so every Excel round-trip silently reset all ※ and forced F = 0.
+// The assessor can still override by unticking the box, which stores unmark:true.
+const D_ESSENTIAL_IDS = (() => {
+  const s = new Set();
+  Object.values(DATA.annexD).forEach(sec => sec.items.forEach(it => { if (it.essential) s.add(it.id); }));
+  return s;
+})();
+function isMarkedD(id, st) {
+  if (!st) return false;
+  if (st.unmark === true) return false;   // assessor deliberately removed an auto-※
+  if (st.mark === true) return true;      // assessor deliberately added ※ (any item)
+  return D_ESSENTIAL_IDS.has(id) && st.choice === 'Lc';   // auto for the four essentials
+}
+
 // If D ≥ 70 but ※-marked Cat I exists, grade = Level 4
 function calcDScore() {
   const items = [];
   let countCatI = 0, countCatII = 0, countCatIII = 0, countNA = 0, countMarked = 0;
   let hasUnmarkedCatI = false;   // Any non-※ Cat I → D = 0
+  const unmarkedCatIds = [];     // which ones — the assessor must be able to see them
   let hasMarkedCatI = false;     // ※-marked Cat I → forces Level 4 even if D ≥ 70
   Object.entries(STATE.D).forEach(([id, st]) => {
     if (st.choice === 'NA') { countNA++; return; }  // Not applicable — fully excluded
     const cat = st.c;
     if (cat === 'I') {
       countCatI++;
-      if (st.flagged) {
+      if (isMarkedD(id, st)) {
         hasMarkedCatI = true;
         countMarked++;
         // ※ items excluded from D calculation
       } else {
         hasUnmarkedCatI = true;
+        unmarkedCatIds.push(id);
         items.push(0);
       }
     } else if (cat === 'II') {
@@ -2595,13 +3459,16 @@ function calcDScore() {
   const totalForCalc = items.length;
   const sum = items.reduce((a, b) => a + b, 0);
 
-  let D;
+  let D, Dratio;
   if (totalForCalc === 0) {
-    D = null;
-  } else if (hasUnmarkedCatI || sum < 0) {
-    D = 0;
+    D = null; Dratio = null;
   } else {
-    D = (sum / totalForCalc) * 100;
+    // Dratio = the genuine risk-weighted score (※ items already excluded from
+    // totalForCalc). D is the same value EXCEPT it is forced to 0 by the
+    // ∃vᵢ=0 / sum<0 override, which exists only to drive the Level-4 grade &
+    // suspend-use recommendation — it is NOT the lift's true safety score.
+    Dratio = (sum / totalForCalc) * 100;
+    D = (hasUnmarkedCatI || sum < 0) ? 0 : Dratio;
   }
 
   let grade, gradeEn, gradeZh, recEn, recZh;
@@ -2629,33 +3496,65 @@ function calcDScore() {
     recZh = '應盡快採取防護措施，以消除或降低風險。';
   } else {
     grade = 4; gradeEn = 'Level 4'; gradeZh = '第四級';
-    // Per EMSD Guideline Table 8, the D < 70 column recommendation is the suspend-use sentence ONLY.
-    recEn = 'Recommend suspending use of the lift; operation may resume only after protective measures have been taken to eliminate or reduce the risk.';
-    recZh = '建議停用升降機。只有在採取防護措施以消除或降低風險後，才可恢復操作。';
+    // Approved Level 4 wording (per 老細, from the attached guideline card, 得分 100 或以下).
+    // The "suspend use of the lift" phrasing must NOT be used unless expressly instructed.
+    recEn = 'RPs shall take immediate and appropriate measures to improve the performance and re-assess the situation within a reasonable timeframe (e.g. three years).';
+    recZh = '負責人須立即採取適當措施改善表現，並在合理的時限內（例如三年）重新評估情況。';
   }
 
   return {
-    D, grade, gradeEn, gradeZh, recEn, recZh,
+    D, Dratio, grade, gradeEn, gradeZh, recEn, recZh,
     countCatI, countCatII, countCatIII, countNA, countMarked,
     totalRated, totalForCalc, sum,
-    hasUnmarkedCatI, hasMarkedCatI,
+    hasUnmarkedCatI, hasMarkedCatI, unmarkedCatIds,
     totalItems: DATA.totals.D,
   };
 }
 
-// Re-determine next inspection interval per EMSD § 6.2:
-// 3-year interval if: a) >30 yrs old; b) lacks all 4 essential safety devices;
-// c) D < 80; or d) ARA opines close monitoring needed. Else 5 years.
+// Re-determine next inspection interval per EMSD Guideline §6.2:
+// 3-year interval if any of: a) lift >30 years old; b) lacks ALL FOUR essential
+// safety devices; c) genuine safety score D < 80; or d) ARA opines close
+// monitoring needed. Otherwise 5 years.
+// NB (c) tests the GENUINE score (Dratio), not the displayed D: a single
+// unmarked Class I risk forces the displayed D to 0 to drive the Level-4 grade,
+// but that 0 is not the lift's safety score and must not by itself shorten the
+// interval to 3 years.
 function nextInspectionInterval(d) {
-  const liftAge = (parseInt($('#f_year')?.value) || 0) > 0
-    ? (new Date().getFullYear() - parseInt($('#f_year').value))
+  return nextInspectionDetail(d).yr;
+}
+function nextInspectionDetail(d) {
+  /* EMSD Guideline §6.2 — the interval is 3 years if ANY of four conditions is
+     met, otherwise a maximum of 5. All four are evaluated here, including
+     (d) the assessor's own opinion, and the basis is reported for BOTH
+     outcomes: a bare "within 5 years" invites the reader to hunt through the
+     Guideline and land on Table 1 (which is the operation & maintenance
+     performance table and carries a different, unrelated "three years"). */
+  const yEl = $('#f_year');
+  const liftAge = (parseInt(yEl && yEl.value) || 0) > 0
+    ? (new Date().getFullYear() - parseInt(yEl.value))
     : null;
   const ess = DATA.annexA.filter(it => it.essential);
   const lacksAllEssential = ess.length > 0 && ess.every(it => STATE.A[it.id] === 'no');
+  const essHave = ess.filter(it => STATE.A[it.id] === 'yes').length;
   const ageOver30 = liftAge !== null && liftAge > 30;
-  const lowScore = d.D !== null && d.D < 80;
-  if (ageOver30 || lacksAllEssential || lowScore) return 3;
-  return 5;
+  const score = (d.Dratio != null) ? d.Dratio : d.D;   // genuine score, not the override
+  const lowScore = score !== null && score < 80;
+  const closeWatch = !!(STATE.info && STATE.info.f_closewatch);   // §6.2(d)
+  const reasons = [];
+  if (ageOver30) reasons.push('運作超過 30 年 · lift over 30 years old');
+  if (lacksAllEssential) reasons.push('欠缺全部四項必須安全裝置 · lacks all four essential safety devices');
+  if (lowScore) reasons.push('整體安全得分低於 80 · overall score D below 80');
+  if (closeWatch) reasons.push('風險評估員認為須密切監察 · Risk Assessor considers close monitoring necessary');
+  const yr = (ageOver30 || lacksAllEssential || closeWatch || lowScore) ? 3 : 5;
+  /* Why 5 applies: state each §6.2 test and the value that cleared it. */
+  const basis = [];
+  basis.push(liftAge === null ? '機齡未填 · lift age not entered'
+             : ('機齡 ' + liftAge + ' 年（≤30）· lift age ' + liftAge + ' yrs'));
+  basis.push(score === null ? '得分未定 · score not determined'
+             : ('D = ' + score.toFixed(1) + '（≥80）'));
+  basis.push('具備 ' + essHave + '/' + ess.length + ' 項必須安全裝置 · ' + essHave + ' of ' + ess.length + ' essential devices fitted');
+  basis.push('評估員未認為須密切監察 · close monitoring not indicated');
+  return { yr, reasons, basis, score, liftAge, essHave, essTotal: ess.length, closeWatch };
 }
 
 // ─── UPDATE ALL ───
@@ -2669,6 +3568,7 @@ function updateAll() {
   const omG = omGrade(om.total);
   const d = calcDScore();
   updateAutofillCount();
+  try { renderFindings(); } catch (e) {}   // Lb/Lc findings list tracks Annex D live
 
   $('#aSum').textContent = om.a;
   $('#bSum').textContent = om.b;
@@ -2780,6 +3680,13 @@ function bindInfoInputs() {
     const el = $('#rec_' + k);
     if (el) el.addEventListener('input', autoSave);
   });
+  /* §6.2(d) is a checkbox: bind .checked on 'change', not .value on 'input'. */
+  const cw = $('#f_closewatch');
+  if (cw) cw.addEventListener('change', () => {
+    STATE.info.f_closewatch = cw.checked;
+    computeAll();
+    autoSave();
+  });
   const afD = $('#autofillD');
   if (afD) afD.addEventListener('click', autofillAnnexD);
   const fp = $('#filledPill');
@@ -2792,7 +3699,16 @@ function autoSave() {
   STATE.urgent = $('#f_urgent')?.value || '';
   if (!STATE.recs) STATE.recs = { A:'', B:'', C:'', D:'' };
   ['A','B','C','D'].forEach(k => { const el = $('#rec_' + k); if (el) STATE.recs[k] = el.value; });
-  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(STATE)); } catch (e) {}
+  try {
+    // Image bytes go to IndexedDB, never localStorage (~5MB cap). Persisting them
+    // here threw a quota error that was silently swallowed, so the draft quietly
+    // stopped saving once a dozen or so photos had been added.
+    const slim = { ...STATE, photos: (STATE.photos || []).map(p => ({ id: p.id, name: p.name, desc: p.desc, part: p.part, finding: p.finding || null })) };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(slim));
+  } catch (e) {
+    console.warn('Draft auto-save failed', e);
+    try { showToast('⚠ Auto-save failed — export a JSON backup · 自動儲存失敗，請匯出 JSON 備份'); } catch (_) {}
+  }
 }
 
 function loadFromStorage() {
@@ -2801,6 +3717,7 @@ function loadFromStorage() {
     if (!raw) return false;
     const s = JSON.parse(raw);
     Object.assign(STATE, s);
+    phMigrate();
     return true;
   } catch (e) { return false; }
 }
@@ -2809,7 +3726,16 @@ function applyStateToUI() {
   // Info
   Object.entries(STATE.info).forEach(([k, v]) => {
     const el = $('#' + k);
-    if (el) el.value = v;
+    if (!el) return;
+    // Lift Type options are now English-only; strip the Chinese suffix from any
+    // value saved by an earlier version (e.g. "Passenger 載客" → "Passenger") so
+    // the dropdown still selects instead of going blank.
+    if (k === 'f_type' && typeof v === 'string') v = v.replace(/\s*[\u4e00-\u9fff].*$/, '');
+    /* Checkboxes (e.g. §6.2(d) f_closewatch) restore via .checked; assigning
+       .value silently does nothing and the tick would be lost on reload. */
+    if (el.type === 'checkbox') { el.checked = !!v; return; }
+    el.value = v;
+    if (k === 'f_type') STATE.info.f_type = el.value;   // keep STATE in sync with the cleaned value
   });
   if (STATE.remarks) $('#f_remarks').value = STATE.remarks;
   if (STATE.urgent) $('#f_urgent').value = STATE.urgent;
@@ -2872,7 +3798,9 @@ function applyStateToUI() {
     if (card.querySelector('.r-c')) card.querySelector('.r-c').value = st.c;
     if (card.querySelector('.r-notes')) card.querySelector('.r-notes').value = st.notes || '';
     const essMark = card.querySelector('.essential-mark');
-    if (essMark) essMark.checked = !!st.flagged;
+    // Derived, not read from the file: Excel carries no ※ column, and legacy JSON
+    // stored flagged:false. Only an explicit unmark:true override is honoured.
+    if (essMark) essMark.checked = isMarkedD(id, st);
     saveDItem(id, card);
   });
 
@@ -2997,8 +3925,11 @@ function importJSON() {
       try {
         const s = JSON.parse(ev.target.result);
         Object.assign(STATE, s);
+        phMigrate();
         applyStateToUI();
         updateAll();
+        // JSON carries the image bytes — write them into IndexedDB so they survive a reload
+        phPersistAll().then(() => renderPhotos()).catch(() => {});
         showToast('JSON loaded · JSON 已載入');
       } catch (err) {
         showToast('Invalid JSON · JSON 格式錯誤');
@@ -3019,7 +3950,7 @@ function resetAll() {
   STATE.photos.length = 0;
   STATE.remarks = ''; STATE.urgent = '';
   localStorage.removeItem(STORAGE_KEY);
-  location.reload();
+  phClear().catch(() => {}).then(() => location.reload());
 }
 
 // ─── INIT ───
@@ -3055,11 +3986,26 @@ function buildFrontExec(){
 window.addEventListener('beforeprint', buildFrontExec);
 
   function doPrint() {
+    // Warn if any Lb/Lc finding still has no linked photo — evidence gap
+    try {
+      const missing = findingsList().filter(f => !findingCovered(f.id));
+      if (missing.length) {
+        const lines = missing.slice(0, 12).map(f => '　• ' + f.id + ' (' + f.choice + ') ' + (f.name_zh || f.name_en)).join('\n');
+        const more = missing.length > 12 ? '\n　…（其餘 ' + (missing.length - 12) + ' 項 and ' + (missing.length - 12) + ' more）' : '';
+        const go = confirm(
+          missing.length + ' 個 Lb／Lc 發現尚未連結相片：\n' + missing.length + ' finding(s) have no linked photo:\n\n' +
+          lines + more +
+          '\n\n仍要列印嗎？ Print anyway?\n（按「取消」返回補相 · Cancel to go back and add photos）'
+        );
+        if (!go) { goTab('photos'); return; }
+      }
+    } catch (e) {}
     populatePrintCover();
     populateExecSummary();
     prepPrintD();
-    // Ensure all textarea content prints (mirror live value into DOM text)
-    document.querySelectorAll('textarea').forEach(t => { t.textContent = t.value; });
+    // Mirror every textarea value into a printable div (a textarea clips its
+    // content to a fixed height and cannot paginate)
+    prepPrintTextareas();
     // Open all D accordions for print
     document.querySelectorAll('details.subsec').forEach(d => d.setAttribute('open',''));
     window.print();
@@ -3114,8 +4060,11 @@ window.addEventListener('beforeprint', buildFrontExec);
 
   updateAuthChip();
 
-  // Auto-fill ARA company per Lifthium brand
-  if (!$('#f_aracompany').value) $('#f_aracompany').value = (window.BRAND&&BRAND.companyBil) || 'Lifthium Consultancy Limited 極樂公證行有限公司';
+  // Assessment organisation: the ARA's OWN firm, never the white-label company.
+  if (!$('#f_aracompany').value) {
+    var _araCo = (window.BRAND && BRAND.ara && BRAND.ara.company) || '';
+    if (_araCo) $('#f_aracompany').value = _araCo;
+  }
 
   bindInfoInputs();
 
@@ -3124,6 +4073,8 @@ window.addEventListener('beforeprint', buildFrontExec);
     applyStateToUI();
     showToast('Restored from auto-save · 已從自動儲存還原');
   }
+  // Image bytes live in IndexedDB — merge them back, then repaint the grids
+  phHydrate().then(() => { renderPhotos(); }).catch(() => {});
 
   updateAll();
 }
