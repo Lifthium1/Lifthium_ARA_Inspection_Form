@@ -352,6 +352,20 @@ textarea{resize:none}
 .modal-body{padding:18px 20px}
 .modal-body p{font-size:.84rem;color:var(--text);line-height:1.5;margin-bottom:12px}
 .modal-body p .zh{font-family:var(--font-zh);display:block;color:var(--muted);margin-top:3px}
+/* Excel import review · 匯入檢視 */
+.imp-h{font-size:.74rem;font-weight:700;color:var(--navy);margin:14px 0 6px;text-transform:uppercase;letter-spacing:.4px}
+.imp-tbl{width:100%;border-collapse:collapse;font-size:.76rem}
+.imp-tbl th,.imp-tbl td{border:1px solid var(--border);padding:4px 7px;text-align:left;vertical-align:top}
+.imp-tbl th{background:#F5F7FA;color:var(--navy);font-weight:700}
+.imp-bad{color:#C62828;font-weight:700}
+.imp-ok{color:#2E7D32}
+.imp-warn{color:#E65100}
+.imp-block{background:#FFEBEE;border:1px solid #C62828;border-radius:8px;padding:10px 12px;font-size:.8rem;color:#B71C1C;margin-bottom:12px;line-height:1.5}
+.imp-note{background:#F5F7FA;border-left:3px solid var(--blue);padding:8px 11px;font-size:.78rem;color:var(--muted);line-height:1.5;margin-bottom:10px}
+.imp-row{display:flex;align-items:center;gap:8px;font-size:.82rem;padding:3px 0;color:var(--text)}
+.imp-row .imp-n{margin-left:auto;color:var(--muted);font-size:.76rem}
+.imp-list{max-height:150px;overflow:auto;border:1px solid var(--border);border-radius:6px}
+.imp-danger{display:flex;align-items:center;gap:8px;font-size:.78rem;color:#C62828;margin-top:14px;cursor:pointer}
 .modal-input{width:100%;border:1.5px solid var(--border);border-radius:6px;padding:11px 13px;font-family:var(--font-h);font-size:1rem;letter-spacing:.1em;text-align:center;outline:none}
 .modal-input:focus{border-color:var(--blue)}
 .modal-actions{display:flex;gap:8px;margin-top:16px;justify-content:flex-end;flex-wrap:wrap}
@@ -392,6 +406,21 @@ textarea{resize:none}
 /* PRINT */
 @media print {
   @page{margin:12mm 12mm 14mm 12mm}
+  /* Page number · 頁碼 — deliberately a SEPARATE @page rule.
+     A margin box lives in the 14mm bottom margin, not in the content flow,
+     so it cannot affect the print budget or push a photo sheet onto an extra
+     page. Chrome ignores @page margin boxes (no support as of early 2026);
+     if that changes, the number appears with no other edit. Keeping it in
+     its own block means a parser that rejects it drops ONLY this rule and
+     never the page margins above. */
+  @page{
+    @bottom-right{
+      content: counter(page) " / " counter(pages);
+      font-family:'Arial','Helvetica Neue',Helvetica,sans-serif;
+      font-size:8pt;
+      color:#888;
+    }
+  }
   .topbar,.progress-track,.tabs,.nav-row,.btn-icon,.modal-overlay,.print-logo,.toast{display:none!important}
   .panel{display:block!important;page-break-after:always}
   body{background:#fff}
@@ -406,7 +435,7 @@ textarea{resize:none}
 
   /* In-flow running header at top of each section (logo top-left + title) */
   .print-section-header{display:flex;align-items:center;gap:8px;padding-bottom:5px;margin-bottom:8px;border-bottom:2px solid var(--gold)}
-  .print-section-header .psh-logo{width:13mm;height:13mm;flex-shrink:0}
+  .print-section-header .psh-logo{width:var(--logo-rh-w,13mm);height:var(--logo-rh-h,13mm);flex-shrink:0}
   .print-section-header .psh-logo svg{width:100%;height:100%;display:block}
   .print-section-header .psh-text{line-height:1.25}
   .print-section-header .psh-text .en{display:block;font-family:var(--font-h);font-weight:700;font-size:9.5pt;color:var(--navy)}
@@ -542,7 +571,7 @@ textarea{resize:none}
   .pc-foot .pc-foot-ip{font-size:8.5pt;color:#999;line-height:1.3;margin-top:1.5mm;font-family:var(--font-h)}
 
   .pd-head{display:flex;align-items:center;gap:8px;border-bottom:2px solid var(--gold);padding-bottom:5px;margin-bottom:6mm}
-  .pd-head .pd-hlogo{width:13mm;height:13mm;flex-shrink:0}
+  .pd-head .pd-hlogo{width:var(--logo-rh-w,13mm);height:var(--logo-rh-h,13mm);flex-shrink:0}
   .pd-head .pd-hlogo svg{width:100%;height:100%;display:block}
   .pd-head .en{font-family:var(--font-h);font-weight:700;font-size:10pt;color:var(--navy);display:block}
   .pd-head .zh{font-size:8.5pt;color:#666;font-family:var(--font-zh);display:block}
@@ -630,6 +659,7 @@ body:not(.app-unlocked){overflow:hidden;}
    inside Annex D item cards stay hidden with it (notes already print via
    .d-print-summary). */
 .ta-print{display:none}
+.inp-print{display:none}
 @media print{
   textarea{display:none!important}
   .ta-print{
@@ -641,6 +671,17 @@ body:not(.app-unlocked){overflow:hidden;}
     break-inside:auto; page-break-inside:auto;
   }
   .rec-block{break-inside:auto; page-break-inside:auto}
+  /* E: a single-line info input clips a long value (Site Address printed
+     '…Tseung Kwan O, N.' — the 'T.' was cut). Mirror the flagged input into a
+     wrapping print box, exactly the .ta-print idea but for an <input>. */
+  .inp-echoed{display:none!important}
+  .inp-print{
+    display:block!important;
+    white-space:normal; overflow-wrap:anywhere;
+    background:#fff; border:1px solid var(--border); border-radius:5px;
+    padding:7px 10px; font-family:var(--font-b); font-size:.87rem;
+    color:var(--text); width:100%; box-sizing:border-box; min-height:1.35em;
+  }
 }
 </style>
 <style id="decl-styles">
@@ -648,6 +689,10 @@ body:not(.app-unlocked){overflow:hidden;}
 .decl-open{margin-bottom:4px}
 .decl-inp{background:#FFF8E1;border:1px solid var(--gold);border-radius:5px;padding:2px 7px;font-family:inherit;font-size:.86rem;color:var(--navy);min-width:130px}
 .decl-inp-wide{min-width:210px}
+/* Connector between position and organization. A controlled list, not free
+   text: this sentence is a statutory declaration and 'at on behalf of' must
+   not be reachable. Default 'at' = the EMSD template wording. */
+.decl-conn{min-width:0;width:auto;font-weight:600}
 .decl-mirror{font-weight:700;color:var(--navy);border-bottom:1px solid var(--gold);padding:0 5px}
 .decl-sec{margin-top:11px}
 .decl-sec h4{font-size:.9rem;color:var(--blue);margin:0 0 2px}
@@ -659,9 +704,35 @@ body:not(.app-unlocked){overflow:hidden;}
 .decl-sigline{border-bottom:1px solid #333;min-height:1.6em;display:block}
 .decl-hand::after{content:'（handwritten on printed copy 於列印本手寫簽署）';font-size:.7rem;color:var(--muted);font-weight:400}
 .decl-foot{margin-top:18px;font-style:italic;font-size:.82rem;color:var(--muted)}
+/* The typed organization name feeds a STATUTORY declaration. An <input> is a
+   fixed-width box that clips overflow, so a long bilingual firm name would
+   print cut in half. On paper we therefore print #decl_org_echo, a plain span
+   that wraps, and hide the input. Same trick as prepPrintTextareas(). */
+.decl-echo{display:none}
 @media print{
   .decl-hand::after{content:''}
-  .decl-inp,.decl-sigval-inp{background:transparent!important;border:none!important;border-bottom:1px solid #333!important;border-radius:0!important}
+  .decl-inp-echoed{display:none!important}
+  /* ONE printed appearance for every value in the declaration paragraph,
+     whether the assessor typed it or the form filled it in: the .decl-mirror
+     look — bold, brand navy, gold rule. A reader must not be able to tell
+     manual entries from automatic ones on a statutory document. */
+  .decl-echo,.decl-inp{
+    font-weight:700!important;color:var(--navy)!important;font-size:inherit!important;
+    background:transparent!important;border:none!important;
+    border-bottom:1px solid var(--gold)!important;border-radius:0!important;
+    padding:0 5px!important}
+  .decl-echo{display:inline!important}
+  /* The connector is a joining WORD, not an entered value: it must read as
+     part of the running sentence, so no bold and no rule beneath it. */
+  .decl-echo-plain{font-weight:400!important;border-bottom:none!important;
+                   padding:0 2px!important}
+  /* Signature block has its own house look (.decl-sigval: grey rule, roomier
+     padding) — match THAT here, not the paragraph style. */
+  .decl-sigval-inp{
+    font-weight:700!important;color:var(--navy)!important;font-size:inherit!important;
+    background:transparent!important;border:none!important;
+    border-bottom:1px solid #888!important;border-radius:0!important;
+    padding:2px 6px!important;max-width:none!important}
 }
 </style>
 <style id="print-selected-emphasis">
@@ -747,7 +818,7 @@ const COMPANIES = {
   lifthium: {
     key:'lifthium', companyEn:'Lifthium Consultancy Limited', companyZh:'極樂公證行有限公司',
     companyBil:'Lifthium Consultancy Limited 極樂公證行有限公司', companyShort:'Lifthium', fileTag:'Lifthium',
-    css:{'--gold':'#D4AF37','--gold-dk':'#B8941F','--blue':'#4A90E2','--blue-dk':'#2E5F8F','--navy':'#1E3A5F','--navy-dp':'#142840','--text':'#1E3A5F','--muted':'#6B7A8F','--btn-fg':'#1E3A5F','--font-en':"'Century Gothic','CenturyGothic','AppleGothic',sans-serif",'--font-h':"'Poppins','Century Gothic',sans-serif"},
+    css:{'--gold':'#D4AF37','--gold-dk':'#B8941F','--blue':'#4A90E2','--blue-dk':'#2E5F8F','--navy':'#1E3A5F','--navy-dp':'#142840','--text':'#1E3A5F','--muted':'#6B7A8F','--btn-fg':'#1E3A5F','--font-en':"'Century Gothic','CenturyGothic','AppleGothic',sans-serif",'--font-h':"'Poppins','Century Gothic',sans-serif",'--logo-pc-w':'17mm','--logo-pc-h':'17mm'},
     excel:{GOLD:'FFD4AF37',BLUE:'FF4A90E2',NAVY:'FF1E3A5F',YEL:'FFFFF8E1',EN:'Century Gothic'},
     salt:'Lifthium-ARA-2026', ownerCode:'51220643',
     endpoint:'https://script.google.com/macros/s/AKfycbwg45FbtG3xyNSOarPN1zsu3dLibagYFf4-Hdz1Bk7hDCGxmvSs4RHvhwJ-mH5b_Vae/exec',
@@ -784,8 +855,8 @@ const COMPANIES = {
     logoLock:`<img src="data:image/png;base64,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" alt="Graceful Engineering" style="height:74px;display:block;margin:0 auto 8px;object-fit:contain"><div style="font-size:24px;color:#fff">Graceful Engineering</div>`
   },
   TK: {
-    key:'TK', companyEn:'TK Elevator Hong Kong Limited', companyZh:'蒂升電梯（香港）有限公司',
-    companyBil:'TK Elevator Hong Kong Limited 蒂升電梯（香港）有限公司', companyShort:'TK Elevator', fileTag:'TKElevator',
+    key:'TK', companyEn:'TK Elevator Hong Kong Limited', companyZh:'蒂升電梯香港有限公司',
+    companyBil:'TK Elevator Hong Kong Limited 蒂升電梯香港有限公司', companyShort:'TK Elevator', fileTag:'TKElevator',
     /* Palette sampled from the supplied TKE logo: purple #6F00BF -> orange #EE680F.
        TYPOGRAPHY IS PURPLE, ORANGE IS ACCENT ONLY (老細, 2026-07-22).
          --text   #3D0069  body text            14.97:1 on white
@@ -800,7 +871,7 @@ const COMPANIES = {
     excel:{GOLD:'FFEE680F',BLUE:'FF6F00BF',NAVY:'FF3D0069',YEL:'FFFDF0E6',EN:'Arial'},
     salt:'TKE-ARA-2026', ownerCode:'00000000', endpoint:'',
     marker:'TKE_ARA_DATA_TEMPLATE|v1', ara:{nameEn:'',nameZh:'',reg:'',company:''},
-    footLine1:'報告內容 Report content © 2026 TK Elevator Hong Kong Limited 蒂升電梯（香港）有限公司',
+    footLine1:'報告內容 Report content © 2026 TK Elevator Hong Kong Limited 蒂升電梯香港有限公司',
     footLine2:'表格格式及工具 Form format & tool © 2026 Lifthium Consultancy Limited 極樂公證行有限公司 — 經授權使用 Used under licence',
     ipOwnerEn:'Lifthium Consultancy Limited', ipOwnerZh:'極樂公證行有限公司',
     logoMark:`<img src="data:image/jpeg;base64,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" alt="TK Elevator" style="width:100%;height:100%;object-fit:contain;display:block">`,
@@ -1062,7 +1133,7 @@ document.addEventListener('DOMContentLoaded',function(){ applyBrand(window.BRAND
       </div>
       <div class="info-grid">
         <div class="field"><label>Project / Site Name <span class="zh">項目／場地名稱</span></label><input type="text" id="f_site" placeholder="e.g. Mei Foo Sun Chuen Stage 8 Tower 12"></div>
-        <div class="field"><label>Site Address <span class="zh">場地地址</span></label><input type="text" id="f_address" placeholder="Address"></div>
+        <div class="field"><label>Site Address <span class="zh">場地地址</span></label><input type="text" id="f_address" class="inp-echoed" placeholder="Address"><div class="inp-print" id="f_address_print" aria-hidden="true"></div></div>
         <div class="field"><label>Responsible Person <span class="zh">升降機負責人</span></label><input type="text" id="f_rp" placeholder="Owner / Management Company"></div>
         <div class="field"><label>Maintenance Contractor <span class="zh">維修承辦商</span></label><input type="text" id="f_contractor" placeholder="Contractor name"></div>
       </div>
@@ -1258,7 +1329,7 @@ document.addEventListener('DOMContentLoaded',function(){ applyBrand(window.BRAND
   <section class="panel" id="panel-decl">
     <div class="card decl-card">
       <div class="card-title">Declaration and Undertaking for Accredited Risk Assessor of Lifts</div>
-      <p class="decl-open">I, <span class="decl-mirror" id="decl_name">—</span>, serving as <input type="text" id="f_arapos" class="decl-inp" placeholder="Position / Title"> at <span class="decl-mirror" id="decl_company">—</span>, with the contact details <input type="text" id="f_aracontact" class="decl-inp decl-inp-wide" placeholder="Contact information">, on <input type="date" id="f_decl_date" class="decl-inp"> hereby solemnly declare and undertake as follows:</p>
+      <p class="decl-open">I, <span class="decl-mirror" id="decl_name">—</span>, serving as <input type="text" id="f_arapos" class="decl-inp decl-inp-echoed" placeholder="Position / Title 職銜"><span class="decl-echo" id="decl_pos_echo" aria-hidden="true"></span> <select id="f_declconn" class="decl-inp decl-conn decl-inp-echoed" title="Relationship to the organization named next 與下列機構的關係"><option value="at" selected>at</option><option value="of">of</option><option value="engaged by">engaged by</option><option value="commissioned by">commissioned by</option><option value="appointed by">appointed by</option><option value="on behalf of">on behalf of</option></select><span class="decl-echo decl-echo-plain" id="decl_conn_echo" aria-hidden="true"></span> <input type="text" id="f_declorg" class="decl-inp decl-inp-wide decl-inp-echoed" placeholder="Assessment Organization 評估機構"><span class="decl-echo" id="decl_org_echo" aria-hidden="true"></span>, with the contact details <input type="text" id="f_aracontact" class="decl-inp decl-inp-wide" placeholder="Contact information">, on <input type="date" id="f_decl_date" class="decl-inp"> hereby solemnly declare and undertake as follows:</p>
       <div class="decl-sec"><h4>Declaration of Independence</h4><p>I recognise that independence is crucial for maintaining the credibility of the risk assessment process and fostering trust among stakeholders. I confirm that, within the two years immediately preceding this risk assessment, I have not served as the registered lift engineer for the periodic examination of this lift. I further confirm that there is no conflict of interest in this assessment, and that I can objectively evaluate the lift’s condition and safety.</p></div>
       <div class="decl-sec"><h4>Commitment to Accuracy</h4><p>I undertake to carry out the risk assessment with the utmost rigor, ensuring that all findings, measurement data and evaluation conclusions are accurate, correct and based on reliable information. I will strictly adhere to the relevant standards and guidelines issued by the Electrical and Mechanical Services Department (EMSD) and other governing bodies.</p></div>
       <div class="decl-sec"><h4>Consequences of Breach</h4><p>I acknowledge that any breach of this Declaration and Undertaking may result in disciplinary action, including but not limited to suspension or revocation of my accreditation, as well as assumption of legal or professional liabilities.</p></div>
@@ -1408,6 +1479,27 @@ document.addEventListener('DOMContentLoaded',function(){ applyBrand(window.BRAND
       <div class="modal-actions">
         <button class="btn-secondary" data-close="pdfModal">Cancel 取消</button>
         <button class="btn-primary" id="pdfContinue">Continue 繼續 →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- EXCEL IMPORT REVIEW MODAL · 匯入檢視 -->
+<div class="modal-overlay" id="importModal">
+  <div class="modal" style="max-width:640px">
+    <div class="modal-head">
+      <div><h3>Review Excel Import</h3><div class="zh">匯入前檢視：升降機身分、範圍、衝突</div></div>
+      <button class="modal-close" data-close="importModal">×</button>
+    </div>
+    <div class="modal-body">
+      <div id="imp_identity"></div>
+      <div id="imp_scopebox"></div>
+      <div id="imp_conflictbox"></div>
+      <label class="imp-danger"><input type="checkbox" id="imp_replace">
+        Replace the selected sections entirely 整份取代所選部分（會刪除現有答案）</label>
+      <div class="modal-actions">
+        <button class="btn-secondary" data-close="importModal">Cancel 取消</button>
+        <button class="btn-primary" id="imp_go">Import 匯入</button>
       </div>
     </div>
   </div>
@@ -2285,6 +2377,20 @@ function prepPrintTextareas(){
       ta.parentNode.insertBefore(m, ta.nextSibling);
     }
     m.textContent = ta.value || '';
+  });
+}
+// E: mirror any single-line input flagged .inp-echoed into a wrapping .inp-print
+// box so a long value (e.g. a full site address) prints in full instead of being
+// clipped by the fixed-width input. Same idiom as prepPrintTextareas().
+function prepPrintInputEchoes(){
+  document.querySelectorAll('input.inp-echoed').forEach(inp => {
+    let m = inp.nextElementSibling;
+    if (!m || !m.classList || !m.classList.contains('inp-print')) {
+      m = document.createElement('div');
+      m.className = 'inp-print';
+      inp.parentNode.insertBefore(m, inp.nextSibling);
+    }
+    m.textContent = inp.value || '';
   });
 }
 function autofillAnnexD() {
@@ -3560,7 +3666,29 @@ function nextInspectionDetail(d) {
 // ─── UPDATE ALL ───
 function syncDecl(){
   const set=(sp,src)=>{ const a=document.getElementById(sp), b=document.getElementById(src); if(a&&b) a.textContent=(b.value||'').trim()||'—'; };
-  set('decl_name','f_araname'); set('decl_company','f_aracompany'); set('decl_reg','f_arareg'); set('decl_loc','f_emsdno');
+  /* f_declorg (Declaration organization) is NOT mirrored: the assessor types
+     it by hand. It is seeded once at start-up (see init) and never bound to
+     the white-label brand — see applyBrand() for why that matters. */
+  set('decl_name','f_araname'); set('decl_reg','f_arareg'); set('decl_loc','f_emsdno');
+  prepPrintDeclOrg();
+}
+/* An <input> is a fixed-width box: it CLIPS anything longer than itself, and
+   a half-printed firm name or job title on a statutory declaration is worse
+   than none. Each entry below mirrors an input into a plain span that wraps;
+   print shows the span and hides the input (.decl-inp-echoed). Blank prints
+   '—' so an omission is VISIBLE — same rule as pc_org on the cover.
+   To echo another field: add the class + a span, then one row here. */
+const DECL_ECHOES = [
+  ['f_arapos',  'decl_pos_echo'],   // Position / Title 職銜
+  ['f_declconn','decl_conn_echo'],  // at / engaged by / …  連接詞
+  ['f_declorg', 'decl_org_echo']    // Assessment Organization 評估機構
+];
+function prepPrintDeclOrg(){
+  DECL_ECHOES.forEach(([src, dst]) => {
+    const inp = document.getElementById(src);
+    const out = document.getElementById(dst);
+    if (inp && out) out.textContent = (inp.value || '').trim() || '—';
+  });
 }
 function updateAll() {
   try{ syncDecl(); }catch(e){}
@@ -3669,7 +3797,7 @@ function renderVerdict(om, omG, d) {
 
 // ─── INFO FORM ───
 function bindInfoInputs() {
-  const ids = ['f_reportno','f_inspno','f_site','f_address','f_rp','f_contractor','f_liftno','f_emsdno','f_mfr','f_type','f_speed','f_load','f_year','f_commyear','f_floors','f_araname','f_arareg','f_aracompany','f_araexpiry','f_inspdate','f_insptime','f_weather','f_rle','f_rlw','f_remarks','f_urgent','f_arapos','f_aracontact','f_decl_date','f_sig_ara','f_sig_date','f_prep','f_review','f_approve','f_seal'];
+  const ids = ['f_reportno','f_inspno','f_site','f_address','f_rp','f_contractor','f_liftno','f_emsdno','f_mfr','f_type','f_speed','f_load','f_year','f_commyear','f_floors','f_araname','f_arareg','f_aracompany','f_araexpiry','f_inspdate','f_insptime','f_weather','f_rle','f_rlw','f_remarks','f_urgent','f_arapos','f_aracontact','f_declconn','f_declorg','f_decl_date','f_sig_ara','f_sig_date','f_prep','f_review','f_approve','f_seal'];
   ids.forEach(id => {
     const el = $('#' + id);
     if (!el) return;
@@ -3681,6 +3809,10 @@ function bindInfoInputs() {
     if (el) el.addEventListener('input', autoSave);
   });
   /* §6.2(d) is a checkbox: bind .checked on 'change', not .value on 'input'. */
+  const conn = $('#f_declconn');
+  if (conn) conn.addEventListener('change', () => {
+    STATE.info.f_declconn = conn.value; prepPrintDeclOrg(); autoSave();
+  });
   const cw = $('#f_closewatch');
   if (cw) cw.addEventListener('change', () => {
     STATE.info.f_closewatch = cw.checked;
@@ -3864,6 +3996,233 @@ async function exportExcel() {
   } catch (e) { console.error(e); showToast('Excel export failed · 匯出失敗'); }
 }
 
+
+/* ══ Multi-person Excel import ═══════════════════════════════════════════════
+   Different people fill different annexes at the same time (administrator
+   A–C, lift engineer D). Each exports a workbook in which the OTHER person's
+   annexes are blank. The old code did `STATE.A = out.A`, so importing the
+   second file DELETED the first person's work — measured as A=8 B=3 C=6
+   becoming 0 0 0. parseWorkbook() was never at fault: it already skips blank
+   cells, so an unanswered item is absent, not empty.
+   Import now merges; refuses a workbook belonging to a different lift; and
+   lists every disagreement before touching anything. ═════════════════════ */
+
+const IMPORT_ID_FIELDS = [
+  ['f_inspno', 'Inspection No. 檢驗編號'],
+  ['f_emsdno', 'EMSD Location ID 機電署編號'],
+  ['f_liftno', 'Lift No. 升降機編號']
+];
+const IMPORT_SCOPES = [
+  ['info', 'Report information 報告資料'],
+  ['A',    'Annex A 附件A'],
+  ['B',    'Annex B 附件B'],
+  ['C',    'Annex C 附件C'],
+  ['D',    'Annex D 附件D'],
+  ['recs', 'Recommendations 建議']
+];
+const impNorm = v => String(v == null ? '' : v).trim().replace(/\s+/g, ' ').toUpperCase();
+const impEsc  = v => String(v == null ? '' : v).replace(/[&<>"]/g, c =>
+  ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' }[c]));
+
+/* Merging two workbooks that describe DIFFERENT lifts would silently produce
+   one statutory report containing both — the single worst outcome here. Any
+   positive disagreement on an identifier blocks the import outright. */
+function importIdentity(out) {
+  const rows = []; let blocked = false;
+  IMPORT_ID_FIELDS.forEach(([k, label]) => {
+    const cur = impNorm(STATE.info[k]), inc = impNorm(out.info && out.info[k]);
+    let status;
+    if (cur && inc && cur !== inc) { status = 'mismatch'; blocked = true; }
+    else if (!inc) status = 'absent';
+    else if (!cur) status = 'adopt';
+    else status = 'match';
+    rows.push({ label, cur: STATE.info[k] || '', inc: (out.info && out.info[k]) || '', status });
+  });
+  return { rows, blocked };
+}
+
+function impScopeCount(out, k) {
+  if (k === 'info') return Object.keys(out.info || {}).length;
+  if (k === 'recs') return Object.keys(out.recs || {}).length;
+  return Object.keys(out[k] || {}).length;
+}
+
+/* Everything the incoming file answers DIFFERENTLY from what is already on
+   record. Shown before applying, so a colleague's answer is never changed
+   without someone seeing it happen. */
+function importConflicts(out, scopes) {
+  const list = [];
+  const add = (sc, id, cur, inc) => list.push({ sc, id, cur, inc });
+  if (scopes.includes('info')) Object.entries(out.info || {}).forEach(([k, v]) => {
+    const cur = STATE.info[k];
+    if (cur != null && String(cur) !== '' && String(cur) !== String(v)) add('Info', k, cur, v);
+  });
+  ['A', 'B'].forEach(sc => {
+    if (!scopes.includes(sc)) return;
+    Object.entries(out[sc] || {}).forEach(([id, v]) => {
+      const cur = (STATE[sc] || {})[id];
+      if (cur != null && cur !== '' && String(cur) !== String(v)) add(sc, id, cur, v);
+    });
+  });
+  if (scopes.includes('C')) Object.entries(out.C || {}).forEach(([id, arr]) => {
+    const cur = (STATE.C || {})[id] || [];
+    (arr || []).forEach((v, i) => {
+      if (v === undefined) return;
+      if (cur[i] != null && cur[i] !== '' && cur[i] !== v) add('C', id + '#' + (i + 1), cur[i], v);
+    });
+  });
+  if (scopes.includes('D')) Object.entries(out.D || {}).forEach(([id, o]) => {
+    const cur = (STATE.D || {})[id];
+    if (cur && cur.choice && o && o.choice && cur.choice !== o.choice) add('D', id, cur.choice, o.choice);
+  });
+  if (scopes.includes('recs')) Object.entries(out.recs || {}).forEach(([k, v]) => {
+    const cur = (STATE.recs || {})[k];
+    if (cur && cur !== v) add('Rec', k, '(existing text)', '(incoming text)');
+  });
+  return list;
+}
+
+function applyImport(out, opts) {
+  const sc = opts.scopes, take = (opts.onConflict === 'incoming'), replace = !!opts.replace;
+  const r = { added: 0, changed: 0, kept: 0 };
+  const put = (store, id, val) => {
+    const cur = store[id];
+    if (cur === undefined || cur === null || cur === '') { store[id] = val; r.added++; }
+    else if (String(cur) === String(val)) { store[id] = val; }
+    else if (take) { store[id] = val; r.changed++; }
+    else { r.kept++; }
+  };
+
+  if (sc.includes('info'))
+    Object.entries(out.info || {}).forEach(([k, v]) => put(STATE.info, k, v));
+
+  ['A', 'B'].forEach(k => {
+    if (!sc.includes(k)) return;
+    if (replace) STATE[k] = {};
+    Object.entries(out[k] || {}).forEach(([id, v]) => put(STATE[k], id, v));
+  });
+
+  /* Annex C holds an ARRAY of sub-answers per item. Merging at item level
+     would still lose work: if one person answered subs 1–3 and another sub 4,
+     replacing the array drops three answers. Merge per sub-index. */
+  if (sc.includes('C')) {
+    if (replace) STATE.C = {};
+    Object.entries(out.C || {}).forEach(([id, arr]) => {
+      const cur = (STATE.C[id] || []).slice();
+      (arr || []).forEach((v, i) => {
+        if (v === undefined) return;
+        const c = cur[i];
+        if (c === undefined || c === null || c === '') { cur[i] = v; r.added++; }
+        else if (c === v) { /* agree */ }
+        else if (take) { cur[i] = v; r.changed++; }
+        else r.kept++;
+      });
+      STATE.C[id] = cur;
+    });
+  }
+
+  if (sc.includes('D')) {
+    if (replace) STATE.D = {};
+    Object.entries(out.D || {}).forEach(([id, o]) => {
+      const cur = STATE.D[id];
+      if (!cur || !cur.choice) { STATE.D[id] = o; r.added++; }
+      else if (cur.choice === o.choice) { STATE.D[id] = o; }
+      else if (take) { STATE.D[id] = o; r.changed++; }
+      else r.kept++;
+    });
+  }
+
+  if (sc.includes('recs')) {
+    STATE.recs = STATE.recs || {};
+    Object.entries(out.recs || {}).forEach(([k, v]) => put(STATE.recs, k, v));
+  }
+  return r;
+}
+
+/* Resolves to the chosen options, or null if the user cancelled. */
+function reviewImport(out) {
+  return new Promise(resolve => {
+    const modal = $('#importModal');
+    if (!modal) { resolve({ scopes: IMPORT_SCOPES.map(x => x[0]), onConflict: 'incoming', replace: false }); return; }
+
+    const idc = importIdentity(out);
+    const STAT = {
+      mismatch: ['imp-bad',  'MISMATCH 不符'],
+      absent:   ['imp-warn', 'not in file 檔內沒有'],
+      adopt:    ['imp-ok',   'will be adopted 將採用'],
+      match:    ['imp-ok',   'match 相符']
+    };
+    $('#imp_identity').innerHTML =
+      (idc.blocked
+        ? '<div class="imp-block"><b>Import blocked \u00b7 \u62d2\u7d55\u532f\u5165</b><br>' +
+          'This workbook identifies a different lift. Merging it would put two lifts into one statutory report.<br>' +
+          '<span class="zh">\u6b64\u6a94\u6848\u5c6c\u65bc\u53e6\u4e00\u90e8\u5347\u964d\u6a5f\u3002\u5408\u4f75\u6703\u4ee4\u5169\u90e8\u6a5f\u7684\u8cc7\u6599\u6df7\u5165\u540c\u4e00\u4efd\u6cd5\u5b9a\u5831\u544a\u3002</span></div>'
+        : '') +
+      '<div class="imp-h">Lift identity \u5347\u964d\u6a5f\u8eab\u5206</div>' +
+      '<table class="imp-tbl"><tr><th>Field</th><th>Current \u73fe\u6709</th><th>In file \u532f\u5165\u6a94</th><th>&nbsp;</th></tr>' +
+      idc.rows.map(r => '<tr><td>' + impEsc(r.label) + '</td><td>' + impEsc(r.cur || '—') +
+        '</td><td>' + impEsc(r.inc || '—') + '</td><td class="' + STAT[r.status][0] + '">' +
+        STAT[r.status][1] + '</td></tr>').join('') + '</table>';
+
+    const avail = IMPORT_SCOPES.filter(([k]) => impScopeCount(out, k) > 0);
+    $('#imp_scopebox').innerHTML =
+      '<div class="imp-h">What to take from this file \u532f\u5165\u7bc4\u570d</div>' +
+      (avail.length
+        ? avail.map(([k, label]) =>
+            '<label class="imp-row"><input type="checkbox" class="imp-sc" value="' + k + '" checked> ' +
+            impEsc(label) + '<span class="imp-n">' + impScopeCount(out, k) + ' answered \u5df2\u586b</span></label>').join('')
+        : '<div class="imp-note">This workbook contains no answers. \u6b64\u6a94\u6848\u6c92\u6709\u4efb\u4f55\u7b54\u6848\u3002</div>') +
+      '<div class="imp-note">Sections not listed are blank in this file and will be left untouched \u2014 ' +
+      'a colleague\u2019s work in those annexes is safe.<br><span class="zh">\u672a\u5217\u51fa\u7684\u90e8\u5206\u5728\u6b64\u6a94\u6848\u5167\u662f\u7a7a\u767d\uff0c\u6703\u539f\u5c01\u4e0d\u52d5\u2014\u2014\u540c\u4e8b\u5728\u90a3\u4e9b\u9644\u4ef6\u7684\u8f38\u5165\u4e0d\u6703\u6d88\u5931\u3002</span></div>';
+
+    const btn = $('#imp_go'), repl = $('#imp_replace');
+    const scopeBoxes = () => [...modal.querySelectorAll('.imp-sc')];
+    const chosen = () => scopeBoxes().filter(b => b.checked).map(b => b.value);
+
+    function refresh() {
+      const sc = chosen();
+      const cf = importConflicts(out, sc);
+      $('#imp_conflictbox').innerHTML = cf.length
+        ? '<div class="imp-h">Disagreements with what is already entered \u8207\u73fe\u6709\u7b54\u6848\u4e0d\u540c</div>' +
+          '<div class="imp-row"><label><input type="radio" name="impcf" value="incoming" checked> ' +
+          'Take the file\u2019s answer \u63a1\u7528\u532f\u5165\u6a94</label>&nbsp;&nbsp;' +
+          '<label><input type="radio" name="impcf" value="existing"> Keep what is here \u4fdd\u7559\u73fe\u6709</label></div>' +
+          '<div class="imp-list"><table class="imp-tbl"><tr><th>Where</th><th>Item</th>' +
+          '<th>Current \u73fe\u6709</th><th>In file \u532f\u5165\u6a94</th></tr>' +
+          cf.slice(0, 100).map(c => '<tr><td>' + impEsc(c.sc) + '</td><td>' + impEsc(c.id) +
+            '</td><td>' + impEsc(c.cur) + '</td><td>' + impEsc(c.inc) + '</td></tr>').join('') +
+          '</table></div>' +
+          (cf.length > 100 ? '<div class="imp-note">' + (cf.length - 100) + ' more not shown \u53e6\u6709 ' +
+            (cf.length - 100) + ' \u9805\u672a\u5217\u51fa</div>' : '')
+        : '<div class="imp-note">No disagreements: this file only adds to what is already here. ' +
+          '<span class="zh">\u6c92\u6709\u885d\u7a81\uff0c\u6b64\u6a94\u6848\u53ea\u6703\u65b0\u589e\u3002</span></div>';
+      btn.disabled = idc.blocked || sc.length === 0;
+      btn.style.opacity = btn.disabled ? .45 : 1;
+      btn.style.cursor = btn.disabled ? 'not-allowed' : 'pointer';
+    }
+
+    function cleanup() {
+      modal.classList.remove('show');
+      btn.removeEventListener('click', onGo);
+      modal.querySelectorAll('[data-close="importModal"]').forEach(b => b.removeEventListener('click', onCancel));
+      scopeBoxes().forEach(b => b.removeEventListener('change', refresh));
+    }
+    function onGo() {
+      const cf = modal.querySelector('input[name="impcf"]:checked');
+      const opts = { scopes: chosen(), onConflict: cf ? cf.value : 'incoming', replace: !!repl.checked };
+      cleanup(); resolve(opts);
+    }
+    function onCancel() { cleanup(); resolve(null); }
+
+    repl.checked = false;
+    scopeBoxes().forEach(b => b.addEventListener('change', refresh));
+    btn.addEventListener('click', onGo);
+    modal.querySelectorAll('[data-close="importModal"]').forEach(b => b.addEventListener('click', onCancel));
+    refresh();
+    modal.classList.add('show');
+  });
+}
+
 function importExcel() {
   const input = document.createElement('input');
   input.type = 'file'; input.accept = '.xlsx';
@@ -3876,13 +4235,18 @@ function importExcel() {
       await wb.xlsx.load(buf);
       const out = LiftXL.parseWorkbook(wb, DATA);
       if (out._fatal) { showToast('Not a '+(((window.BRAND&&BRAND.companyShort)||'Lifthium'))+' template · 非本範本'); alert(out._errors.join('\n')); return; }
-      STATE.A = out.A; STATE.B = out.B; STATE.C = out.C; STATE.D = out.D;
-      Object.assign(STATE.info, out.info);
-      if (out.recs) Object.assign(STATE.recs, out.recs);
-      applyStateToUI(); updateAll();
+      /* NEVER assign wholesale here: a colleague's annexes are blank in this
+         file and would be erased. Review, then merge. */
+      STATE.recs = STATE.recs || {};
+      const opts = await reviewImport(out);
+      if (!opts) { showToast('Import cancelled · 已取消匯入'); return; }
+      const applied = applyImport(out, opts);
+      applyStateToUI(); updateAll(); autoSave();
       const c = out._counts;
       showToast('Excel loaded · Excel 已載入');
-      let msg = 'Excel 已載入 Loaded — Info ' + c.info + ' · A ' + c.A + ' · B ' + c.B + ' · C ' + c.C + ' · D ' + c.D;
+      let msg = 'Excel 已合併 Merged — new 新增 ' + applied.added +
+        ' · changed 更改 ' + applied.changed + ' · kept existing 保留現有 ' + applied.kept +
+        '\n(file contained — Info ' + c.info + ' · A ' + c.A + ' · B ' + c.B + ' · C ' + c.C + ' · D ' + c.D + ')';
       if (out._errors.length) { alert(msg + '\n\n⚠ ' + out._errors.length + ' 問題 issue(s):\n' + out._errors.slice(0,20).join('\n')); }
       try { LiftLog.log('import_excel', buildSummary()); } catch (e) {}
     } catch (err) { console.error(err); showToast('Invalid Excel · Excel 讀取錯誤'); }
@@ -4006,6 +4370,8 @@ window.addEventListener('beforeprint', buildFrontExec);
     // Mirror every textarea value into a printable div (a textarea clips its
     // content to a fixed height and cannot paginate)
     prepPrintTextareas();
+    prepPrintDeclOrg();
+    prepPrintInputEchoes();
     // Open all D accordions for print
     document.querySelectorAll('details.subsec').forEach(d => d.setAttribute('open',''));
     window.print();
@@ -4073,6 +4439,16 @@ window.addEventListener('beforeprint', buildFrontExec);
     applyStateToUI();
     showToast('Restored from auto-save · 已從自動儲存還原');
   }
+  /* Declaration organization: an independent statutory field. Seeded ONCE at
+     start-up from the Assessment Organization box purely as a convenience. If
+     the assessor has ever touched it — including deliberately clearing it —
+     STATE.info.f_declorg exists and no seeding occurs. Never brand-bound. */
+  { const dz = $('#f_declorg');
+    if (dz && STATE.info.f_declorg == null && !dz.value) {
+      const ac = $('#f_aracompany');
+      if (ac && ac.value) { dz.value = ac.value; STATE.info.f_declorg = dz.value; }
+    } }
+
   // Image bytes live in IndexedDB — merge them back, then repaint the grids
   phHydrate().then(() => { renderPhotos(); }).catch(() => {});
 
@@ -4081,6 +4457,76 @@ window.addEventListener('beforeprint', buildFrontExec);
 
 document.addEventListener('DOMContentLoaded', init);
 document.addEventListener('DOMContentLoaded', () => { document.querySelectorAll('.rec-area').forEach(el => el.addEventListener('input', () => growTA(el))); setTimeout(growAllRec, 0); });
+</script>
+<style id="name-suggest-styles">
+.name-suggest{font-size:.72rem;color:var(--gold-dk);margin-top:4px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.name-suggest-btn{font:inherit;font-weight:600;cursor:pointer;border:1px solid var(--gold);background:#FFF8E1;color:var(--navy);border-radius:4px;padding:2px 8px}
+@media print{.name-suggest{display:none!important}}
+/* F: keep the browser's Ctrl+F find highlight (and any stray text selection)
+   out of the printout. ::search-text is Chrome 144+ and auto-suppresses the
+   yellow find highlight when printing; older browsers ignore this rule
+   harmlessly — there the fix is to press Esc (close the find bar) before
+   printing. Kept as its own rules so an unknown pseudo never affects other CSS. */
+@media print{ ::selection{ background:transparent !important; color:inherit !important; } }
+@media print{ ::search-text{ background:transparent !important; color:inherit !important; } }
+@media print{ ::search-text:current{ background:transparent !important; color:inherit !important; } }
+</style>
+<script>
+/* D — official-name suggestion (老細 approved 2026-07-24).
+   When an organization field is typed with only a bracket/spacing difference
+   from the brand's official name (e.g. 蒂升電梯（香港）有限公司 vs the official
+   蒂升電梯香港有限公司), offer the official form with one click.
+   HOW IT VERIFIES: a NORMALISED compare — NFKC-fold full/half-width, then strip
+   （）()【】〔〕[] brackets and all whitespace — matched against the brand's own
+   registered names (companyBil / companyZh / companyEn / ara.company). It only
+   fires when the two are identical AFTER that fold but differ before it, so a
+   genuinely different company name never triggers it. Non-blocking, screen-only. */
+(function(){
+  function norm(s){
+    return (s||'').normalize('NFKC').replace(/[（）()【】〔〕\[\]\s]/g,'').toLowerCase();
+  }
+  function officials(){
+    var b = window.BRAND || {};
+    return [b.companyBil, b.companyZh, b.companyEn, (b.ara && b.ara.company)]
+      .filter(function(x){ return x && String(x).trim(); });
+  }
+  var TARGETS = ['f_aracompany','f_declorg','f_contractor'];
+  function attach(id){
+    var inp = document.getElementById(id);
+    if(!inp) return;
+    var hint = document.createElement('div');
+    hint.className = 'name-suggest';
+    hint.style.display = 'none';
+    inp.parentNode.insertBefore(hint, inp.nextSibling);
+    function check(){
+      var v = (inp.value || '').trim();
+      if(!v){ hint.style.display='none'; return; }
+      var nv = norm(v), match = null;
+      officials().forEach(function(o){ if(!match && norm(o)===nv) match=o; });
+      if(match && match!==v){
+        hint.textContent = '';
+        var t = document.createElement('span');
+        t.textContent = '官方名稱 Official: ' + match;
+        var btn = document.createElement('button');
+        btn.type = 'button'; btn.className = 'name-suggest-btn'; btn.textContent = '套用 Apply';
+        btn.addEventListener('click', function(){
+          inp.value = match;
+          inp.dispatchEvent(new Event('input', {bubbles:true}));
+          hint.style.display = 'none';
+        });
+        hint.appendChild(t); hint.appendChild(btn);
+        hint.style.display = 'flex';
+      } else {
+        hint.style.display = 'none';
+      }
+    }
+    inp.addEventListener('input', check);
+    inp.addEventListener('blur', check);
+  }
+  function initNameSuggest(){ TARGETS.forEach(attach); }
+  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initNameSuggest);
+  else initNameSuggest();
+})();
 </script>
 </body>
 </html>
