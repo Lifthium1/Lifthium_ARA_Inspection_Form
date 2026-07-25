@@ -1019,7 +1019,7 @@ document.addEventListener('DOMContentLoaded',function(){ applyBrand(window.BRAND
           <div class="pc-sigline"><span class="lab">姓名 Name:</span><span class="un" id="pc_araname"></span></div>
           <div class="pc-sigline"><span class="lab">評估員編號 ARA No.:</span><span class="un" id="pc_arareg"></span></div>
           <div class="pc-sigline"><span class="lab">日期 Date:</span><span class="un"></span></div>
-          <div class="pc-sigline"><span class="lab">電話 Tel:</span><span class="un"></span></div>
+          <div class="pc-sigline"><span class="lab">電話 Tel:</span><span class="un" id="pc_aratel"></span></div>
         </div>
         <div class="pc-sigbox">
           <div class="pc-sigtitle">升降機負責人簽署 <span class="en">Responsible Person's Signature</span></div>
@@ -1308,17 +1308,9 @@ document.addEventListener('DOMContentLoaded',function(){ applyBrand(window.BRAND
       <div class="ph-empty" id="phEmpty2">No photos yet <span class="zh" style="font-family:var(--font-zh)">尚未加入相片</span></div>
     </div>
 
-    <div class="card">
-      <input type="file" id="fileInput" accept="image/*" multiple style="display:none">
-      <div class="field">
-        <label>Overall Site Remarks <span class="zh">場地整體備註</span></label>
-        <textarea id="f_remarks" rows="4" placeholder="General observations, environment, notable conditions…"></textarea>
-      </div>
-      <div class="field" style="margin-top:10px">
-        <label>Urgent Items Requiring Immediate Attention <span class="zh">須即時處理之事項</span></label>
-        <textarea id="f_urgent" rows="3" placeholder="List urgent safety items here…"></textarea>
-      </div>
-    </div>
+    <!-- Site Remarks + Urgent Items moved to the conclusion (Recommendations) section.
+         Keep the hidden photo file-input here so photo upload still works. -->
+    <div style="display:none"><input type="file" id="fileInput" accept="image/*" multiple></div>
     <div class="nav-row">
       <button class="btn-secondary" data-goto="D">← Back</button>
       <button class="btn-primary" data-goto="decl">Next: Declaration →</button>
@@ -1419,6 +1411,24 @@ document.addEventListener('DOMContentLoaded',function(){ applyBrand(window.BRAND
         <div class="rec-label"><span class="rec-tag">D</span> Annex D — Equipment Risk 設備風險 <span class="zh">附件 D · 升降機設備風險</span></div>
         <button class="rec-autofill" id="autofillD" type="button">↓ Auto-fill guideline recommendations for Lb/Lc items <span class="zh" style="font-family:var(--font-zh)">自動填入 Lb／Lc 項目的指引建議</span> <span id="autofillDcount" class="af-count"></span></button>
         <textarea id="rec_D" class="rec-area" rows="3" placeholder="Recommendations for Annex D… 附件 D 建議…"></textarea>
+      </div>
+      <div class="concl-tail">
+      <div class="field" style="margin-top:16px">
+        <label>Urgent Items Requiring Immediate Attention <span class="zh">須即時處理之事項</span></label>
+        <textarea id="f_urgent" rows="3" placeholder="List urgent safety items here…"></textarea>
+      </div>
+      <div class="field" style="margin-top:10px">
+        <label>Overall Site Remarks <span class="zh">場地整體備註</span></label>
+        <textarea id="f_remarks" rows="4" placeholder="General observations, environment, notable conditions…"></textarea>
+      </div>
+      <div class="field" style="margin-top:12px">
+        <label style="display:flex;align-items:flex-start;gap:8px;cursor:pointer;font-weight:400">
+          <input type="checkbox" id="f_certattached" style="margin-top:3px;flex-shrink:0;width:auto">
+          <span>Calibration certificates of measuring instruments attached — see Annex E
+            <span class="zh" style="display:block;font-family:var(--font-zh)">已附量度儀器校準證書 — 見附件 E</span>
+          </span>
+        </label>
+      </div>
       </div>
     </div>
 
@@ -2556,6 +2566,10 @@ function populatePrintCover() {
   var araNm = v('f_araname') || (window.BRAND&&BRAND.ara ? ((BRAND.ara.nameEn||'')+' '+(BRAND.ara.nameZh||'')).trim() : '');
   set('pc_araname', araNm);
   set('pc_arareg', v('f_arareg') || (window.BRAND&&BRAND.ara&&BRAND.ara.reg) || '');
+  // Cover ARA phone mirrors the Declaration's contact input (f_aracontact).
+  // Cover DATE is intentionally left BLANK — the cover is signed on a different
+  // day than the declaration, so it must be hand-dated. (老細, 2026-07-25)
+  set('pc_aratel', v('f_aracontact') || '');
 }
 
 // ─── Save / Save as New (gated) ───
@@ -4458,6 +4472,27 @@ window.addEventListener('beforeprint', buildFrontExec);
 document.addEventListener('DOMContentLoaded', init);
 document.addEventListener('DOMContentLoaded', () => { document.querySelectorAll('.rec-area').forEach(el => el.addEventListener('input', () => growTA(el))); setTimeout(growAllRec, 0); });
 </script>
+<style id="conclusion-print-styles">
+/* Conclusion / Recommendations print layout fix:
+   1) strip the rec-card's outer box in print so its border never spans pages and
+      strands an empty outline on the next page — each item keeps its own labelled
+      box instead;
+   2) keep every label + its box together (no box split across the page break);
+   a box longer than a whole page is still allowed to break so content never clips. */
+@media print{
+  .rec-card{border:none!important;box-shadow:none!important;background:none!important;padding:0!important;margin:0!important}
+  .rec-card .card-title{break-after:avoid; page-break-after:avoid}
+  .rec-label{break-after:avoid; page-break-after:avoid}
+  .rec-block, .rec-card .field{break-inside:avoid; page-break-inside:avoid}
+  /* Keep the closing block (Urgent Items + Site Remarks + cert checkbox) together as
+     ONE unit so a trailing item — especially the one-line certificate checkbox — can
+     never orphan onto a near-empty last page. If the whole block cannot fit after the
+     recommendations it moves down as a group; if it is itself taller than a page it may
+     break (rare). This is the permanent fix for conclusion-tail pagination. */
+  .concl-tail{break-inside:avoid; page-break-inside:avoid}
+  .concl-tail .field{break-before:avoid; page-break-before:avoid}
+}
+</style>
 <style id="name-suggest-styles">
 .name-suggest{font-size:.72rem;color:var(--gold-dk);margin-top:4px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .name-suggest-btn{font:inherit;font-weight:600;cursor:pointer;border:1px solid var(--gold);background:#FFF8E1;color:var(--navy);border-radius:4px;padding:2px 8px}
