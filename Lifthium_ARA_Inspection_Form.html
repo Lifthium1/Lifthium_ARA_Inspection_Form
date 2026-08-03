@@ -2392,6 +2392,27 @@ function prepPrintTextareas(){
 // E: mirror any single-line input flagged .inp-echoed into a wrapping .inp-print
 // box so a long value (e.g. a full site address) prints in full instead of being
 // clipped by the fixed-width input. Same idiom as prepPrintTextareas().
+// Build the printed-PDF filename base, IDENTICAL to the Excel/JSON export naming:
+//   <InspNo>[_<LiftNo>]_YYYYMMDD_HHMMSS   (Chrome appends ".pdf" from document.title)
+// Falls back to the brand/site pattern when Inspection No. is blank, exactly like the exports.
+function printFileBase(){
+  var g = function(id){
+    var v = '';
+    try { v = (STATE && STATE.info && STATE.info[id]) || ''; } catch(e){}
+    if (!v) { var el = document.getElementById(id); v = el ? el.value : ''; }
+    return (v || '') + '';
+  };
+  var _p = function(n){ return String(n).padStart(2,'0'); };
+  var d = new Date();
+  var ts = d.getFullYear() + _p(d.getMonth()+1) + _p(d.getDate()) + '_' + _p(d.getHours()) + _p(d.getMinutes()) + _p(d.getSeconds());
+  var clean = function(s){ return s.replace(/[^a-zA-Z0-9_-]/g, '_'); };
+  var inspno = clean(g('f_inspno'));
+  var site   = clean(g('f_site') || 'lift');
+  var liftno = clean(g('f_liftno'));
+  var base = inspno ? (inspno + (liftno ? '_' + liftno : ''))
+                    : (((window.BRAND && BRAND.fileTag) || 'Lifthium') + '_ARA_' + site + '_' + liftno);
+  return base + '_' + ts;
+}
 function prepPrintInputEchoes(){
   document.querySelectorAll('input.inp-echoed').forEach(inp => {
     let m = inp.nextElementSibling;
@@ -4388,6 +4409,14 @@ window.addEventListener('beforeprint', buildFrontExec);
     prepPrintInputEchoes();
     // Open all D accordions for print
     document.querySelectorAll('details.subsec').forEach(d => d.setAttribute('open',''));
+    // Name the saved PDF the same as the Excel/JSON exports (Chrome uses document.title
+    // as the default "Save as PDF" filename). Restore the title afterwards.
+    var _origTitle = document.title;
+    try { document.title = printFileBase(); } catch (e) {}
+    window.addEventListener('afterprint', function _restoreTitle(){
+      document.title = _origTitle;
+      window.removeEventListener('afterprint', _restoreTitle);
+    });
     window.print();
     try { LiftLog.log('print', buildSummary()); } catch (e) {}
   }
