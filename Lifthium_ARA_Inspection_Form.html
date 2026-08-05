@@ -76,6 +76,10 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-b);min-height
 .field input,.field select,.field textarea{background:#fff;border:1px solid var(--border);border-radius:5px;padding:7px 10px;font-family:var(--font-b);font-size:.87rem;color:var(--text);outline:none;transition:border-color .15s;width:100%}
 .field input:focus,.field select:focus,.field textarea:focus{border-color:var(--blue)}
 .field textarea{resize:vertical;min-height:60px}
+/* .inp-line — a free-text info field that looks like a single-line input but is
+   a textarea so Shift+Enter / Enter can add real line breaks. Starts one line
+   high and auto-grows (growTA). Newlines are preserved on screen and print. */
+.field textarea.inp-line{min-height:0;height:auto;resize:none;overflow:hidden;line-height:1.4;white-space:pre-wrap}
 
 /* ITEM */
 .item{background:var(--surface);border:1px solid var(--border);border-left:4px solid var(--border);border-radius:var(--radius);padding:12px 14px;margin-bottom:8px;transition:.2s}
@@ -682,6 +686,13 @@ body:not(.app-unlocked){overflow:hidden;}
     padding:7px 10px; font-family:var(--font-b); font-size:.87rem;
     color:var(--text); width:100%; box-sizing:border-box; min-height:1.35em;
   }
+  /* Info fields are now .inp-line textareas: their .ta-print mirror keeps the
+     newline-preserving pre-wrap of .ta-print but the SLIM input-like box look
+     (not the tall 3.2em recommendation box), so short fields don't balloon. */
+  .inp-line + .ta-print{
+    min-height:1.35em; padding:7px 10px; border:1px solid var(--border);
+    border-radius:5px; font-size:.87rem; line-height:1.4; color:var(--text);
+  }
 }
 </style>
 <style id="decl-styles">
@@ -1132,15 +1143,15 @@ document.addEventListener('DOMContentLoaded',function(){ applyBrand(window.BRAND
         <div class="field"><label>Inspection No. <span class="zh">檢驗編號</span></label><input type="text" id="f_inspno" placeholder="e.g. 26ARA0001"></div>
       </div>
       <div class="info-grid">
-        <div class="field"><label>Project / Site Name <span class="zh">項目／場地名稱</span></label><input type="text" id="f_site" class="inp-echoed" placeholder="e.g. Mei Foo Sun Chuen Stage 8 Tower 12"></div>
-        <div class="field"><label>Site Address <span class="zh">場地地址</span></label><input type="text" id="f_address" class="inp-echoed" placeholder="Address"><div class="inp-print" id="f_address_print" aria-hidden="true"></div></div>
-        <div class="field"><label>Responsible Person <span class="zh">升降機負責人</span></label><input type="text" id="f_rp" class="inp-echoed" placeholder="Owner / Management Company"></div>
-        <div class="field"><label>Maintenance Contractor <span class="zh">維修承辦商</span></label><input type="text" id="f_contractor" class="inp-echoed" placeholder="Contractor name"></div>
+        <div class="field"><label>Project / Site Name <span class="zh">項目／場地名稱</span></label><textarea id="f_site" class="inp-line" rows="1" placeholder="e.g. Mei Foo Sun Chuen Stage 8 Tower 12"></textarea></div>
+        <div class="field"><label>Site Address <span class="zh">場地地址</span></label><textarea id="f_address" class="inp-line" rows="1" placeholder="Address"></textarea></div>
+        <div class="field"><label>Responsible Person <span class="zh">升降機負責人</span></label><textarea id="f_rp" class="inp-line" rows="1" placeholder="Owner / Management Company"></textarea></div>
+        <div class="field"><label>Maintenance Contractor <span class="zh">維修承辦商</span></label><textarea id="f_contractor" class="inp-line" rows="1" placeholder="Contractor name"></textarea></div>
       </div>
       <div class="info-grid-3" style="margin-top:10px">
         <div class="field"><label>Lift No. / ID <span class="zh">升降機編號</span></label><input type="text" id="f_liftno" placeholder="e.g. L-01"></div>
         <div class="field"><label>EMSD Location No. <span class="zh">機電署地點編號</span></label><input type="text" id="f_emsdno" placeholder="e.g. 1012838-001"></div>
-        <div class="field"><label>Manufacturer <span class="zh">製造商</span></label><input type="text" id="f_mfr" class="inp-echoed" placeholder="OEM"></div>
+        <div class="field"><label>Manufacturer <span class="zh">製造商</span></label><textarea id="f_mfr" class="inp-line" rows="1" placeholder="OEM"></textarea></div>
       </div>
       <div class="info-grid-3" style="margin-top:10px">
         <div class="field"><label>Lift Type <span class="zh">升降機類型</span></label>
@@ -1166,11 +1177,11 @@ document.addEventListener('DOMContentLoaded',function(){ applyBrand(window.BRAND
       <div class="info-grid-3" style="margin-top:10px">
         <div class="field"><label>Date of Inspection <span class="zh">檢查日期</span></label><input type="date" id="f_inspdate"></div>
         <div class="field"><label>Time of Inspection <span class="zh">檢查時間</span></label><input type="text" id="f_insptime" placeholder="e.g. 0930–1230"></div>
-        <div class="field"><label>Weather <span class="zh">天氣</span></label><input type="text" id="f_weather" class="inp-echoed" placeholder="e.g. Cloudy 22°C"></div>
+        <div class="field"><label>Weather <span class="zh">天氣</span></label><textarea id="f_weather" class="inp-line" rows="1" placeholder="e.g. Cloudy 22°C"></textarea></div>
       </div>
       <div class="info-grid" style="margin-top:10px">
-        <div class="field"><label>Registered Lift Engineer Present <span class="zh">在場註冊升降機工程師</span></label><input type="text" id="f_rle" class="inp-echoed" placeholder="RLE name + reg. no."></div>
-        <div class="field"><label>Registered Lift Worker Present <span class="zh">在場註冊升降機工程人員</span></label><input type="text" id="f_rlw" class="inp-echoed" placeholder="RLW name + reg. no."></div>
+        <div class="field"><label>Registered Lift Engineer Present <span class="zh">在場註冊升降機工程師</span></label><textarea id="f_rle" class="inp-line" rows="1" placeholder="RLE name + reg. no."></textarea></div>
+        <div class="field"><label>Registered Lift Worker Present <span class="zh">在場註冊升降機工程人員</span></label><textarea id="f_rlw" class="inp-line" rows="1" placeholder="RLW name + reg. no."></textarea></div>
         <div class="field" style="grid-column:1/-1">
           <label style="display:flex;align-items:flex-start;gap:8px;cursor:pointer;font-weight:400">
             <input type="checkbox" id="f_closewatch" style="margin-top:3px;flex-shrink:0;width:auto">
@@ -2368,6 +2379,9 @@ function updateAutofillCount() {
 }
 function growTA(el){ if(!el) return; el.style.height='auto'; el.style.height=el.scrollHeight+'px'; }
 function growAllRec(){ document.querySelectorAll('.rec-area').forEach(growTA); }
+// Auto-grow the single-line-look info textareas (.inp-line) so they expand as
+// the assessor adds lines (Shift+Enter / Enter) and shrink back when cleared.
+function growAllInpLine(){ document.querySelectorAll('textarea.inp-line').forEach(growTA); }
 // Mirror each textarea's live value into a sibling div that the print stylesheet
 // shows in its place, so long content prints in full and can break across pages.
 function prepPrintTextareas(){
@@ -3935,6 +3949,9 @@ function applyStateToUI() {
     el.value = v;
     if (k === 'f_type') STATE.info.f_type = el.value;   // keep STATE in sync with the cleaned value
   });
+  // Info fields restored from a draft/import may be multi-line now — re-fit the
+  // .inp-line textareas to their content so restored line breaks aren't clipped.
+  try { growAllInpLine(); } catch (e) {}
   if (STATE.remarks) $('#f_remarks').value = STATE.remarks;
   if (STATE.urgent) $('#f_urgent').value = STATE.urgent;
   // Recommendations by annex
@@ -4415,6 +4432,24 @@ function buildFrontExec(){
 }
 window.addEventListener('beforeprint', buildFrontExec);
 
+// Populate every print-only mirror on ANY print path. doPrint() (the form's
+// Print button) already runs these, but a native browser print (Ctrl+P /
+// ⌘P / File▸Print) never calls doPrint — so the .inp-echoed inputs were
+// hidden in @media print while their .inp-print mirrors stayed empty, and
+// free-text info fields (Manufacturer, Site, Address, etc.) printed BLANK.
+// Binding the presentational preps to beforeprint makes every path safe.
+// All of these are idempotent, so the double-run under doPrint is harmless.
+function prepAllPrintMirrors(){
+  try { populatePrintCover(); } catch(e){}
+  try { populateExecSummary(); } catch(e){}
+  try { prepPrintD(); } catch(e){}
+  try { prepPrintTextareas(); } catch(e){}
+  try { prepPrintDeclOrg(); } catch(e){}
+  try { prepPrintInputEchoes(); } catch(e){}
+  try { document.querySelectorAll('details.subsec').forEach(d => d.setAttribute('open','')); } catch(e){}
+}
+window.addEventListener('beforeprint', prepAllPrintMirrors);
+
   function doPrint() {
     // Warn if any Lb/Lc finding still has no linked photo — evidence gap
     try {
@@ -4530,7 +4565,7 @@ window.addEventListener('beforeprint', buildFrontExec);
 }
 
 document.addEventListener('DOMContentLoaded', init);
-document.addEventListener('DOMContentLoaded', () => { document.querySelectorAll('.rec-area').forEach(el => el.addEventListener('input', () => growTA(el))); setTimeout(growAllRec, 0); });
+document.addEventListener('DOMContentLoaded', () => { document.querySelectorAll('.rec-area').forEach(el => el.addEventListener('input', () => growTA(el))); document.querySelectorAll('textarea.inp-line').forEach(el => el.addEventListener('input', () => growTA(el))); setTimeout(growAllRec, 0); setTimeout(growAllInpLine, 0); });
 </script>
 <style id="conclusion-print-styles">
 /* Conclusion / Recommendations print layout fix:
