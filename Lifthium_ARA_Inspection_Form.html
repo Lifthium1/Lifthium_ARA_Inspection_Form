@@ -1132,15 +1132,15 @@ document.addEventListener('DOMContentLoaded',function(){ applyBrand(window.BRAND
         <div class="field"><label>Inspection No. <span class="zh">檢驗編號</span></label><input type="text" id="f_inspno" placeholder="e.g. 26ARA0001"></div>
       </div>
       <div class="info-grid">
-        <div class="field"><label>Project / Site Name <span class="zh">項目／場地名稱</span></label><input type="text" id="f_site" placeholder="e.g. Mei Foo Sun Chuen Stage 8 Tower 12"></div>
+        <div class="field"><label>Project / Site Name <span class="zh">項目／場地名稱</span></label><input type="text" id="f_site" class="inp-echoed" placeholder="e.g. Mei Foo Sun Chuen Stage 8 Tower 12"></div>
         <div class="field"><label>Site Address <span class="zh">場地地址</span></label><input type="text" id="f_address" class="inp-echoed" placeholder="Address"><div class="inp-print" id="f_address_print" aria-hidden="true"></div></div>
-        <div class="field"><label>Responsible Person <span class="zh">升降機負責人</span></label><input type="text" id="f_rp" placeholder="Owner / Management Company"></div>
-        <div class="field"><label>Maintenance Contractor <span class="zh">維修承辦商</span></label><input type="text" id="f_contractor" placeholder="Contractor name"></div>
+        <div class="field"><label>Responsible Person <span class="zh">升降機負責人</span></label><input type="text" id="f_rp" class="inp-echoed" placeholder="Owner / Management Company"></div>
+        <div class="field"><label>Maintenance Contractor <span class="zh">維修承辦商</span></label><input type="text" id="f_contractor" class="inp-echoed" placeholder="Contractor name"></div>
       </div>
       <div class="info-grid-3" style="margin-top:10px">
         <div class="field"><label>Lift No. / ID <span class="zh">升降機編號</span></label><input type="text" id="f_liftno" placeholder="e.g. L-01"></div>
         <div class="field"><label>EMSD Location No. <span class="zh">機電署地點編號</span></label><input type="text" id="f_emsdno" placeholder="e.g. 1012838-001"></div>
-        <div class="field"><label>Manufacturer <span class="zh">製造商</span></label><input type="text" id="f_mfr" placeholder="OEM"></div>
+        <div class="field"><label>Manufacturer <span class="zh">製造商</span></label><input type="text" id="f_mfr" class="inp-echoed" placeholder="OEM"></div>
       </div>
       <div class="info-grid-3" style="margin-top:10px">
         <div class="field"><label>Lift Type <span class="zh">升降機類型</span></label>
@@ -1166,11 +1166,11 @@ document.addEventListener('DOMContentLoaded',function(){ applyBrand(window.BRAND
       <div class="info-grid-3" style="margin-top:10px">
         <div class="field"><label>Date of Inspection <span class="zh">檢查日期</span></label><input type="date" id="f_inspdate"></div>
         <div class="field"><label>Time of Inspection <span class="zh">檢查時間</span></label><input type="text" id="f_insptime" placeholder="e.g. 0930–1230"></div>
-        <div class="field"><label>Weather <span class="zh">天氣</span></label><input type="text" id="f_weather" placeholder="e.g. Cloudy 22°C"></div>
+        <div class="field"><label>Weather <span class="zh">天氣</span></label><input type="text" id="f_weather" class="inp-echoed" placeholder="e.g. Cloudy 22°C"></div>
       </div>
       <div class="info-grid" style="margin-top:10px">
-        <div class="field"><label>Registered Lift Engineer Present <span class="zh">在場註冊升降機工程師</span></label><input type="text" id="f_rle" placeholder="RLE name + reg. no."></div>
-        <div class="field"><label>Registered Lift Worker Present <span class="zh">在場註冊升降機工程人員</span></label><input type="text" id="f_rlw" placeholder="RLW name + reg. no."></div>
+        <div class="field"><label>Registered Lift Engineer Present <span class="zh">在場註冊升降機工程師</span></label><input type="text" id="f_rle" class="inp-echoed" placeholder="RLE name + reg. no."></div>
+        <div class="field"><label>Registered Lift Worker Present <span class="zh">在場註冊升降機工程人員</span></label><input type="text" id="f_rlw" class="inp-echoed" placeholder="RLW name + reg. no."></div>
         <div class="field" style="grid-column:1/-1">
           <label style="display:flex;align-items:flex-start;gap:8px;cursor:pointer;font-weight:400">
             <input type="checkbox" id="f_closewatch" style="margin-top:3px;flex-shrink:0;width:auto">
@@ -2788,9 +2788,10 @@ function renderAnnexA() {
     wrap.appendChild(card);
     card.querySelectorAll('.ab-btn').forEach(b => b.addEventListener('click', () => {
       const v = b.dataset.val;
+      const already = b.classList.contains('sel-' + v);   // clicking the chosen one again clears it
       card.querySelectorAll('.ab-btn').forEach(x => { x.classList.remove('sel-yes','sel-no'); });
-      b.classList.add('sel-' + v);
-      STATE.A[it.id] = v;
+      if (already) { delete STATE.A[it.id]; }              // un-click → back to blank
+      else { b.classList.add('sel-' + v); STATE.A[it.id] = v; }
       updateAll();
     }));
   });
@@ -2818,9 +2819,10 @@ function renderAnnexB() {
     `;
     wrap.appendChild(card);
     card.querySelectorAll('.b-btn').forEach(b => b.addEventListener('click', () => {
+      const already = b.classList.contains('sel');        // clicking the chosen one again clears it
       card.querySelectorAll('.b-btn').forEach(x => x.classList.remove('sel'));
-      b.classList.add('sel');
-      STATE.B[it.id] = parseInt(b.dataset.pts);
+      if (already) { delete STATE.B[it.id]; }              // un-click → back to blank
+      else { b.classList.add('sel'); STATE.B[it.id] = parseInt(b.dataset.pts); }
       updateAll();
     }));
   });
@@ -2857,11 +2859,12 @@ function renderAnnexC() {
     card.querySelectorAll('.cyn-btn').forEach(btn => btn.addEventListener('click', () => {
       const idx = parseInt(btn.dataset.idx);
       const val = btn.dataset.val;
+      const already = btn.classList.contains('sel-' + val); // clicking the chosen one again clears it
       if (!STATE.C[it.id]) STATE.C[it.id] = it.subs.map(() => null);
-      STATE.C[it.id][idx] = val;
       const subEl = btn.closest('.c-sub');
       subEl.querySelectorAll('.cyn-btn').forEach(b => b.classList.remove('sel-yes','sel-no'));
-      btn.classList.add('sel-' + val);
+      if (already) { STATE.C[it.id][idx] = null; }          // un-click → back to blank
+      else { STATE.C[it.id][idx] = val; btn.classList.add('sel-' + val); }
       autoSave();
       updateAll();
     }));
@@ -2998,6 +3001,18 @@ function renderDItem(it) {
   card.querySelectorAll('.lc-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       const choice = btn.dataset.choice;
+      // Un-click: clicking the already-selected rating clears it back to blank
+      // (unrated). Keeps any typed remark — only the rating is removed.
+      if (btn.classList.contains('act-' + choice)) {
+        card.querySelectorAll('.lc-btn').forEach(b => b.classList.remove('act-La','act-Lb','act-Lc','act-NA'));
+        card.classList.remove('sel-La','sel-Lb','sel-Lc','sel-NA');
+        const emClr = card.querySelector('.essential-mark'); if (emClr) emClr.checked = false;
+        if (riskBlock) riskBlock.style.display = 'none';
+        delete STATE.D[it.id];
+        autoSave();
+        updateAll();
+        return;
+      }
       // A remark written for the previous rating contradicts the new one, and a
       // stale remark is worse than none in a statutory report. Clear it on a
       // GENUINE change only (not on re-clicking the same rating, and never on
@@ -3089,6 +3104,22 @@ function saveDItem(id, card) {
   const catLbl = {'I':'Class Ⅰ — Mitigation REQUIRED','II':'Class Ⅱ — Review &amp; consider mitigation','III':'Class Ⅲ — No action needed'}[cat];
   const catLblZh = {'I':'第Ⅰ類 — 需採取降低風險措施','II':'第Ⅱ類 — 需進行檢討','III':'第Ⅲ類 — 無需採取任何措施'}[cat];
   catDisp.innerHTML = catLbl + '<span class="zh">' + catLblZh + '</span>';
+  // ※ marking only applies to a Category Ⅰ risk (Guideline 5.4.3.7). Show the ※
+  // option ONLY on Cat Ⅰ items; on Cat Ⅱ/Ⅲ hide it and force it off so a
+  // non-Cat-Ⅰ item can never be wrongly excluded from D. Essential devices rated
+  // Lc are Cat Ⅰ, so their ※ still shows and auto-marks.
+  const flagBox = card.querySelector('.special-flag');
+  if (flagBox) {
+    if (cat === 'I') {
+      flagBox.style.display = '';
+    } else {
+      flagBox.style.display = 'none';
+      if (em && em.checked) em.checked = false;
+      STATE.D[id].flagged = false;
+      STATE.D[id].mark = false;
+      STATE.D[id].unmark = false;
+    }
+  }
 }
 
 // ─── PHOTOS ───
