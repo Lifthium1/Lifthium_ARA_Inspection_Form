@@ -9,6 +9,15 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
 <style>
+/* Bug-01: locked ※ on the four essential devices — screen only, never printed */
+.essential-mark:disabled { cursor: not-allowed; opacity: .85; }
+.special-flag-ess .essential-mark:disabled + label::after {
+  content: ' 🔒 必須裝置：此項評 Lc 一律標 ※（不可撤銷）';
+  display: block; margin-top: 4px; font-size: .72rem; font-weight: 700;
+  color: var(--gold-dk, #9a7b18); font-family: var(--font-zh, sans-serif);
+}
+@media print { .special-flag-ess .essential-mark:disabled + label::after { display: none; } }
+
 :root {
   --gold:#D4AF37; --gold-dk:#B8941F; --blue:#4A90E2; --blue-dk:#2E5F8F;
   --navy:#1E3A5F; --navy-dp:#142840; --bg:#F5F7FA; --surface:#FFFFFF;
@@ -645,6 +654,11 @@ body:not(.app-unlocked){overflow:hidden;}
 #lockScreen .lock-err{color:#ff9b9b;font-size:13px;min-height:18px;margin-top:12px;}
 #lockScreen .lock-foot{color:#8aa0b6;font-size:11px;margin-top:18px;}
 @media print{#lockScreen{display:none!important;}}
+/* U2 undo button — screen only (the whole .topbar is already hidden in print;
+   this is a belt-and-braces rule so a future topbar change can't leak it). */
+#undoBtn:disabled{opacity:.35;cursor:default}
+#undoBtn{font-variant-numeric:tabular-nums}
+@media print{#undoBtn{display:none!important}}
 </style>
 <style id="report-fixes-1-2">
 #frontExecHost{display:none}
@@ -1040,6 +1054,7 @@ document.addEventListener('DOMContentLoaded',function(){ applyBrand(window.BRAND
     <div class="score-pill score-pill-click" id="filledPill" title="Tap to trace unfilled items · 點擊追蹤未填項目"><div class="lbl">Filled 🔍</div><div class="val" id="filledTop">0/178</div></div>
   </div>
   <div class="topbar-right">
+    <button class="btn-icon" id="undoBtn" disabled title="Nothing to undo · 沒有可復原的操作">↶ Undo 復原</button>
     <button class="btn-icon" id="draftsBtn">☰ Drafts 草稿</button>
     <button class="btn-icon" id="saveBtn">⤓ Export</button>
     <button class="btn-icon" id="loadBtn">⤒ Import</button>
@@ -1267,7 +1282,7 @@ document.addEventListener('DOMContentLoaded',function(){ applyBrand(window.BRAND
       <p style="font-size:.8rem;color:var(--muted);margin-bottom:10px">Maximum score: 50 points (+10 bonus). For each item, select <strong>YES</strong> if installed &amp; functional, <strong>NO</strong> if absent or non-functional. <span class="zh" style="font-family:var(--font-zh)">總分最高 50 分（+10 加分）。每項按裝置存在且功能正常選 YES，否則選 NO。</span></p>
       <div id="annexA-items"></div>
       <div style="margin-top:14px;padding:12px;background:color-mix(in srgb, var(--gold) 8%, transparent);border-radius:6px;font-family:var(--font-h);font-weight:700;text-align:center">
-        Annex A Subtotal <span class="zh" style="font-family:var(--font-zh);font-weight:500;color:var(--muted)">小計</span>: <span id="aSum" style="color:var(--gold-dk)">0</span> / 50 (+10)
+        Annex A Subtotal <span class="zh" style="font-family:var(--font-zh);font-weight:500;color:var(--muted)">小計</span>: <span id="aSum" style="color:var(--gold-dk)">0</span> / 50
       </div>
     </div>
     <div class="nav-row">
@@ -2844,6 +2859,108 @@ function showToastAction(msg, label, fn){
   clearTimeout(_toastTimer); _toastTimer = setTimeout(()=>t.classList.remove('show'), 8000);
 }
 
+/* ─── U2 · UNIFIED UNDO STACK ────────────────────────────────────────────────
+   In MEMORY ONLY. Never written into a draft — one deleted photo is ~350 KB and
+   a persisted history would balloon the draft (same reasoning as AE_CERTS).
+   Reloading the page therefore clears the history; the UI says so.
+
+   Ctrl+Z is handed straight back to the browser whenever the caret sits in a
+   text field. Without that guard, "undo my last typo" would silently undo the
+   last deleted photo — worse than having no undo at all.                     */
+const UNDO = {
+  stack: [], redo: [], MAX: 50, BYTE_BUDGET: 20 * 1024 * 1024, _seq: 0,
+
+  push(label, undoFn, redoFn, bytes) {
+    const e = { id: ++this._seq, label, undoFn, redoFn, bytes: bytes || 0 };
+    this.stack.push(e);
+    this.redo.length = 0;
+    this._trim();
+    refreshUndoBtn();
+    return e.id;
+  },
+
+  // Entries that carry photo bytes are dropped oldest-first once the budget is
+  // exceeded. Dropping the whole entry is honest: we cannot free the bytes and
+  // keep the entry usable, so the action simply stops being undoable.
+  _trim() {
+    while (this.stack.length > this.MAX) this.stack.shift();
+    let total = this.stack.reduce((a, e) => a + e.bytes, 0);
+    while (total > this.BYTE_BUDGET) {
+      const i = this.stack.findIndex(e => e.bytes > 0);
+      if (i < 0) break;
+      total -= this.stack[i].bytes;
+      this.stack.splice(i, 1);
+    }
+  },
+
+  async _run(e, dir) {
+    const fn = (dir === 'undo') ? e.undoFn : e.redoFn;
+    if (!fn) return false;
+    try { await fn(); return true; }
+    catch (err) { console.error('UNDO ' + dir + ' failed', err); showToast('Undo failed · 復原失敗'); return false; }
+  },
+
+  async undo() {
+    const e = this.stack.pop();
+    if (!e) { showToast('Nothing to undo · 沒有可復原的操作'); refreshUndoBtn(); return; }
+    await this._run(e, 'undo');
+    if (e.redoFn) this.redo.push(e);
+    refreshUndoBtn();
+  },
+
+  // Toast "Undo" targets ITS OWN action, even if later actions have been pushed
+  // on top — that is what the person reading the toast expects.
+  async undoById(id) {
+    const i = this.stack.findIndex(e => e.id === id);
+    if (i < 0) { showToast('Already undone · 該操作已復原'); return; }
+    const e = this.stack.splice(i, 1)[0];
+    await this._run(e, 'undo');
+    this.redo.length = 0;
+    refreshUndoBtn();
+  },
+
+  async redoLast() {
+    const e = this.redo.pop();
+    if (!e) { showToast('Nothing to redo · 沒有可重做的操作'); return; }
+    if (await this._run(e, 'redo')) this.stack.push(e);
+    refreshUndoBtn();
+  }
+};
+
+function refreshUndoBtn() {
+  const b = document.getElementById('undoBtn');
+  if (!b) return;
+  const top = UNDO.stack[UNDO.stack.length - 1];
+  b.disabled = !top;
+  b.title = top
+    ? '復原上一步 Undo: ' + top.label
+      + '\nCtrl+Z · 重新載入頁面後歷史清空 History clears on reload'
+    : 'Nothing to undo · 沒有可復原的操作';
+}
+
+// Single entry point: register the action AND show its toast.
+function undoable(msg, undoFn, redoFn, bytes) {
+  const id = UNDO.push(msg, undoFn, redoFn, bytes);
+  showToastAction(msg, 'Undo 復原', () => UNDO.undoById(id));
+  return id;
+}
+
+document.addEventListener('keydown', ev => {
+  if (!(ev.ctrlKey || ev.metaKey)) return;
+  const k = (ev.key || '').toLowerCase();
+  if (k !== 'z' && k !== 'y') return;
+  const t = document.activeElement;
+  if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) return;
+  ev.preventDefault();
+  if (k === 'y' || ev.shiftKey) UNDO.redoLast(); else UNDO.undo();
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+  const b = document.getElementById('undoBtn');
+  if (b) b.addEventListener('click', () => UNDO.undo());
+  refreshUndoBtn();
+});
+
 function bootLockScreen() {
   const ls = document.getElementById('lockScreen');
   if (!ls) return;
@@ -3102,7 +3219,7 @@ function renderDItem(it) {
         </div>
       </div>
       <div class="cat-display"></div>
-      <div class="special-flag${it.essential ? '' : ' special-flag-opt'}">
+      <div class="special-flag${it.essential ? ' special-flag-ess' : ' special-flag-opt'}">
       <input type="checkbox" class="essential-mark" id="ess-${it.id}">
       <label for="ess-${it.id}">Mark with ※ — Category Ⅰ risk arising from a safety protection function absent at installation <span style="font-family:var(--font-zh)">標記為 ※（因安裝時缺乏安全保護功能而存在的第 Ⅰ 類風險）</span><span class="sf-hint">※ items are excluded from D (Guideline 5.4.3.7); a Category Ⅰ risk left unmarked forces D = 0. Tick only where the risk existed from installation. ※ 項目不計入 D；未標記的第 Ⅰ 類風險會令 D 歸零。僅在該風險源於安裝時已缺乏保護功能時勾選。</span></label>
     </div>
@@ -3128,7 +3245,7 @@ function renderDItem(it) {
       if (btn.classList.contains('act-' + choice)) {
         card.querySelectorAll('.lc-btn').forEach(b => b.classList.remove('act-La','act-Lb','act-Lc','act-NA'));
         card.classList.remove('sel-La','sel-Lb','sel-Lc','sel-NA');
-        const emClr = card.querySelector('.essential-mark'); if (emClr) emClr.checked = false;
+        const emClr = card.querySelector('.essential-mark'); if (emClr) { emClr.checked = false; emClr.disabled = false; }
         if (riskBlock) riskBlock.style.display = 'none';
         delete STATE.D[it.id];
         autoSave();
@@ -3151,7 +3268,7 @@ function renderDItem(it) {
       if (choice === 'NA') {
         // Not applicable — excluded from D calculation, no risk params
         const emNA = card.querySelector('.essential-mark');
-        if (emNA) emNA.checked = false;
+        if (emNA) { emNA.checked = false; emNA.disabled = false; }
         riskBlock.style.display = 'none';
         STATE.D[it.id] = { choice: 'NA' };
         autoSave();
@@ -3159,9 +3276,15 @@ function renderDItem(it) {
         if (clearedNote) showToast('Remark cleared — rating changed to N/A · 評級改為不適用，備註已清除');
         return;
       }
-      // ※ auto-marks on Lc for the four essential-device items; assessor may untick
+      // Bug-01 fix (2026-08-27, 老細 decision 1a-i):
+      // ※ auto-marks ONLY on the four essential-device items rated Lc, and there it
+      // is LOCKED (disabled) — Lc on those items always means the device was absent
+      // at installation. Previously this ticked ※ on EVERY Lc, which silently
+      // excluded 78 non-essential Cat Ⅰ items from D and suppressed the D = 0
+      // zero-override. Non-essential items are now left to the assessor.
       const emAuto = card.querySelector('.essential-mark');
-      if (emAuto) emAuto.checked = (choice === 'Lc');
+      const essLc  = D_ESSENTIAL_IDS.has(it.id) && choice === 'Lc';
+      if (emAuto) { emAuto.checked = essLc; emAuto.disabled = essLc; }
       // Pre-fill risk params from default (La/Lb/Lc)
       const def = choiceDefaults[choice];
       card.querySelector('.r-d').value = def.d;
@@ -3172,17 +3295,24 @@ function renderDItem(it) {
       saveDItem(it.id, card);
       updateAll();
       if (clearedNote) {
-        showToastAction(
-          'Remark cleared · 備註已清除 (' + prev + ' → ' + choice + ')',
-          'Undo 復原',
+        undoable(
+          it.id + ' remark cleared · 備註已清除 (' + prev + ' → ' + choice + ')',
           () => {
             const nEl = card.querySelector('.r-notes');
             if (!nEl) return;
             nEl.value = oldNote;
             saveDItem(it.id, card);
             updateAll();
-            showToast('Remark restored · 備註已復原');
-          }
+            showToast('Remark restored · 備註已復原 ' + it.id);
+          },
+          () => {
+            const nEl = card.querySelector('.r-notes');
+            if (!nEl) return;
+            nEl.value = '';
+            saveDItem(it.id, card);
+            updateAll();
+          },
+          0
         );
       }
     });
@@ -3204,6 +3334,10 @@ function saveDItem(id, card) {
   if (!btnSel) return;
   const choice = btnSel.dataset.choice;
   const em = card.querySelector('.essential-mark');
+  // Decision 1a-i: the four essential devices rated Lc are ALWAYS ※ and the box is
+  // locked. Enforced here too so no code path (import, restore, script) can bypass it.
+  const essLc = D_ESSENTIAL_IDS.has(id) && choice === 'Lc';
+  if (em) { em.disabled = essLc; if (essLc) em.checked = true; }
   const marked = em ? em.checked : false;
   STATE.D[id] = {
     choice,
@@ -3606,9 +3740,38 @@ function renderPhotos() {
 
   document.querySelectorAll('#panel-photos .remove').forEach(b => b.addEventListener('click', async () => {
     const id = b.dataset.rm;
-    STATE.photos = STATE.photos.filter(x => x.id !== id);
+    // U1 (2026-08-27): deleting a photo also destroyed its caption, its Annex D
+    // finding link and shifted every later P1/P2 number, with no way back.
+    // Snapshot the whole record (dataUrl included) and offer Undo.
+    const idx = STATE.photos.findIndex(x => x.id === id);
+    if (idx < 0) return;
+    const rec  = STATE.photos[idx];
+    const part = rec.part || 1;
+    const noInPart = STATE.photos.filter(x => (x.part || 1) === part)
+                                 .findIndex(x => x.id === id) + 1;
+    const label = 'P' + part + '-' + String(noInPart).padStart(2, '0');
+    STATE.photos.splice(idx, 1);
     try { await phDel(id); } catch (e) {}
     autoSave(); renderPhotos();
+    const tail = (rec.desc && rec.desc.trim())
+      ? ' — ' + rec.desc.trim().slice(0, 40) + (rec.desc.trim().length > 40 ? '…' : '')
+      : '';
+    undoable(
+      'Deleted ' + label + ' · 已刪除 ' + label + tail,
+      async () => {
+        if (STATE.photos.some(x => x.id === rec.id)) return;
+        STATE.photos.splice(Math.min(idx, STATE.photos.length), 0, rec);
+        try { await phPut(rec); } catch (e) {}
+        autoSave(); renderPhotos();
+        showToast('Photo restored · 相片已復原 ' + label);
+      },
+      async () => {
+        STATE.photos = STATE.photos.filter(x => x.id !== rec.id);
+        try { await phDel(rec.id); } catch (e) {}
+        autoSave(); renderPhotos();
+      },
+      (rec.dataUrl || '').length
+    );
   }));
   document.querySelectorAll('#panel-photos .photo-desc').forEach(t => t.addEventListener('input', () => {
     const rec = STATE.photos.find(x => x.id === t.dataset.id);
@@ -3645,12 +3808,31 @@ $('#fileInput').addEventListener('change', async e => {
 $('#phPrint').addEventListener('click', () => doPrint());
 $('#phClear').addEventListener('click', async () => {
   if (!STATE.photos.length) return;
-  if (!confirm('Delete ALL ' + STATE.photos.length + ' photos from both parts? This cannot be undone.\n刪除兩個部分全部 ' + STATE.photos.length + ' 張相片？此操作無法復原。')) return;
+  if (!confirm('Delete ALL ' + STATE.photos.length + ' photos from both parts?\nUndo is available until the page is reloaded.\n刪除兩個部分全部 ' + STATE.photos.length + ' 張相片？\n重新載入頁面前仍可復原。')) return;
+  // U1: keep the full snapshot in memory so Undo can put every record back.
+  // Memory note: the snapshot holds the same bytes STATE.photos held a moment ago,
+  // and is released when the next toast replaces this one.
+  const snap = STATE.photos.slice();
   STATE.photos = [];
   try { await phClear(); } catch (e) {}
   autoSave(); renderPhotos();
   [1, 2].forEach(p => { const el = byId('phLog' + p); if (el) el.className = 'ph-log'; });
-  showToast('All photos deleted · 已刪除全部相片');
+  undoable(
+    'Deleted all ' + snap.length + ' photos · 已刪除全部 ' + snap.length + ' 張相片',
+    async () => {
+      if (STATE.photos.length) return;
+      STATE.photos = snap.slice();
+      for (const r of snap) { try { await phPut(r); } catch (e) {} }
+      autoSave(); renderPhotos();
+      showToast('All photos restored · 已復原全部 ' + snap.length + ' 張相片');
+    },
+    async () => {
+      STATE.photos = [];
+      try { await phClear(); } catch (e) {}
+      autoSave(); renderPhotos();
+    },
+    snap.reduce((a, r) => a + (r.dataUrl || '').length, 0)
+  );
 });
 
 // ─── SCORING ENGINE ───
@@ -3714,6 +3896,9 @@ const D_ESSENTIAL_IDS = (() => {
 })();
 function isMarkedD(id, st) {
   if (!st) return false;
+  // Decision 1a-i: essential device + Lc is locked ※. Legacy drafts may carry
+  // unmark:true from before the lock; ignore it so D can never be inflated.
+  if (D_ESSENTIAL_IDS.has(id) && st.choice === 'Lc') return true;
   if (st.unmark === true) return false;   // assessor deliberately removed an auto-※
   if (st.mark === true) return true;      // assessor deliberately added ※ (any item)
   return D_ESSENTIAL_IDS.has(id) && st.choice === 'Lc';   // auto for the four essentials
@@ -4123,7 +4308,10 @@ function applyStateToUI() {
     const essMark = card.querySelector('.essential-mark');
     // Derived, not read from the file: Excel carries no ※ column, and legacy JSON
     // stored flagged:false. Only an explicit unmark:true override is honoured.
-    if (essMark) essMark.checked = isMarkedD(id, st);
+    if (essMark) {
+      essMark.checked = isMarkedD(id, st);
+      essMark.disabled = D_ESSENTIAL_IDS.has(id) && st.choice === 'Lc';
+    }
     saveDItem(id, card);
   });
 
