@@ -213,6 +213,7 @@ details.subsec .subsec-count{font-size:.72rem;color:rgba(255,255,255,.7);font-we
 .fnd-badge{flex-shrink:0;width:26px;text-align:center;font-family:var(--font-h);font-weight:700;
   font-size:.72rem;color:#fff;border-radius:5px;padding:3px 0}
 .fnd-badge.lb{background:var(--gold-dk)} .fnd-badge.lc{background:var(--danger)}
+.fnd-badge.la{background:var(--navy);width:auto;padding:0 5px} .fnd-badge.la small{font-size:.65em;opacity:.9}
 .fnd-main{flex:1;min-width:0}
 .fnd-name{font-family:var(--font-zh);font-weight:600;font-size:.8rem;color:var(--text)}
 .fnd-desc{font-size:.72rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -229,6 +230,14 @@ details.subsec .subsec-count{font-size:.72rem;color:rgba(255,255,255,.7);font-we
   font-family:'Consolas','Menlo',monospace;font-size:.74rem;line-height:1.5;color:var(--text);resize:vertical}
 .ph-caps:focus{outline:none;border-color:var(--blue)}
 .ph-row{display:flex;gap:9px;align-items:center;flex-wrap:wrap;margin-top:9px}
+/* DND-01 · photo drop zone (screen only; hidden in @media print) */
+.ph-drop{margin-top:9px;border:2px dashed var(--border);border-radius:9px;padding:14px 12px;text-align:center;
+  font-family:var(--font-h);font-weight:700;font-size:.8rem;color:var(--muted);background:#fafbfd;cursor:pointer;
+  transition:border-color .15s,background .15s,color .15s;user-select:none}
+.ph-drop .zh{font-family:var(--font-zh);font-weight:500}
+.ph-drop .ph-drop-sub{display:block;font-family:var(--font-b,inherit);font-weight:400;font-size:.7rem;margin-top:3px}
+.ph-drop:hover{border-color:var(--blue)}
+.ph-drop.hover{border-color:var(--gold);background:#FFF9E6;color:var(--navy)}
 .ph-btn{font-family:var(--font-h);font-weight:700;font-size:.8rem;border-radius:7px;padding:8px 14px;
   cursor:pointer;border:1px solid transparent}
 .ph-btn-p{background:var(--navy);color:#fff}
@@ -508,7 +517,7 @@ textarea{resize:none}
      The 12.8mm headroom deliberately absorbs a footer that wraps to a 4th line
      (brand footer text differs per white-label company).
      object-fit:contain, never cover, so no evidence is cropped out of frame. */
-  .photo-note,.ph-meter,.ph-row,.ph-caps,.ph-log,.ph-empty,.ph-sep,.findings-panel,
+  .photo-note,.ph-meter,.ph-row,.ph-drop,.ph-caps,.ph-log,.ph-empty,.ph-sep,.findings-panel,
   .photo-cell-no .cell-fnd,
   #panel-photos .ta-print,
   .photo-slot .remove{display:none!important}
@@ -1354,8 +1363,8 @@ document.addEventListener('DOMContentLoaded',function(){ applyBrand(window.BRAND
     <div class="card">
       <div class="card-title">Site Photos <span class="card-title-zh">場地相片</span></div>
       <p class="photo-note" style="font-size:.8rem;color:var(--muted);margin-bottom:8px">
-        Paste the caption list, then click <b>Add photos</b> and press <b>Ctrl+A</b> in the file dialog. Captions attach automatically by filename. Videos are skipped. Max 200 photos — Part 1 prints 6 per sheet, Part 2 prints 4 per sheet (bigger photos + bilingual finding text).
-        <span class="zh" style="font-family:var(--font-zh)">貼上註解清單，㩒「加入相片」後喺檔案視窗㩒 Ctrl+A。註解會按檔名自動配對，影片會略過。最多 200 張；第一部分每頁印 6 張，第二部分每頁印 4 張（相片更大，並附中英雙語發現說明）。</span>
+        Paste the caption list, then click <b>Add photos</b> and press <b>Ctrl+A</b> in the file dialog — or <b>drag the photos</b> straight into the dashed box. Captions attach automatically by filename. Videos are skipped. Max 200 photos — Part 1 prints 6 per sheet, Part 2 prints 4 per sheet (bigger photos + bilingual finding text).
+        <span class="zh" style="font-family:var(--font-zh)">貼上註解清單，㩒「加入相片」後喺檔案視窗㩒 Ctrl+A，或直接將相片拖入虛線框。註解會按檔名自動配對，影片會略過。最多 200 張；第一部分每頁印 6 張，第二部分每頁印 4 張（相片更大，並附中英雙語發現說明）。</span>
       </p>
       <div class="ph-meter photo-note">
         <span id="phTotal" style="font-family:var(--font-h);font-weight:700">0 / 200</span>
@@ -1370,9 +1379,14 @@ document.addEventListener('DOMContentLoaded',function(){ applyBrand(window.BRAND
       <div class="card-title"><span class="rec-tag">1</span> Part 1 — General Outlook <span class="card-title-zh">第一部分 · 整體外觀</span></div>
       <p class="photo-note" style="font-size:.78rem;color:var(--muted);margin-bottom:8px">Caption list for Part 1 <span class="zh" style="font-family:var(--font-zh)">第一部分註解清單</span></p>
       <textarea class="ph-caps" id="phCaps1" rows="3" placeholder='"C:\path\L17\20260620_120445.jpg", outlook of control panel'></textarea>
+      <div class="ph-drop" data-phdrop="1" role="button" tabindex="0" title="Drop photo files here · 將相片檔案放到這裡">
+        🖼 Drag photos here <span class="zh">將相片拖曳到這裡</span>
+        <span class="ph-drop-sub">or click here / use ＋ Add photos · 或點擊此處／使用「加入相片」</span>
+      </div>
       <div class="ph-row">
         <button class="ph-btn ph-btn-p" data-phadd="1" type="button">＋ Add photos 加入相片</button>
         <button class="ph-btn ph-btn-s" data-phrematch="1" type="button">↻ Re-match captions 重新配對註解</button>
+        <button class="ph-btn ph-btn-s" data-phsort="1" type="button" title="Sort all photos in this part by filename (natural order). Undoable with Ctrl+Z.">↕ Re-sort by filename 按檔名重新排序</button>
         <span class="ph-count" id="phCount1">0</span>
       </div>
       <div class="ph-log" id="phLog1"></div>
@@ -1385,9 +1399,14 @@ document.addEventListener('DOMContentLoaded',function(){ applyBrand(window.BRAND
       <div class="findings-panel" id="findingsPanel"></div>
       <p class="photo-note" style="font-size:.78rem;color:var(--muted);margin-bottom:8px">Caption list for Part 2 <span class="zh" style="font-family:var(--font-zh)">第二部分註解清單</span></p>
       <textarea class="ph-caps" id="phCaps2" rows="3" placeholder='"C:\path\L17\IMG_4842.jpg", serious oil leakage from the gear box'></textarea>
+      <div class="ph-drop" data-phdrop="2" role="button" tabindex="0" title="Drop photo files here · 將相片檔案放到這裡">
+        🖼 Drag photos here <span class="zh">將相片拖曳到這裡</span>
+        <span class="ph-drop-sub">or click here / use ＋ Add photos · 或點擊此處／使用「加入相片」</span>
+      </div>
       <div class="ph-row">
         <button class="ph-btn ph-btn-p" data-phadd="2" type="button">＋ Add photos 加入相片</button>
         <button class="ph-btn ph-btn-s" data-phrematch="2" type="button">↻ Re-match captions 重新配對註解</button>
+        <button class="ph-btn ph-btn-s" data-phsort="2" type="button" title="Sort all photos in this part by filename (natural order). Undoable with Ctrl+Z.">↕ Re-sort by filename 按檔名重新排序</button>
         <span class="ph-count" id="phCount2">0</span>
       </div>
       <div class="ph-log" id="phLog2"></div>
@@ -2485,8 +2504,8 @@ function collectAnnexDRecs() {
   const lines = [];
   Object.values(DATA.annexD).forEach(sec => sec.items.forEach(it => {
     const st = STATE.D[it.id];
-    if (st && (st.choice === 'Lb' || st.choice === 'Lc')) {
-      const lvl = st.choice === 'Lb' ? 'Lb·Fair 不良' : 'Lc·Failure 嚴重';
+    if (isFinding(it.id, st)) {                      // §4.2 — Lb/Lc, or La with Category hand-set to I/II
+      const lvl = findingLevelLabel(st);
       lines.push(`• [${it.no} · ${lvl}] ${it.improvement_zh} / ${it.improvement_en}`);
     }
   }));
@@ -2564,7 +2583,7 @@ function prepPrintInputEchoes(){
 function autofillAnnexD() {
   const lines = collectAnnexDRecs();
   const el = byId('rec_D');
-  if (!lines.length) { showToast('No Lb/Lc items in Annex D · 附件 D 暫無 Lb／Lc 項目'); return; }
+  if (!lines.length) { showToast('No findings in Annex D · 附件 D 暫無發現項目'); return; }
   const auto = lines.join('\n');
   if (el.value.trim() && !confirm('Replace the Annex D box with guideline recommendations? You can edit and add your own opinion afterwards.\n用指引建議取代附件 D 框內容？之後仍可自由編輯及補充意見。')) return;
   el.value = auto;
@@ -3455,9 +3474,15 @@ async function phHydrate() {
     return false;
   });
 }
-/* Older drafts stored a fixed 24-slot array with no id/part */
+/* Older drafts stored a fixed 24-slot array with no id/part.
+   Bug-02 (2026-08-31): autoSave() writes SLIM records (id/name/desc/part/finding,
+   no dataUrl), so a photo with an empty caption used to be dropped here BEFORE
+   phHydrate() could merge its bytes back — it silently vanished on reload and
+   the next autoSave orphaned its IndexedDB bytes. A record with an id is a
+   modern one and must be kept; phHydrate() still discards any record whose
+   bytes are genuinely gone. Legacy id-less empty slots are still filtered. */
 function phMigrate() {
-  STATE.photos = (STATE.photos || []).filter(p => p && (p.dataUrl || p.desc));
+  STATE.photos = (STATE.photos || []).filter(p => p && (p.id || p.dataUrl || p.desc));
   STATE.photos.forEach(p => {
     if (!p.id) p.id = 'p' + (++phUid);
     if (p.part !== 1 && p.part !== 2) p.part = 1;
@@ -3526,19 +3551,25 @@ function findingsList() {
   const out = [];
   Object.values(DATA.annexD).forEach(sec => sec.items.forEach(it => {
     const st = STATE.D[it.id];
-    if (!st || (st.choice !== 'Lb' && st.choice !== 'Lc')) return;
-    const src = it[st.choice] || {};
+    if (!isFinding(it.id, st)) return;             // §4.2 — Lb/Lc, or La with Category hand-set to I/II
+    const laX = isLaException(st);
+    /* La-exception: it['La'].desc reads "good condition" — never print that under a
+       Cat I/II finding. Use the improvement text (same source as the Annex D
+       recommendation line, so wording is consistent) and prefix the tag. */
+    const src = laX ? { desc_zh: it.improvement_zh, desc_en: it.improvement_en } : (it[st.choice] || {});
+    const tag = laX ? '[' + it.no + ' · ' + findingLevelLabel(st) + '] ' : '';
     /* Bilingual caption: ZH and EN on their own lines. .photo-desc-print is
        white-space:pre-wrap, so the \n renders as a real line break in the PDF. */
     const nm = [it.name_zh, it.name_en].filter(Boolean).join('  ');
     const fd = [src.desc_zh, src.desc_en].filter(Boolean).join('  ');
-    const defCap = it.id + ' · ' + nm + (fd ? '\n' + fd : '');
+    const defCap = tag + it.id + ' · ' + nm + (fd ? '\n' + fd : '');
     /* The Chinese-only form used before 2026-07-22 — kept so an untouched
        caption can be auto-upgraded, while a hand-edited one is left alone. */
     const legacyCapZh = it.id + ' · ' + (it.name_zh || it.name_en || '') +
       (src.desc_zh ? ' — ' + src.desc_zh : '');
-    out.push({ id: it.id, name_en: it.name_en, name_zh: it.name_zh, choice: st.choice,
-      findingZh: src.desc_zh || '', findingEn: src.desc_en || '', defCap, legacyCapZh });
+    out.push({ id: it.id, name_en: it.name_en, name_zh: it.name_zh, choice: st.choice, cat: st.c,
+      laException: laX, level: findingLevelLabel(st),
+      findingZh: (laX ? tag : '') + (src.desc_zh || ''), findingEn: src.desc_en || '', defCap, legacyCapZh });
   }));
   return out;   // already in Annex D order
 }
@@ -3568,7 +3599,7 @@ function renderFindings() {
   if (!panel) return;
   const list = findingsList();
   if (!list.length) {
-    panel.innerHTML = '<div class="fnd-empty">尚無 Lb／Lc 發現 · No Lb/Lc findings yet — 評定附件 D 後將在此自動列出，提醒你為每個發現拍照。</div>';
+    panel.innerHTML = '<div class="fnd-empty">尚無發現 · No findings yet（Lb／Lc，或風險類別經人手調整為第Ⅰ／Ⅱ類之項目）— 評定附件 D 後將在此自動列出，提醒你為每個發現拍照。</div>';
     return;
   }
   const covered = list.filter(f => findingCovered(f.id)).length;
@@ -3578,7 +3609,7 @@ function renderFindings() {
   list.forEach(f => {
     const cov = findingCovered(f.id);
     html += '<div class="fnd-row' + (cov ? ' cov' : '') + '">' +
-      '<span class="fnd-badge ' + f.choice.toLowerCase() + '">' + f.choice + '</span>' +
+      '<span class="fnd-badge ' + f.choice.toLowerCase() + '"' + (f.laException ? ' title="' + esc(f.level) + '"' : '') + '>' + f.choice + (f.laException ? '<small>→' + esc(f.cat) + '</small>' : '') + '</span>' +
       '<div class="fnd-main"><div class="fnd-name">' + esc(f.id) + ' · ' + esc(f.name_zh || '') + ' ' + esc(f.name_en || '') + '</div>' +
       '<div class="fnd-desc" title="' + esc(f.findingZh || f.findingEn) + '">' + esc(f.findingZh || f.findingEn) + '</div></div>' +
       '<span class="fnd-status">' + (cov ? '✓ 已拍' : '⚠ 待拍') + '</span>' +
@@ -3629,6 +3660,54 @@ async function phAddFiles(part, fileList, finding) {
   if (r.failed.length) L.push('<span class="li er"><b>✕ ' + r.failed.length + '</b> file(s) failed to decode 無法解讀：' + esc(r.failed.slice(0, 4).join(', ')) + '</span>');
   if (r.over) L.push('<span class="li er"><b>✕ ' + r.over + '</b> rejected — ' + PH_MAX + '-photo limit reached 已達 ' + PH_MAX + ' 張上限</span>');
   phLog(part, L.join(''));
+}
+
+// DND-01 · Re-sort this part's photos by filename (natural order), keeping the
+// other part's photos exactly where they are. Upload sorts per BATCH only
+// (phAddFiles), so two batches can end up out of order; this fixes it on
+// demand. Records are re-ordered by reference (no copies, bytes = 0), and the
+// action is registered on the U2 UNDO stack — Ctrl+Z / ↶ Undo restore the
+// previous order. Photos added or removed after the sort are handled: undo
+// re-applies the old id order and appends anything it has never seen.
+function phResort(part) {
+  const idx = [], recs = [];
+  (STATE.photos || []).forEach((p, i) => { if (p.part === part) { idx.push(i); recs.push(p); } });
+  if (recs.length < 2) {
+    phLog(part, '<span class="li wa"><b>' + recs.length + '</b> photo(s) — nothing to sort 相片不足兩張，無需排序</span>');
+    return;
+  }
+  const sorted = recs.slice().sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true }));
+  let moved = 0;
+  sorted.forEach((p, k) => { if (p !== recs[k]) moved++; });
+  if (!moved) {
+    phLog(part, '<span class="li ok"><b>✓</b> already in filename order 已按檔名排序，無需更改</span>');
+    return;
+  }
+  const before = STATE.photos.map(p => p.id);
+  const next = STATE.photos.slice();
+  idx.forEach((i, k) => { next[i] = sorted[k]; });
+  const after = next.map(p => p.id);
+
+  const applyOrder = ids => {
+    const map = new Map((STATE.photos || []).map(p => [p.id, p]));
+    const out = ids.map(id => map.get(id)).filter(Boolean);
+    const seen = new Set(out.map(p => p.id));
+    (STATE.photos || []).forEach(p => { if (!seen.has(p.id)) out.push(p); });
+    STATE.photos = out;
+    autoSave();
+    renderPhotos();
+  };
+
+  applyOrder(after);
+  phLog(part,
+    '<span class="li ok"><b>✓ ' + moved + '</b> of ' + recs.length + ' photo(s) re-positioned by filename · 已按檔名重新排序（' + moved + ' 張移動）</span>' +
+    '<span class="li wa">Part ' + part + ' numbering P' + part + '-xx updated · 第' + (part === 1 ? '一' : '二') + '部分編號已更新</span>');
+  undoable(
+    'Re-sorted Part ' + part + ' by filename · 第' + (part === 1 ? '一' : '二') + '部分已按檔名重新排序',
+    () => applyOrder(before),
+    () => applyOrder(after),
+    0
+  );
 }
 
 // Re-apply the caption list to photos ALREADY uploaded in this part — used when a
@@ -3792,6 +3871,64 @@ document.querySelectorAll('[data-phadd]').forEach(b => b.addEventListener('click
 document.querySelectorAll('[data-phrematch]').forEach(b => b.addEventListener('click', () => {
   phRematch(+b.dataset.phrematch);
 }));
+document.querySelectorAll('[data-phsort]').forEach(b => b.addEventListener('click', () => {
+  phResort(+b.dataset.phsort);
+}));
+
+/* ─── DND-01 · Drag-and-drop photo intake ────────────────────────────────────
+   Dropped files go through the SAME phAddFiles() path as the file dialog, so
+   reading / compression / IndexedDB / caption matching / P1-P2 numbering are
+   untouched. Only the entry point is new.
+   The dialog's accept="image/*" does not apply to drops, so we filter here:
+   images (by MIME or HEIC/HEIF extension) and videos (so the existing
+   "video skipped" message still fires) are forwarded; anything else is
+   reported as skipped.                                                        */
+const PH_DROP_TYPES_OK = f => {
+  if ((f.type || '').startsWith('image/')) return true;
+  const e = phExt(f.name);
+  return PH_HEIC_EXT.includes(e) || PH_VIDEO_EXT.includes(e);
+};
+document.querySelectorAll('[data-phdrop]').forEach(z => {
+  const part = +z.dataset.phdrop;
+  const addBtn = document.querySelector('[data-phadd="' + part + '"]');
+  ['dragenter', 'dragover'].forEach(ev => z.addEventListener(ev, e => {
+    e.preventDefault(); e.stopPropagation();
+    if (e.dataTransfer) e.dataTransfer.dropEffect = 'copy';
+    z.classList.add('hover');
+  }));
+  z.addEventListener('dragleave', e => { e.preventDefault(); z.classList.remove('hover'); });
+  z.addEventListener('drop', async e => {
+    e.preventDefault(); e.stopPropagation(); z.classList.remove('hover');
+    const all = Array.from((e.dataTransfer && e.dataTransfer.files) || []);
+    if (!all.length) return;
+    const keep = all.filter(PH_DROP_TYPES_OK);
+    const skipped = all.length - keep.length;
+    const old = addBtn ? addBtn.textContent : '';
+    if (addBtn) { addBtn.textContent = 'Reading… 讀取中…'; addBtn.disabled = true; }
+    try { if (keep.length) await phAddFiles(part, keep, null); }
+    finally { if (addBtn) { addBtn.textContent = old; addBtn.disabled = false; } }
+    if (skipped) {
+      const el = byId('phLog' + part);
+      const msg = '<span class="li wa"><b>⚠ ' + skipped + '</b> non-image file(s) skipped 非圖片檔案已略過</span>';
+      if (el && keep.length) { el.innerHTML += msg; } else { phLog(part, msg); }
+    }
+  });
+  // Click / Enter / Space on the zone = same as the ＋ Add photos button
+  z.addEventListener('click', () => { if (addBtn) addBtn.click(); });
+  z.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); if (addBtn) addBtn.click(); } });
+});
+// Page-level guard: a file dropped OUTSIDE a zone must never navigate the tab
+// away from the form (Chrome's default opens the image and the draft is lost).
+// Scoped to file drags only, so dragging text inside a textarea is untouched.
+(function () {
+  const isFileDrag = e => !!(e.dataTransfer && Array.from(e.dataTransfer.types || []).includes('Files'));
+  window.addEventListener('dragover', e => { if (isFileDrag(e)) e.preventDefault(); });
+  window.addEventListener('drop', e => {
+    if (!isFileDrag(e)) return;
+    e.preventDefault();
+    showToast('Drop photos inside a dashed box · 請將相片放入虛線框內');
+  });
+})();
 $('#fileInput').addEventListener('change', async e => {
   const part = +e.target.dataset.part || 1;
   const finding = e.target.dataset.finding || null;   // set by a Findings-checklist ＋Photo button
@@ -3894,6 +4031,25 @@ const D_ESSENTIAL_IDS = (() => {
   Object.values(DATA.annexD).forEach(sec => sec.items.forEach(it => { if (it.essential) s.add(it.id); }));
   return s;
 })();
+/* ─── Phase 3 · §4.2 · "Finding" definition (Decision 2 = Option B) ──────────
+   Single source of truth used by collectAnnexDRecs() and findingsList().
+   Lb / Lc are always findings. An La item becomes a finding ONLY when the
+   assessor has manually moved its Category to I or II (every La default is
+   Cat III, so line 3 never fires on an untouched item). Text is spec-verbatim. */
+function isFinding(id, st) {
+  if (!st || !st.choice || st.choice === 'NA') return false;
+  if (st.choice === 'Lb' || st.choice === 'Lc') return true;   // 一定係發現
+  return st.c === 'I' || st.c === 'II';                        // 手改 Category 的例外
+}
+/* La-exception: choice La but Category hand-set to I/II. Its La description says
+   "good condition", so consumers must use improvement_zh/en instead (§4.2). */
+function isLaException(st) { return !!st && st.choice === 'La' && isFinding(null, st); }
+function findingLevelLabel(st) {
+  if (st.choice === 'Lb') return 'Lb·Fair 不良';
+  if (st.choice === 'Lc') return 'Lc·Failure 嚴重';
+  const cz = st.c === 'I' ? 'Ⅰ' : 'Ⅱ';
+  return 'La（風險類別經人手調整為第' + cz + '類）· Category manually set to ' + st.c;
+}
 function isMarkedD(id, st) {
   if (!st) return false;
   // Decision 1a-i: essential device + Lc is locked ※. Legacy drafts may carry
@@ -4747,14 +4903,14 @@ function prepAllPrintMirrors(){
 window.addEventListener('beforeprint', prepAllPrintMirrors);
 
   function doPrint() {
-    // Warn if any Lb/Lc finding still has no linked photo — evidence gap
+    // Warn if any finding (isFinding: Lb/Lc, or La with Category hand-set) still has no linked photo — evidence gap
     try {
       const missing = findingsList().filter(f => !findingCovered(f.id));
       if (missing.length) {
         const lines = missing.slice(0, 12).map(f => '　• ' + f.id + ' (' + f.choice + ') ' + (f.name_zh || f.name_en)).join('\n');
         const more = missing.length > 12 ? '\n　…（其餘 ' + (missing.length - 12) + ' 項 and ' + (missing.length - 12) + ' more）' : '';
         const go = confirm(
-          missing.length + ' 個 Lb／Lc 發現尚未連結相片：\n' + missing.length + ' finding(s) have no linked photo:\n\n' +
+          missing.length + ' 個發現尚未連結相片：\n' + missing.length + ' finding(s) have no linked photo:\n\n' +
           lines + more +
           '\n\n仍要列印嗎？ Print anyway?\n（按「取消」返回補相 · Cancel to go back and add photos）'
         );
