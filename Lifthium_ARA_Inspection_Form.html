@@ -731,7 +731,7 @@ body:not(.app-unlocked){overflow:hidden;}
 .decl-inp{background:#FFF8E1;border:1px solid var(--gold);border-radius:5px;padding:2px 7px;font-family:inherit;font-size:.86rem;color:var(--navy);min-width:130px}
 .decl-inp-wide{min-width:210px}
 /* Connector between position and organization. A controlled list, not free
-   text: this sentence is a statutory declaration and 'at on behalf of' must
+   text: this sentence is the declaration prescribed by the Guideline and 'at on behalf of' must
    not be reachable. Default 'at' = the EMSD template wording. */
 .decl-conn{min-width:0;width:auto;font-weight:600}
 .decl-mirror{font-weight:700;color:var(--navy);border-bottom:1px solid var(--gold);padding:0 5px}
@@ -745,7 +745,7 @@ body:not(.app-unlocked){overflow:hidden;}
 .decl-sigline{border-bottom:1px solid #333;min-height:1.6em;display:block}
 .decl-hand::after{content:'（handwritten on printed copy 於列印本手寫簽署）';font-size:.7rem;color:var(--muted);font-weight:400}
 .decl-foot{margin-top:18px;font-style:italic;font-size:.82rem;color:var(--muted)}
-/* The typed organization name feeds a STATUTORY declaration. An <input> is a
+/* The typed organization name feeds the signed declaration. An <input> is a
    fixed-width box that clips overflow, so a long bilingual firm name would
    print cut in half. On paper we therefore print #decl_org_echo, a plain span
    that wraps, and hide the input. Same trick as prepPrintTextareas(). */
@@ -756,7 +756,7 @@ body:not(.app-unlocked){overflow:hidden;}
   /* ONE printed appearance for every value in the declaration paragraph,
      whether the assessor typed it or the form filled it in: the .decl-mirror
      look — bold, brand navy, gold rule. A reader must not be able to tell
-     manual entries from automatic ones on a statutory document. */
+     manual entries from automatic ones on the declaration page. */
   .decl-echo,.decl-inp{
     font-weight:700!important;color:var(--navy)!important;font-size:inherit!important;
     background:transparent!important;border:none!important;
@@ -995,12 +995,12 @@ function applyBrand(b){
   document.querySelectorAll('[data-brand]').forEach(function(el){var k=el.getAttribute('data-brand'); if(b[k]!=null) el.textContent=b[k];});
   var tl=document.querySelector('.topbar-logo'); if(tl) tl.title=b.companyBil;
   /* 評估機構 Assessment Organization is DELIBERATELY NOT bound to the brand.
-     It names the organisation the ARA works for and it feeds the statutory
+     It names the organisation the ARA works for and it feeds the signed
      Declaration page ("I, <name>, serving as <post> at <organisation>").
      Binding it to the active white-label would auto-populate the LICENSEE'S
      name — and a licensee is frequently the lift's maintenance contractor, so
      the form would generate a declaration asserting that the contractor is the
-     independent assessor. That is a false statement on a statutory declaration
+     independent assessor. That is a false statement on the signed declaration
      and a direct conflict of interest (Guideline §5.2, §5.3.3).
      Value comes from BRAND.ara.company (the ARA's OWN firm) if configured, and
      is NEVER overwritten once it holds anything. */
@@ -1166,8 +1166,8 @@ document.addEventListener('DOMContentLoaded',function(){ applyBrand(window.BRAND
       <div class="pd-item"><div class="pd-num">7</div><div class="pd-txt">本報告需一式三份，評估機構留存一份，升降機負責人留存兩份。<span class="en">This report shall be made in triplicate: one copy retained by the assessment organisation and two copies by the responsible person.</span></div></div>
       <div class="pd-sechead pd-ip-head">知識產權<span class="en">Intellectual Property</span></div>
       <div class="pd-item"><div class="pd-num">8</div><div class="pd-txt">本報告的格式、版面編排、內容的編選及編排方式，連同用以製作本報告的軟件工具，均為<span data-brand="ipOwnerZh">極樂公證行有限公司</span>的原創作品；其版權及一切其他知識產權由<span data-brand="ipOwnerZh">極樂公證行有限公司</span>獨家擁有，並受《版權條例》（香港法例第 528 章）保障。<span class="en">The format, layout, and the selection and arrangement of the contents of this report, together with the software tool used to produce it, are the original work of <span data-brand="ipOwnerEn">Lifthium Consultancy Limited</span>. The copyright and all other intellectual property rights therein are owned exclusively by <span data-brand="ipOwnerEn">Lifthium Consultancy Limited</span> and are protected under the Copyright Ordinance (Cap. 528 of the Laws of Hong Kong).</span></div></div>
-      <div class="pd-item"><div class="pd-num">9</div><div class="pd-txt">上款不適用於引錄自《曳引式升降機風險評估指引》及其他政府刊物的法定條文、評估項目、風險矩陣及計分方法；該等內容的權利由其各自擁有人保留。<span class="en">The preceding item does not extend to the statutory provisions, assessment items, risk matrices and scoring methodology reproduced from the Guideline on Risk Assessment for Traction Lifts and other Government publications, rights in which remain with their respective owners.</span></div></div>
-      <div class="pd-item"><div class="pd-num">10</div><div class="pd-txt">升降機負責人獲授予非獨家、不可轉讓的許可，可就其法定合規、樓宇管理、保險及專業諮詢用途，使用、保存及複製本報告（包括按指引規定須保留的副本）。本項不限制機電工程署或任何其他監管機構為履行法定職能而使用本報告。<span class="en">The responsible person for the lift is granted a non-exclusive, non-transferable licence to use, retain and reproduce this report (including the copies required to be kept under the Guideline) for its own statutory compliance, building management, insurance and professional advisory purposes. Nothing in this item restricts the use of this report by the Electrical and Mechanical Services Department or any other regulatory authority in the discharge of its statutory functions.</span></div></div>
+      <div class="pd-item"><div class="pd-num">9</div><div class="pd-txt">上款不適用於引錄自《曳引式升降機風險評估指引》及其他政府刊物的內容、評估項目、風險矩陣及計分方法；該等內容的權利由其各自擁有人保留。<span class="en">The preceding item does not extend to the content, assessment items, risk matrices and scoring methodology reproduced from the Guideline on Risk Assessment for Traction Lifts and other Government publications, rights in which remain with their respective owners.</span></div></div>
+      <div class="pd-item"><div class="pd-num">10</div><div class="pd-txt">升降機負責人獲授予非獨家、不可轉讓的許可，可就其在《升降機及自動梯條例》（第618章）下的保養及檢驗合規、樓宇管理、保險及專業諮詢用途，使用、保存及複製本報告（包括按指引規定須保留的副本）。本項不限制機電工程署或任何其他監管機構為履行法定職能而使用本報告。<span class="en">The responsible person for the lift is granted a non-exclusive, non-transferable licence to use, retain and reproduce this report (including the copies required to be kept under the Guideline) for its own compliance with maintenance and examination duties under the Lifts and Escalators Ordinance (Cap. 618), building management, insurance and professional advisory purposes. Nothing in this item restricts the use of this report by the Electrical and Mechanical Services Department or any other regulatory authority in the discharge of its statutory functions.</span></div></div>
       <div class="pd-item"><div class="pd-num">11</div><div class="pd-txt">未經<span data-brand="ipOwnerZh">極樂公證行有限公司</span>事先書面同意，不得複製或改編本報告的格式、版面或其製作工具，以製作任何其他風險評估報告或類似文件，亦不得為此目的向第三方提供。<span class="en">Save with the prior written consent of <span data-brand="ipOwnerEn">Lifthium Consultancy Limited</span>, the format, layout or production tool of this report shall not be copied or adapted for the production of any other risk assessment report or similar document, nor supplied to any third party for that purpose.</span></div></div>
     </div>
 
@@ -1920,8 +1920,8 @@ https://github.com/nodeca/pako/blob/main/LICENSE
      ["知識產權 Intellectual Property",true],
      ["本工作簿的格式、版面編排，以及評估項目的編選及編排方式，均為極樂公證行有限公司的原創作品，其版權及一切知識產權由極樂公證行有限公司獨家擁有，並受《版權條例》（香港法例第 528 章）保障。",false],
      ["The format, layout, and the selection and arrangement of the assessment items in this workbook are the original work of Lifthium Consultancy Limited, which owns exclusively the copyright and all intellectual property rights therein, protected under the Copyright Ordinance (Cap. 528).",false],
-     ["上述不適用於引錄自《曳引式升降機風險評估指引》的法定條文、評估項目、風險矩陣及計分方法，該等內容的權利由其擁有人保留。",false],
-     ["The above does not extend to the statutory provisions, assessment items, risk matrices and scoring methodology reproduced from the Guideline on Risk Assessment for Traction Lifts, rights in which remain with their owner.",false],
+     ["上述不適用於引錄自《曳引式升降機風險評估指引》的內容、評估項目、風險矩陣及計分方法，該等內容的權利由其擁有人保留。",false],
+     ["The above does not extend to the content, assessment items, risk matrices and scoring methodology reproduced from the Guideline on Risk Assessment for Traction Lifts, rights in which remain with their owner.",false],
      ["本工作簿僅供獲授權人員為本次風險評估輸入資料之用。未經極樂公證行有限公司事先書面同意，不得複製或改編其格式，以製作任何其他評估表格或報告，亦不得為此目的向第三方提供。",false],
      ["This workbook is supplied solely for authorised personnel to enter data for this risk assessment. Save with the prior written consent of Lifthium Consultancy Limited, its format shall not be copied or adapted to produce any other assessment form or report, nor supplied to any third party for that purpose.",false]
     ].forEach(([txt,b],i)=>{ const c=ws.getCell(i+1,1); c.value=txt; c.font=F({size:(b&&i===0)?12:10,bold:b}); c.alignment={wrapText:true}; });
@@ -3272,7 +3272,7 @@ function renderDItem(it) {
         return;
       }
       // A remark written for the previous rating contradicts the new one, and a
-      // stale remark is worse than none in a statutory report. Clear it on a
+      // stale remark is worse than none in an issued ARA report. Clear it on a
       // GENUINE change only (not on re-clicking the same rating, and never on
       // import/restore — those set the button classes directly, they don't click).
       const prev = STATE.D[it.id] && STATE.D[it.id].choice;
@@ -4202,7 +4202,7 @@ function syncDecl(){
   prepPrintDeclOrg();
 }
 /* An <input> is a fixed-width box: it CLIPS anything longer than itself, and
-   a half-printed firm name or job title on a statutory declaration is worse
+   a half-printed firm name or job title on the declaration page is worse
    than none. Each entry below mirrors an input into a plain span that wraps;
    print shows the span and hides the input (.decl-inp-echoed). Blank prints
    '—' so an omission is VISIBLE — same rule as pc_org on the cover.
@@ -4560,7 +4560,7 @@ const impEsc  = v => String(v == null ? '' : v).replace(/[&<>"]/g, c =>
   ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' }[c]));
 
 /* Merging two workbooks that describe DIFFERENT lifts would silently produce
-   one statutory report containing both — the single worst outcome here. Any
+   one ARA report containing both — the single worst outcome here. Any
    positive disagreement on an identifier blocks the import outright. */
 function importIdentity(out) {
   const rows = []; let blocked = false;
@@ -4690,8 +4690,8 @@ function reviewImport(out) {
     $('#imp_identity').innerHTML =
       (idc.blocked
         ? '<div class="imp-block"><b>Import blocked \u00b7 \u62d2\u7d55\u532f\u5165</b><br>' +
-          'This workbook identifies a different lift. Merging it would put two lifts into one statutory report.<br>' +
-          '<span class="zh">\u6b64\u6a94\u6848\u5c6c\u65bc\u53e6\u4e00\u90e8\u5347\u964d\u6a5f\u3002\u5408\u4f75\u6703\u4ee4\u5169\u90e8\u6a5f\u7684\u8cc7\u6599\u6df7\u5165\u540c\u4e00\u4efd\u6cd5\u5b9a\u5831\u544a\u3002</span></div>'
+          'This workbook identifies a different lift. Merging it would put two lifts into one ARA report.<br>' +
+          '<span class="zh">\u6b64\u6a94\u6848\u5c6c\u65bc\u53e6\u4e00\u90e8\u5347\u964d\u6a5f\u3002\u5408\u4f75\u6703\u4ee4\u5169\u90e8\u6a5f\u7684\u8cc7\u6599\u6df7\u5165\u540c\u4e00\u4efd\u98a8\u96aa\u8a55\u4f30\u5831\u544a\u3002</span></div>'
         : '') +
       '<div class="imp-h">Lift identity \u5347\u964d\u6a5f\u8eab\u5206</div>' +
       '<table class="imp-tbl"><tr><th>Field</th><th>Current \u73fe\u6709</th><th>In file \u532f\u5165\u6a94</th><th>&nbsp;</th></tr>' +
@@ -5000,7 +5000,7 @@ window.addEventListener('beforeprint', prepAllPrintMirrors);
     applyStateToUI();
     showToast('Restored from auto-save · 已從自動儲存還原');
   }
-  /* Declaration organization: an independent statutory field. Seeded ONCE at
+  /* Declaration organization: an independent declaration field. Seeded ONCE at
      start-up from the Assessment Organization box purely as a convenience. If
      the assessor has ever touched it — including deliberately clearing it —
      STATE.info.f_declorg exists and no seeding occurs. Never brand-bound. */
