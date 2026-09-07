@@ -1325,6 +1325,10 @@ document.addEventListener('DOMContentLoaded',function(){ applyBrand(window.BRAND
         <button class="btn-secondary" id="reuseCBtn" style="white-space:nowrap">↺ Reuse Annex C 沿用管理記錄</button>
         <span style="font-size:.78rem;color:var(--muted)">Same building? Load Annex C + shared building info from another lift's file (JSON / Excel). <span class="zh" style="font-family:var(--font-zh)">同一大廈？由另一部升降機的檔案載入管理記錄及大廈共用資料，免除重複輸入。</span></span>
       </div>
+      <div style="margin:0 0 12px;padding:10px 12px;background:color-mix(in srgb, var(--gold) 10%, transparent);border:1px solid color-mix(in srgb, var(--gold) 35%, transparent);border-radius:8px;display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+        <button class="btn-secondary" id="clientCBtn" style="white-space:nowrap">⤓ Client Copy 客戶填寫版</button>
+        <span style="font-size:.78rem;color:var(--muted)">Export a blank Annex C self-declaration workbook (Cover · Instructions · Annex C · Declaration) with this lift's identity pre-filled, for the Responsible Person to complete and return. Bring it back with ⤒ Excel. <span class="zh" style="font-family:var(--font-zh)">匯出一份空白附件C負責人自述表（封面・填寫說明・附件C・聲明），已預填本升降機資料，交負責人填妥後交回；用「⤒ Excel」匯入。</span></span>
+      </div>
       <div id="annexC-items"></div>
       <div style="margin-top:14px;padding:12px;background:color-mix(in srgb, var(--gold) 8%, transparent);border-radius:6px;font-family:var(--font-h);font-weight:700;text-align:center">
         Annex C Subtotal <span class="zh" style="font-family:var(--font-zh);font-weight:500;color:var(--muted)">小計</span>: <span id="cSum" style="color:var(--gold-dk)">0</span> / 50
@@ -2114,7 +2118,229 @@ function cellStr(ws, r, c){ const v=ws.getCell(r,c).value; if(v==null) return ""
     return out;
   }
 
-  root.LiftXL = { buildWorkbook, parseWorkbook, MARKER };
+  // ═══════════════ ANNEX C · CLIENT COPY 客戶填寫版 (export + import) ═══════════════
+  /* A four-sheet self-declaration workbook the Responsible Person fills in:
+       封面 Cover · 填寫說明 Instructions · 附件C AnnexC · 聲明 Declaration
+     Layout reproduces the approved ARA_AnnexC_Client_v2.xlsx (2026-09-07).
+     Carries its OWN marker (CLIENT_MARKER) so parseWorkbook() rejects it and
+     only parseClientC() — which reads Annex C columns F/G and nothing else —
+     can bring it back in. Annex A/B/D, Verdict and Declaration can never be
+     touched by a file that came from a client.
+     C.1.1 and C.1.4 are NOT for the client: the assessor verifies those from
+     the lift log book (LE50L). They are shown greyed/locked and are skipped
+     on import even if a client has unprotected the sheet. */
+  const CLIENT_MARKER = (function(){ const m=String(MARKER).split("|"); const brand=(m[0]||"LIFTHIUM_ARA_DATA_TEMPLATE").replace(/_?ARA_DATA_TEMPLATE$/,""); return (brand||"LIFTHIUM")+"_ARA_CLIENT_C|v1"; })();
+  const CLIENT_C_LOCKED = new Set(["C.1.1","C.1.4"]);
+  const CLIENT_C_PREFILL = ["f_reportno","f_inspno","f_emsdno","f_site","f_address","f_liftno"];
+  const CLIENT_C_COVER_ROWS = [
+    ["f_reportno",  "報告編號  Report No."],
+    ["f_inspno",    "評估編號  Inspection No."],
+    ["f_emsdno",    "EMSD 地點編號  EMSD Location ID"],
+    ["f_site",      "大廈／地點名稱  Building / Site"],
+    ["f_address",   "地址  Address"],
+    ["f_liftno",    "升降機編號  Lift No."],
+    ["f_rp",        "負責人  Responsible Person"],
+    ["f_contractor","註冊升降機承辦商  Registered Lift Contractor"],
+    ["f_rle",       "註冊升降機工程師  Registered Lift Engineer"]
+  ];
+
+  async function buildClientC(ExcelJS, DATA, STATE){
+    STATE = STATE || {}; const info = STATE.info || {};
+    const B = window.BRAND || {};
+    const coZh = B.companyZh || "極樂公證行有限公司", coEn = B.companyEn || "Lifthium Consultancy Limited";
+    const INK="FF1A1A1A", MUTED="FF5A6270", LIGHT="FFF2F4F7", INPUT="FFFFF7D6", BANNER="FFFEF3C7",
+          ITEM_A="FFEAF2FB", ITEM_B="FFF7EFD2", EXAMPLE="FFFFFBEB";
+    const zh = (o={}) => Object.assign({ name:ZH, size:10, color:{argb:INK} }, o);
+    const en = (o={}) => Object.assign({ name:EN, size:9,  color:{argb:INK} }, o);
+    const thinB = { top:thin("FFBFC5CE"), left:thin("FFBFC5CE"), right:thin("FFBFC5CE"), bottom:thin("FFBFC5CE") };
+    const lock   = c => { c.protection = { locked:true }; };
+    const unlock = c => { c.protection = { locked:false }; c.fill = fill(INPUT); };
+    const setPage = (ws, o) => { ws.pageSetup = Object.assign({ paperSize:9, fitToPage:true, fitToWidth:1, fitToHeight:0,
+      margins:{ left:.5, right:.5, top:.5, bottom:.5, header:.3, footer:.3 } }, o||{}); };
+
+    const wb = new ExcelJS.Workbook();
+    wb.creator = coEn + " ARA"; wb.created = new Date();
+    const clientSubs = DATA.annexC.reduce((n,it)=> n + (CLIENT_C_LOCKED.has(it.id) ? 0 : it.subs.length), 0);
+
+    // ── 1 · 封面 Cover ──
+    let ws = wb.addWorksheet("封面 Cover");
+    ws.getColumn(1).hidden = true; ws.getColumn(1).width = 12;
+    ws.getColumn(2).width = 34; ws.getColumn(3).width = 46;
+    ws.getCell("A1").value = "MARKER"; ws.getCell("C1").value = CLIENT_MARKER;
+    ws.getCell("C1").font = en({ size:7, color:{argb:"FFB0B6BF"} }); lock(ws.getCell("C1"));
+    const cov = (addr, text, o) => { const c=ws.getCell(addr); c.value=text; c.alignment=Object.assign({ vertical:"center", wrapText:true }, (o&&o.al)||{}); c.font=(o&&o.font)||zh(); if(o&&o.fill) c.fill=fill(o.fill); if(o&&o.border) c.border=o.border; lock(c); return c; };
+    ws.mergeCells("B2:C2"); ws.getRow(2).height = 46;
+    cov("B2", "附件C · 升降機服務的管理表現\nAnnex C · Management of Lift Services", { font: zh({ size:14, bold:true, color:{argb:NAVY} }), al:{ horizontal:"center" } });
+    ws.mergeCells("B3:C3"); ws.getRow(3).height = 34;
+    cov("B3", "負責人自述聲明表\nResponsible Person Self-Declaration Form", { font: zh({ size:12, bold:true, color:{argb:NAVY} }), al:{ horizontal:"center" } });
+    ws.mergeCells("B4:C4"); ws.getRow(4).height = 44;
+    cov("B4", "本表格由"+coZh+"發出，用於由認可風險評估員進行之升降機風險評估。\nIssued by "+coEn+" for a lift risk assessment carried out by an Accredited Risk Assessor.", { fill:LIGHT, font: zh({ size:9.5 }) });
+    ws.mergeCells("B6:C6"); ws.getRow(6).height = 30;
+    const coZhShort = coZh.replace(/有限公司$/,""), coEnShort = B.companyShort || coEn;
+    cov("B6", "升降機識別資料（由"+coZhShort+"填寫）  Lift identification (completed by "+coEnShort+")", { fill:NAVY, font: zh({ bold:true, color:{argb:WHITET} }) });
+    let r = 7;
+    CLIENT_C_COVER_ROWS.forEach(([key,label])=>{
+      ws.getRow(r).height = (key==="f_contractor"||key==="f_rle") ? 30 : 24;
+      const k=ws.getCell(r,1); k.value=key; lock(k);
+      cov(ws.getCell(r,2).address, label, { fill:LIGHT, border:thinB });
+      const v=ws.getCell(r,3); v.border=thinB; v.alignment={ vertical:"center", wrapText:true }; v.font=zh();
+      if(CLIENT_C_PREFILL.includes(key)){ v.value = info[key] ? String(info[key]) : ""; lock(v); }
+      else { v.value = ""; unlock(v); }   // RP / contractor / RLE are for the client to complete
+      r++;
+    });
+    ws.mergeCells("B17:C17"); ws.getRow(17).height = 32;
+    cov("B17", "⚠ 重要：請勿更改本工作簿的工作表名稱或欄位結構，否則資料將無法讀回評估系統。\nIMPORTANT: Do not rename sheets or alter the column structure — the file must remain machine-readable.", { fill:BANNER, border:thinB, font: zh({ size:9.5 }) });
+    setPage(ws, { orientation:"portrait" });
+    await ws.protect("", { selectLockedCells:true, selectUnlockedCells:true });
+
+    // ── 2 · 填寫說明 Instructions ──
+    ws = wb.addWorksheet("填寫說明 Instructions");
+    ws.getColumn(1).width = 4; ws.getColumn(2).width = 92; ws.getColumn(3).width = 4;
+    const ins = (rr, text, o) => { const c=ws.getCell(rr,2); c.value=text; c.font=(o&&o.font)||zh(); c.alignment=Object.assign({ vertical:"top", wrapText:true }, (o&&o.al)||{}); if(o&&o.fill) c.fill=fill(o.fill); if(o&&o.border) c.border=thinB; ws.getRow(rr).height=(o&&o.h)||42; lock(c); };
+    const insH = (rr, text, argb) => ins(rr, text, { fill:argb||BLUE, font: zh({ bold:true, color:{argb:WHITET} }), al:{ vertical:"center" }, h:22 });
+    ins(1, "填寫說明\nHow to complete this form", { font: zh({ size:14, bold:true, color:{argb:NAVY} }), al:{ vertical:"center" }, h:44 });
+    insH(3, "1. 填寫範圍  What to complete");
+    ins(4, "請在「附件C AnnexC」工作表的「答案 Answer」欄，就每一子項選擇 Yes 或 No。共 "+clientSubs+" 條子項。\nIn the \"附件C AnnexC\" sheet, choose Yes or No in the \"答案 Answer\" column for each of the "+clientSubs+" sub-items.", { border:true });
+    insH(6, "2. 填寫依據  Basis of your answers");
+    ins(7, "請根據貴公司實際存置的管理記錄如實填報，切勿估計。如某項未有記錄或未曾進行，請填 No。\nAnswer strictly from the management records your organisation actually holds. Do not estimate. If no record exists, answer No.", { border:true });
+    insH(9, "3. 證明文件  Supporting evidence");
+    ins(10, "請於「證明文件／記錄」欄填寫可佐證的文件名稱或編號（例如：巡查紀錄表 2026-03、會議記錄 M/2026/02）。\nState the document or reference that supports each answer (e.g. \"Inspection log 2026-03\", \"Minutes M/2026/02\").", { border:true });
+    insH(12, "4. 簽署及蓋章  Signature and company chop");
+    ins(13, "完成後請列印「聲明 Declaration」工作表，由負責人或獲授權代表簽署並加蓋公司印章。\nPrint the \"聲明 Declaration\" sheet, sign it, and affix the company chop.", { border:true });
+    insH(15, "5. 交回方式  What to return");
+    ins(16, "請將 (a) 已簽署及蓋章的聲明頁掃描本，以及 (b) 本 Excel 檔案，一併電郵交回"+coZh+"。\nReturn BOTH (a) the scanned signed & chopped declaration page and (b) this Excel file to "+coEn+".", { border:true });
+    insH(18, "6. 核實安排  Verification");
+    ins(19, "風險評估員將就本表所報項目進行抽樣核實，並會另行從升降機工作日誌（表格 LE50L）核實保養、檢驗及日誌簽署記錄。\nThe Risk Assessor will sample-verify the declared items, and will separately verify maintenance, examination and log-book signature records from the lift log book (Form LE50L).", { border:true });
+    insH(21, "填寫示例  Worked example", GOLD);
+    ins(22, "子項「對警報進行測試」 → 答案：Yes → 證明文件／記錄：「警鐘測試紀錄 2026-04-18」 → 備註：「每季測試一次」", { fill:EXAMPLE, border:true, h:30 });
+    setPage(ws, { orientation:"portrait" });
+    await ws.protect("", { selectLockedCells:true, selectUnlockedCells:true });
+
+    // ── 3 · 附件C AnnexC ──
+    ws = wb.addWorksheet("附件C AnnexC");
+    ws.getColumn(1).hidden = true; ws.getColumn(1).width = 12;
+    [8,50,44,26,11,28].forEach((w,i)=> ws.getColumn(i+2).width = w);
+    ws.mergeCells("B1:E1"); ws.getRow(1).height = 40;
+    { const c=ws.getCell("B1"); c.value="附件C · 升降機服務的管理表現 — 負責人自述表\nAnnex C · Management of Lift Services — RP Self-Declaration"; c.font=zh({ size:13, bold:true, color:{argb:NAVY} }); c.alignment={ vertical:"center", wrapText:true }; lock(c); }
+    ws.mergeCells("B2:G2"); ws.getRow(2).height = 30;
+    { const c=ws.getCell("B2"); c.value="請就每一子項在「答案 Answer」欄選擇 Yes 或 No。請按貴公司實際記錄填報；風險評估員將抽樣核實。\nSelect Yes or No for every sub-item, based on records actually held. The Risk Assessor will sample-verify."; c.font=zh({ size:9.5 }); c.fill=fill(BANNER); c.alignment={ vertical:"center", wrapText:true }; c.border=thinB; lock(c); }
+    ws.getRow(5).height = 30;
+    ["編號  No.","評估子項  Sub-item","Sub-item (English)","證明文件／記錄  Evidence / record","答案  Answer","備註  Remarks"].forEach((h,i)=>{
+      const c=ws.getCell(5,i+2); c.value=h; c.fill=fill(NAVY); c.font=zh({ bold:true, color:{argb:WHITET} });
+      c.alignment={ horizontal:"center", vertical:"center", wrapText:true }; c.border=thinB; lock(c); });
+    ws.views = [{ state:"frozen", ySplit:5 }];
+    r = 6; const cfRanges = [];
+    const estLines = (t, w, cjk) => Math.max(1, Math.ceil(String(t||"").length * (cjk?2:1) / w));
+    DATA.annexC.forEach(it=>{
+      const locked = CLIENT_C_LOCKED.has(it.id);
+      if(!locked) cfRanges.push([r+1, r+it.subs.length]);
+      ws.mergeCells(r,2,r,7); ws.getRow(r).height = 32;
+      const hc=ws.getCell(r,2); hc.value = it.no+"  "+it.name_zh+"\n"+it.name_en;
+      hc.font=zh({ size:10.5, bold:true, color:{argb:NAVY} }); hc.fill=fill(locked?ITEM_A:ITEM_B);
+      hc.alignment={ vertical:"center", wrapText:true }; hc.border=thinB; lock(hc);
+      for(let col=3; col<=7; col++){ ws.getCell(r,col).border=thinB; }
+      r++;
+      it.subs.forEach((sub,si)=>{
+        ws.getRow(r).height = Math.max(26.1, 12.5 * Math.max(estLines(sub.text_zh, 50, true), estLines(sub.text_en, 44, false)) + 4);
+        const k=ws.getCell(r,1); k.value = it.id+"#"+si; lock(k);
+        const b=ws.getCell(r,2); b.value = it.no+"."+(si+1); b.font=en({ size:9 }); b.alignment={ horizontal:"center", vertical:"top" };
+        const cz=ws.getCell(r,3); cz.value = sub.text_zh; cz.font=zh({ size:9.5 }); cz.alignment={ vertical:"top", wrapText:true };
+        const ce=ws.getCell(r,4); ce.value = sub.text_en; ce.font=en({ size:9, color:{argb:MUTED} }); ce.alignment={ vertical:"top", wrapText:true };
+        const ev=ws.getCell(r,5); ev.font=zh({ size:9 }); ev.alignment={ vertical:"top", wrapText:true };
+        const an=ws.getCell(r,6); an.font=en({ size:10, bold:true }); an.alignment={ horizontal:"center", vertical:"center" }; an.dataValidation = dv("Yes,No");
+        const rm=ws.getCell(r,7); rm.font=zh({ size:9 }); rm.alignment={ vertical:"top", wrapText:true };
+        [b,cz,ce,ev,an,rm].forEach(c=>{ c.border=thinB; });
+        if(locked){ [b,cz,ce,ev,an,rm].forEach(c=>{ c.fill=fill(ITEM_A); lock(c); }); }
+        else { [b,cz,ce].forEach(lock); [ev,an,rm].forEach(unlock); }
+        r++;
+      });
+    });
+    cfRanges.forEach(([r1,r2])=> cfBlank(ws, "F", r1, r2, "$A"));   // red "not yet filled" only on client rows
+    setPage(ws, { orientation:"landscape", fitToHeight:2, margins:{ left:.4, right:.4, top:.5, bottom:.5, header:.3, footer:.3 } });
+    await ws.protect("", { selectLockedCells:true, selectUnlockedCells:true });
+
+    // ── 4 · 聲明 Declaration ──
+    ws = wb.addWorksheet("聲明 Declaration");
+    [3,30,32,30,3].forEach((w,i)=> ws.getColumn(i+1).width = w);
+    const dec = (addr, text, o) => { const c=ws.getCell(addr); c.value=text; c.font=(o&&o.font)||zh(); c.alignment=Object.assign({ vertical:"top", wrapText:true }, (o&&o.al)||{}); if(o&&o.fill) c.fill=fill(o.fill); if(o&&o.border) c.border=thinB; lock(c); return c; };
+    ws.mergeCells("B2:D2"); ws.getRow(2).height = 46;
+    dec("B2", "聲明\nDECLARATION", { font: zh({ size:16, bold:true, color:{argb:NAVY} }), al:{ horizontal:"center", vertical:"center" } });
+    ws.mergeCells("B3:D3"); ws.getRow(3).height = 30;
+    dec("B3", "附件C · 升降機服務的管理表現\nAnnex C · Management of Lift Services", { font: zh({ size:11, bold:true, color:{argb:NAVY} }), al:{ horizontal:"center", vertical:"center" } });
+    ws.mergeCells("B5:D5"); ws.getRow(5).height = 22;
+    dec("B5", "本人謹此聲明：  I hereby declare that:", { font: zh({ bold:true }), al:{ vertical:"center" } });
+    const clauses = [
+      "1. 本人為上述升降機之負責人，或獲負責人正式授權代其作出本聲明之代表。\nI am the Responsible Person for the lift identified above, or a representative duly authorised by the Responsible Person to make this declaration.",
+      "2. 本表格內所填報之資料，乃根據負責人／管理公司所存置之記錄如實填報。就本人所知所信，該等資料均為真實、完整及準確。\nThe information declared in this form has been completed from the records held by the Responsible Person / management company and is, to the best of my knowledge and belief, true, complete and accurate.",
+      "3. 本人明白"+coZh+"將依據本聲明所提供之資料，進行升降機風險評估，並將就所報項目進行抽樣核實。\nI understand that "+coEn+" will rely on this information to carry out a lift risk assessment, and will sample-verify the declared items.",
+      "4. 如所提供之資料有任何重大變更，本人會盡快通知風險評估員。\nI will notify the Risk Assessor promptly of any material change to the information provided."
+    ];
+    clauses.forEach((t,i)=>{ const rr=6+i; ws.mergeCells("B"+rr+":D"+rr); ws.getRow(rr).height = 58; dec("B"+rr, t, { font: zh({ size:9.5 }) }); });
+    const sig = [
+      [11,"簽署人姓名\nName of signatory"],[12,"職銜\nTitle / Position"],[13,"代表機構\nOrganisation represented"],
+      [14,"簽署人身分及授權依據\nCapacity and basis of authority"],[15,"聯絡電話 / 電郵\nContact tel. / email"]
+    ];
+    sig.forEach(([rr,label])=>{
+      ws.getRow(rr).height = 30;
+      dec("B"+rr, label, { fill:LIGHT, border:true, al:{ horizontal:"center", vertical:"center" } });
+      ws.mergeCells("C"+rr+":D"+rr); const v=ws.getCell("C"+rr); v.border=thinB; v.font=zh(); v.alignment={ vertical:"center" }; unlock(v);
+    });
+    ws.getRow(17).height = 24;
+    dec("B17", "簽署\nSignature", { al:{ horizontal:"center", vertical:"center" } });
+    dec("D17", "公司印章\nCompany chop", { al:{ horizontal:"center", vertical:"center" } });
+    ws.mergeCells("B18:C21"); { const c=ws.getCell("B18"); c.border=thinB; lock(c); }
+    ws.mergeCells("D18:D21"); dec("D18", "（請於此蓋章）\n(affix chop here)", { border:true, font: zh({ color:{argb:MUTED} }), al:{ horizontal:"center", vertical:"center" } });
+    [18,19,20,21].forEach(rr=> ws.getRow(rr).height = 22);
+    ws.getRow(23).height = 30;
+    dec("B23", "日期\nDate", { fill:LIGHT, border:true, al:{ horizontal:"center", vertical:"center" } });
+    { const v=ws.getCell("C23"); v.border=thinB; v.font=zh(); v.alignment={ vertical:"center" }; unlock(v); }
+    ws.mergeCells("B25:D25"); ws.getRow(25).height = 28;
+    // IP line stays Lifthium on every branded variant — the format/tool is Lifthium's work.
+    dec("B25", "本表格及其格式為極樂公證行有限公司之知識產權（第528章）。\nThis form and its format are the intellectual property of Lifthium Consultancy Limited (Cap. 528).", { font: zh({ size:8.5, color:{argb:MUTED} }) });
+    setPage(ws, { orientation:"portrait", fitToHeight:1, margins:{ left:.6, right:.6, top:.6, bottom:.6, header:.3, footer:.3 } });
+    await ws.protect("", { selectLockedCells:true, selectUnlockedCells:true });
+
+    return wb;
+  }
+
+  function isClientC(wb){
+    const cover = wb.getWorksheet("封面 Cover") || wb.worksheets[0]; if(!cover) return false;
+    const marker = cellStr(cover,1,3) || cellStr(cover,1,2);
+    return /(^|_)ARA_CLIENT_C\|/.test(String(marker||""));
+  }
+
+  /* Reads ONLY: cover identity (for the lift-identity guard) and Annex C
+     columns F (answer) / G (remarks). Evidence (col E) and remarks are for the
+     assessor to read in the file; they have no field in the form and are not
+     imported. RP / contractor / RLE typed by the client are surfaced in
+     out._clientFilled for display, never written to STATE. */
+  function parseClientC(wb, DATA){
+    const out={ info:{}, A:{}, B:{}, C:{}, D:{}, recs:{}, _errors:[], _counts:{A:0,B:0,C:0,D:0,info:0}, _clientC:true, _clientFilled:{} };
+    const cover = wb.getWorksheet("封面 Cover") || wb.worksheets[0];
+    const marker = cover ? (cellStr(cover,1,3)||cellStr(cover,1,2)) : "";
+    const mg=String(marker||"").trim().split("|"); const brand=(mg[0]||"").trim(), ver=(mg[1]||"").trim();
+    if(!/(^|_)ARA_CLIENT_C$/.test(brand) || ver!=="v1"){
+      out._errors.push("此檔案不是 Annex C 客戶填寫版，或封面被更改／版本不符。Not an Annex C client copy (marker missing, altered, or version mismatch)."); out._fatal=true; return out; }
+    out._srcBrand = brand.replace(/_?ARA_CLIENT_C$/,"")||"UNKNOWN";
+    out._crossBrand = (out._srcBrand !== String(CLIENT_MARKER).split("|")[0].replace(/_?ARA_CLIENT_C$/,""));
+    if(cover){ cover.eachRow((row,rn)=>{ const key=cellStr(cover,rn,1); if(!/^f_/.test(key)) return; const val=cellStr(cover,rn,3);
+      if(CLIENT_C_PREFILL.includes(key)){ if(val!==""){ out.info[key]=val; out._counts.info++; } }
+      else if(val!==""){ out._clientFilled[key]=val; } }); }
+    const normYN = v => { v=(v||"").toString().trim().toLowerCase(); if(v==="yes"||v==="y"||v==="是") return "yes"; if(v==="no"||v==="n"||v==="否") return "no"; return null; };
+    const ws=wb.getWorksheet("附件C AnnexC");
+    if(!ws){ out._errors.push("檔案內沒有「附件C AnnexC」工作表。Sheet \"附件C AnnexC\" not found."); out._fatal=true; return out; }
+    const tmp={};
+    ws.eachRow((row,rn)=>{ const key=cellStr(ws,rn,1); const m=/^(C\.[0-9.]+)#(\d+)$/.exec(key); if(!m) return; const id=m[1], si=+m[2];
+      if(CLIENT_C_LOCKED.has(id)) return;                      // assessor-verified items: never taken from a client file
+      const raw=cellStr(ws,rn,6); if(raw==="") return; const yn=normYN(raw);
+      if(!yn){ out._errors.push("附件C "+id+"."+(si+1)+" 答案不合法：\""+raw+"\""); return; }
+      (tmp[id]=tmp[id]||[])[si]=yn; });
+    Object.entries(tmp).forEach(([id,arr])=>{ const item=DATA.annexC.find(x=>x.id===id); const n=item?item.subs.length:arr.length;
+      const full=[]; for(let i=0;i<n;i++) full[i]=arr[i]||undefined; out.C[id]=full; out._counts.C++; });
+    return out;
+  }
+
+  root.LiftXL = { buildWorkbook, parseWorkbook, MARKER, buildClientC, parseClientC, isClientC, CLIENT_MARKER };
 })(typeof window!=="undefined"?window:globalThis);
 
 </script>
@@ -4531,6 +4757,33 @@ async function exportExcel() {
   } catch (e) { console.error(e); showToast('Excel export failed · 匯出失敗'); }
 }
 
+/* Annex C client copy 客戶填寫版 — a four-sheet self-declaration workbook for
+   the Responsible Person. Always blank (3-A): the client answers from their
+   own records. Identity block pre-filled from this lift (2-A). */
+async function exportClientC() {
+  const ok = await requireAuth(); if (!ok) return;
+  try {
+    showToast('Building client copy… 產生客戶填寫版…');
+    const wb = await LiftXL.buildClientC(window.ExcelJS, DATA, STATE);
+    const buf = await wb.xlsx.writeBuffer();
+    const blob = new Blob([buf], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    const _p = n => String(n).padStart(2,'0');
+    const _dt = new Date();
+    const ts = _dt.getFullYear() + _p(_dt.getMonth()+1) + _p(_dt.getDate()) + '_' + _p(_dt.getHours()) + _p(_dt.getMinutes()) + _p(_dt.getSeconds());
+    const inspno = (STATE.info.f_inspno || '').replace(/[^a-zA-Z0-9_-]/g, '_');
+    const site = (STATE.info.f_site || 'lift').replace(/[^a-zA-Z0-9_-]/g, '_');
+    const liftno = (STATE.info.f_liftno || '').replace(/[^a-zA-Z0-9_-]/g, '_');
+    a.href = url;
+    const _base = inspno ? `${inspno}${liftno ? '_' + liftno : ''}` : `${(window.BRAND&&BRAND.fileTag)||'Lifthium'}_ARA_${site}_${liftno}`;
+    a.download = `${_base}_AnnexC_Client_${ts}.xlsx`;
+    a.click(); URL.revokeObjectURL(url);
+    showToast('Client copy exported · 客戶填寫版已匯出');
+    try { LiftLog.log('export_annexC_client', buildSummary()); } catch (e) {}
+  } catch (e) { console.error(e); showToast('Client copy export failed · 匯出失敗'); }
+}
+
 
 /* ══ Multi-person Excel import ═══════════════════════════════════════════════
    Different people fill different annexes at the same time (administrator
@@ -4768,7 +5021,10 @@ function importExcel() {
       const buf = await file.arrayBuffer();
       const wb = new window.ExcelJS.Workbook();
       await wb.xlsx.load(buf);
-      const out = LiftXL.parseWorkbook(wb, DATA);
+      /* A client-copy workbook carries its own marker: route it to the
+         Annex-C-only parser so nothing outside Annex C can come in from it. */
+      const _isClient = LiftXL.isClientC(wb);
+      const out = _isClient ? LiftXL.parseClientC(wb, DATA) : LiftXL.parseWorkbook(wb, DATA);
       if (out._fatal) { showToast('Not a '+(((window.BRAND&&BRAND.companyShort)||'Lifthium'))+' template · 非本範本'); alert(out._errors.join('\n')); return; }
       /* NEVER assign wholesale here: a colleague's annexes are blank in this
          file and would be erased. Review, then merge. */
@@ -4782,8 +5038,14 @@ function importExcel() {
       let msg = 'Excel 已合併 Merged — new 新增 ' + applied.added +
         ' · changed 更改 ' + applied.changed + ' · kept existing 保留現有 ' + applied.kept +
         '\n(file contained — Info ' + c.info + ' · A ' + c.A + ' · B ' + c.B + ' · C ' + c.C + ' · D ' + c.D + ')';
+      if (_isClient && out._clientFilled && Object.keys(out._clientFilled).length) {
+        const _lbl = { f_rp:'負責人 RP', f_contractor:'承辦商 Contractor', f_rle:'註冊工程師 RLE' };
+        msg += '\n\n客戶於封面填寫（未寫入表單，請自行核對後輸入）Client wrote on the cover (not imported — verify, then type in):\n' +
+          Object.entries(out._clientFilled).map(([k,v]) => '  ' + (_lbl[k]||k) + ': ' + v).join('\n');
+      }
       if (out._errors.length) { alert(msg + '\n\n⚠ ' + out._errors.length + ' 問題 issue(s):\n' + out._errors.slice(0,20).join('\n')); }
-      try { LiftLog.log('import_excel', buildSummary()); } catch (e) {}
+      else if (_isClient && out._clientFilled && Object.keys(out._clientFilled).length) { alert(msg); }
+      try { LiftLog.log(_isClient ? 'import_annexC_client' : 'import_excel', buildSummary()); } catch (e) {}
     } catch (err) { console.error(err); showToast('Invalid Excel · Excel 讀取錯誤'); }
   };
   input.click();
@@ -4983,6 +5245,7 @@ window.addEventListener('beforeprint', prepAllPrintMirrors);
   { const b=document.getElementById('xlsxInBtn'); if(b) b.addEventListener('click', importExcel); }
   $('#importXlsxBtn').addEventListener('click', importExcel);
   { const b=document.getElementById('reuseCBtn'); if(b) b.addEventListener('click', reuseAnnexC); }
+  { const b=document.getElementById('clientCBtn'); if(b) b.addEventListener('click', exportClientC); }
   $('#newAssessBtn').addEventListener('click', resetAll);
 
   updateAuthChip();
