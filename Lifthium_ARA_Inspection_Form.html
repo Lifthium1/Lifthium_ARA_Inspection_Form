@@ -900,6 +900,7 @@ body:not(.app-unlocked){overflow:hidden;}
 </style>
 </head>
 <body>
+<div id="draftWatermark" aria-hidden="true"><span>DRAFT 草稿</span><small>NOT FOR ISSUE · 不可簽發</small></div>
 <script>
 /* ================= WHITE-LABEL ENGINE — ONE MASTER, MANY COMPANIES =================
    SWITCH COMPANY (no find-replace, ever):
@@ -1069,7 +1070,8 @@ document.addEventListener('DOMContentLoaded',function(){ applyBrand(window.BRAND
     <button class="btn-icon" id="loadBtn">⤒ Import</button>
     <button class="btn-icon" id="xlsxOutBtn">⤓ Excel</button>
     <button class="btn-icon" id="xlsxInBtn">⤒ Excel</button>
-    <button class="btn-icon" id="printBtn">⎙ Print</button>
+    <button class="btn-icon" id="printDraftBtn" title="Watermarked draft for review · 加水印草稿供覆核">⎙ Draft 草稿</button>
+    <button class="btn-icon" id="printBtn" title="Clean copy for issue · 乾淨正本供簽發">⎙ Issue 正本</button>
     <button class="btn-icon" id="resetBtn">↻ Reset</button>
     <div class="auth-chip" id="authChip" title="Owner authorization 老闆授權"><span class="dot"></span><span id="authChipTxt">Locked 鎖定</span></div>
   </div>
@@ -2126,9 +2128,10 @@ function cellStr(ws, r, c){ const v=ws.getCell(r,c).value; if(v==null) return ""
      (老細 2026-09-08). Lifthium wording on every build; colours follow brand.
      Own marker in hidden A1 so parseWorkbook() rejects it and only
      parseClientC() — which reads column E (answer) and nothing outside this
-     sheet — can bring it back. C.1.1 / C.1.4 are shown greyed and locked:
-     the assessor verifies those from the log book (LE50L); they are skipped
-     on import even if a client has unprotected the sheet. */
+     sheet — can bring it back. Every answer cell is open to the client (Yes / No only, list-validated).
+     C.1.1 / C.1.4 are tinted grey: the assessor verifies those from the log
+     book (LE50L), so client answers there are shown for reference on import
+     but not written. */
   const CLIENT_MARKER = "ARA_CLIENT_C|v1";
   const CLIENT_SHEET  = "附件C AnnexC";
   const CLIENT_C_LOCKED = new Set(["C.1.1","C.1.4"]);
@@ -2136,7 +2139,7 @@ function cellStr(ws, r, c){ const v=ws.getCell(r,c).value; if(v==null) return ""
     { keys:["f_site","f_liftno","f_emsdno"],  labels:["地點  Site","升降機編號  Lift No.","EMSD 地點編號  Location ID"] },
     { keys:["f_inspno","f_reportno"],         labels:["檢驗編號  Inspection No.","報告編號  Report No."] }
   ];
-  const CLIENT_C_FOOTER = [["cc_name","填寫人  Completed by"],["cc_title","職銜  Title / Position"],["cc_date","日期  Date"]];
+  const CLIENT_C_FOOTER = [["cc_name","升降機負責人／授權代表姓名  Name of Responsible Person / authorised representative"],["cc_title","職銜  Title / Position"],["cc_date","日期  Date"]];
 
   async function buildClientC(ExcelJS, DATA, STATE){
     STATE = STATE || {}; const info = STATE.info || {};
@@ -2159,11 +2162,13 @@ function cellStr(ws, r, c){ const v=ws.getCell(r,c).value; if(v==null) return ""
     ws.getCell("A1").value = CLIENT_MARKER; lock(ws.getCell("A1"));
     ws.mergeCells("B1:F1"); ws.getRow(1).height = 40;
     put("B1", "附件C · 升降機服務的管理表現 — 管理記錄核對表\nAnnex C · Management of Lift Services — Management Records Checklist", { font: zh({ size:13, bold:true, color:{argb:NAVY} }) });
-    ws.mergeCells("B2:F2"); ws.getRow(2).height = 44;
-    put("B2", "請按貴公司實際存置的記錄，就每項在「答案」欄選 Yes 或 No；如有，請填上文件名稱或編號。灰色項目由風險評估員從升降機工作日誌核實，毋須填寫。評估員將抽樣核實。\nAnswer Yes / No for each item from the records you actually hold, and cite the document name or reference. Grey items are verified by the Risk Assessor from the lift log book — leave blank. Declared items will be sample-verified.", { fill:BANNER, border:true, font: zh({ size:9 }) });
+    ws.mergeCells("B2:F2"); ws.getRow(2).height = 18;
+    put("B2", "本附件所載資料由升降機負責人提供。  Information in this Annex is provided by the Responsible Person for the lift.", { font: zh({ size:9.5, bold:true, color:{argb:MUTED} }) });
+    ws.mergeCells("B3:F3"); ws.getRow(3).height = 44;
+    put("B3", "請按貴公司實際存置的記錄，就每項在「答案」欄選 Yes 或 No；如有，請填上文件名稱或編號。灰色項目風險評估員會另外從升降機工作日誌核實。評估員將抽樣核實。\nAnswer Yes / No for each item from the records you actually hold, and cite the document name or reference. Grey items are also verified by the Risk Assessor from the lift log book. Declared items will be sample-verified.", { fill:BANNER, border:true, font: zh({ size:9 }) });
 
     // identity block: label row (small, grey) over value row (bold, locked)
-    let r = 3;
+    let r = 4;
     CLIENT_C_ID_ROWS.forEach(({keys,labels})=>{
       ws.getRow(r).height = 14; ws.getRow(r+1).height = 22;
       labels.forEach((lab,i)=>{ const col=3+i; if(i===labels.length-1 && col<6) ws.mergeCells(r, col, r, 6);
@@ -2187,7 +2192,7 @@ function cellStr(ws, r, c){ const v=ws.getCell(r,c).value; if(v==null) return ""
     DATA.annexC.forEach(it=>{
       const locked = CLIENT_C_LOCKED.has(it.id);
       ws.mergeCells(r,2,r,6); ws.getRow(r).height = 30;
-      put(ws.getCell(r,2).address, it.no+"  "+it.name_zh+(locked?"（由評估員核實，毋須填寫）":"")+"\n"+it.name_en+(locked?"  (verified by assessor — leave blank)":""),
+      put(ws.getCell(r,2).address, it.no+"  "+it.name_zh+(locked?"（評估員另會對工作日誌核實）":"")+"\n"+it.name_en+(locked?"  (also verified by assessor from log book)":""),
           { font: zh({ size:10, bold:true, color:{argb:locked?MUTED:NAVY} }), fill:(locked?ITEM_A:ITEM_B), border:true });
       for(let col=3; col<=6; col++){ ws.getCell(r,col).border=thinB; }
       r++;
@@ -2201,8 +2206,8 @@ function cellStr(ws, r, c){ const v=ws.getCell(r,c).value; if(v==null) return ""
         const an=ws.getCell(r,5); an.font=en({ size:10, bold:true }); an.alignment={ horizontal:"center", vertical:"center" };
         const ev=ws.getCell(r,6); ev.font=zh({ size:9 }); ev.alignment={ vertical:"top", wrapText:true };
         [b,cz,ce,an,ev].forEach(c=>{ c.border=thinB; });
-        if(locked){ [b,cz,ce,an,ev].forEach(c=>{ c.fill=fill(ITEM_A); lock(c); }); }
-        else { an.dataValidation = dv("Yes,No"); [b,cz,ce].forEach(lock); [an,ev].forEach(unlock); }
+        an.dataValidation = dv("Yes,No"); [b,cz,ce].forEach(lock); [an,ev].forEach(unlock);
+        if(locked){ [b,cz,ce,an,ev].forEach(c=>{ c.fill=fill(ITEM_A); }); }   // grey tint only — still editable
         r++;
       });
     });
@@ -2238,7 +2243,7 @@ function cellStr(ws, r, c){ const v=ws.getCell(r,c).value; if(v==null) return ""
      are not imported — read them in the file. The completed-by footer is
      surfaced in out._clientFilled for display, never written to STATE. */
   function parseClientC(wb, DATA){
-    const out={ info:{}, A:{}, B:{}, C:{}, D:{}, recs:{}, _errors:[], _counts:{A:0,B:0,C:0,D:0,info:0}, _clientC:true, _clientFilled:{} };
+    const out={ info:{}, A:{}, B:{}, C:{}, D:{}, recs:{}, _errors:[], _counts:{A:0,B:0,C:0,D:0,info:0}, _clientC:true, _clientFilled:{}, _assessorItems:[] };
     const ws = wb.getWorksheet(CLIENT_SHEET) || wb.worksheets[0];
     const mg=String(ws ? cellStr(ws,1,1) : "").trim().split("|"); const brand=(mg[0]||"").trim(), ver=(mg[1]||"").trim();
     if(!ws || !/(^|_)ARA_CLIENT_C$/.test(brand) || ver!=="v1"){
@@ -2249,9 +2254,9 @@ function cellStr(ws, r, c){ const v=ws.getCell(r,c).value; if(v==null) return ""
       if(/^f_/.test(key)){ key.split(",").forEach((k,i)=>{ const v=cellStr(ws,rn,3+i); if(v!==""){ out.info[k]=v; out._counts.info++; } }); return; }
       if(/^cc_/.test(key)){ const v=cellStr(ws,rn,4); if(v!=="") out._clientFilled[key]=v; return; }
       const m=/^(C\.[0-9.]+)#(\d+)$/.exec(key); if(!m) return; const id=m[1], si=+m[2];
-      if(CLIENT_C_LOCKED.has(id)) return;                      // assessor-verified items: never taken from a client file
       const raw=cellStr(ws,rn,5); if(raw==="") return; const yn=normYN(raw);
       if(!yn){ out._errors.push("附件C "+id+"."+(si+1)+" 答案不合法：\""+raw+"\""); return; }
+      if(CLIENT_C_LOCKED.has(id)){ out._assessorItems.push(id+"."+(si+1)+" = "+raw); return; }   // shown, never written: assessor scores these from the log book
       (tmp[id]=tmp[id]||[])[si]=yn; });
     Object.entries(tmp).forEach(([id,arr])=>{ const item=DATA.annexC.find(x=>x.id===id); const n=item?item.subs.length:arr.length;
       const full=[]; for(let i=0;i<n;i++) full[i]=arr[i]||undefined; out.C[id]=full; out._counts.C++; });
@@ -4086,7 +4091,7 @@ $('#fileInput').addEventListener('change', async e => {
   e.target.value = '';
   delete e.target.dataset.finding;
 });
-$('#phPrint').addEventListener('click', () => doPrint());
+$('#phPrint').addEventListener('click', () => doPrint(true));   // preview = draft
 $('#phClear').addEventListener('click', async () => {
   if (!STATE.photos.length) return;
   if (!confirm('Delete ALL ' + STATE.photos.length + ' photos from both parts?\nUndo is available until the page is reloaded.\n刪除兩個部分全部 ' + STATE.photos.length + ' 張相片？\n重新載入頁面前仍可復原。')) return;
@@ -4956,13 +4961,17 @@ function importExcel() {
       let msg = 'Excel 已合併 Merged — new 新增 ' + applied.added +
         ' · changed 更改 ' + applied.changed + ' · kept existing 保留現有 ' + applied.kept +
         '\n(file contained — Info ' + c.info + ' · A ' + c.A + ' · B ' + c.B + ' · C ' + c.C + ' · D ' + c.D + ')';
-      if (_isClient && out._clientFilled && Object.keys(out._clientFilled).length) {
-        const _lbl = { cc_name:'填寫人 Completed by', cc_title:'職銜 Title', cc_date:'日期 Date' };
-        msg += '\n\n客戶填寫（僅供參考，未寫入表單）Client footer (for reference, not imported):\n' +
-          Object.entries(out._clientFilled).map(([k,v]) => '  ' + (_lbl[k]||k) + ': ' + v).join('\n');
+      let _clientNote = '';
+      if (_isClient) {
+        if (out._assessorItems && out._assessorItems.length) _clientNote += '\n\n客戶對 1.1 / 1.4 嘅答案（未寫入，請對工作日誌後自行輸入）Client answers for 1.1 / 1.4 (not imported — verify against the log book, then enter):\n  ' + out._assessorItems.join('\n  ');
+        if (out._clientFilled && Object.keys(out._clientFilled).length) {
+          const _lbl = { cc_name:'升降機負責人／授權代表 Responsible Person / rep.', cc_title:'職銜 Title', cc_date:'日期 Date' };
+          _clientNote += '\n\n填寫人 Completed by:\n' + Object.entries(out._clientFilled).map(([k,v]) => '  ' + (_lbl[k]||k) + ': ' + v).join('\n');
+        }
+        msg += _clientNote;
       }
       if (out._errors.length) { alert(msg + '\n\n⚠ ' + out._errors.length + ' 問題 issue(s):\n' + out._errors.slice(0,20).join('\n')); }
-      else if (_isClient && out._clientFilled && Object.keys(out._clientFilled).length) { alert(msg); }
+      else if (_clientNote) { alert(msg); }
       try { LiftLog.log(_isClient ? 'import_annexC_client' : 'import_excel', buildSummary()); } catch (e) {}
     } catch (err) { console.error(err); showToast('Invalid Excel · Excel 讀取錯誤'); }
   };
@@ -5082,7 +5091,7 @@ function prepAllPrintMirrors(){
 }
 window.addEventListener('beforeprint', prepAllPrintMirrors);
 
-  function doPrint() {
+  function doPrint(isDraft) {
     // Warn if any finding (isFinding: Lb/Lc, or La with Category hand-set) still has no linked photo — evidence gap
     try {
       const missing = findingsList().filter(f => !findingCovered(f.id));
@@ -5110,22 +5119,29 @@ window.addEventListener('beforeprint', prepAllPrintMirrors);
     // Name the saved PDF the same as the Excel/JSON exports (Chrome uses document.title
     // as the default "Save as PDF" filename). Restore the title afterwards.
     var _origTitle = document.title;
-    try { document.title = printFileBase(); } catch (e) {}
+    try { document.title = printFileBase() + (isDraft ? '_DRAFT' : ''); } catch (e) {}
+    if (isDraft) document.body.classList.add('print-draft');
     window.addEventListener('afterprint', function _restoreTitle(){
       document.title = _origTitle;
+      document.body.classList.remove('print-draft');
       window.removeEventListener('afterprint', _restoreTitle);
     });
     window.print();
-    try { LiftLog.log('print', buildSummary()); } catch (e) {}
+    try { LiftLog.log(isDraft ? 'print_draft' : 'print_issue', buildSummary()); } catch (e) {}
   }
-  $('#printBtn').addEventListener('click', () => {
-    if (localStorage.getItem('lifthium_pdf_tips_off') === '1') { doPrint(); return; }
+  // Which button opened the tips modal, so Continue prints the right mode.
+  let PENDING_PRINT_DRAFT = false;
+  function startPrint(isDraft) {
+    PENDING_PRINT_DRAFT = !!isDraft;
+    if (localStorage.getItem('lifthium_pdf_tips_off') === '1') { doPrint(PENDING_PRINT_DRAFT); return; }
     $('#pdfModal').classList.add('show');
-  });
+  }
+  $('#printDraftBtn').addEventListener('click', () => startPrint(true));
+  $('#printBtn').addEventListener('click', () => startPrint(false));
   $('#pdfContinue').addEventListener('click', () => {
     if ($('#pdfDontShow') && $('#pdfDontShow').checked) localStorage.setItem('lifthium_pdf_tips_off', '1');
     $('#pdfModal').classList.remove('show');
-    setTimeout(doPrint, 200);
+    setTimeout(() => doPrint(PENDING_PRINT_DRAFT), 200);
   });
   $('#resetBtn').addEventListener('click', resetAll);
   $('#draftsBtn').addEventListener('click', openDraftsModal);
@@ -5207,7 +5223,28 @@ document.addEventListener('DOMContentLoaded', () => { document.querySelectorAll(
       box instead;
    2) keep every label + its box together (no box split across the page break);
    a box longer than a whole page is still allowed to break so content never clips. */
+/* ── DRAFT watermark ────────────────────────────────────────────────────────
+   Fixed-position inside @media print repeats the element on EVERY printed
+   page in Chrome, which is exactly what a draft stamp needs. It is inert on
+   screen and absent entirely unless body.print-draft is set by doPrint(true),
+   so the Issue path is byte-for-byte what it was before this patch. */
+#draftWatermark{display:none}
 @media print{
+  body.print-draft #draftWatermark{
+    display:flex; position:fixed; top:50%; left:50%;
+    transform:translate(-50%,-50%) rotate(-32deg);
+    flex-direction:column; align-items:center; gap:6mm;
+    z-index:9999; pointer-events:none;
+    -webkit-print-color-adjust:exact; print-color-adjust:exact;
+  }
+  body.print-draft #draftWatermark span{
+    font-family:var(--font-h); font-weight:700; font-size:64pt; letter-spacing:.06em;
+    color:rgba(30,58,95,.11); white-space:nowrap;
+  }
+  body.print-draft #draftWatermark small{
+    font-family:var(--font-h); font-weight:600; font-size:16pt; letter-spacing:.22em;
+    color:rgba(30,58,95,.13); white-space:nowrap;
+  }
   .rec-card{border:none!important;box-shadow:none!important;background:none!important;padding:0!important;margin:0!important}
   .rec-card .card-title{break-after:avoid; page-break-after:avoid}
   .rec-label{break-after:avoid; page-break-after:avoid}
