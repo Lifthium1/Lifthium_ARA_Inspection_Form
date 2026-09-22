@@ -4414,6 +4414,10 @@ function renderVerdict(om, omG, d) {
   const cont = $('#verdictContainer');
   const interval = nextInspectionInterval(d);
   const dScoreDisp = d.D === null ? '—' : (Math.round(d.D * 10) / 10).toFixed(1);
+  const rawD = d.totalForCalc > 0 ? (d.sum / d.totalForCalc) * 100 : null;
+  const rawDisp = rawD === null ? '—' : (Math.round(rawD * 10) / 10).toFixed(1);
+  const unmarkedCatI = Math.max(0, (d.countCatI || 0) - (d.countMarked || 0));
+  const zeroByRule = rawD !== null && d.D === 0 && (unmarkedCatI > 0 || d.sum < 0);
 
   cont.innerHTML = `
     <div class="verdict-card">
@@ -4422,7 +4426,8 @@ function renderVerdict(om, omG, d) {
       <div class="verdict-grid">
         <div class="verdict-stat">
           <div class="lbl">D Score · 整體安全得分</div>
-          <div class="num">${dScoreDisp}</div>
+          <div class="num">${zeroByRule ? `${rawDisp} → ${dScoreDisp}` : dScoreDisp}</div>
+          ${zeroByRule ? `<div style="font-size:11px;opacity:.9;margin-top:4px">實際得分 ${rawDisp}，但根據指引調整為 0<br>Actual ${rawDisp}, adjusted to 0 per Guideline</div>` : ''}
         </div>
         <div class="verdict-stat">
           <div class="lbl">O&amp;M Score · 運作及保養</div>
@@ -4449,7 +4454,9 @@ function renderVerdict(om, omG, d) {
           <tr><td>· ※ marked items 標記「※」項目（已剔除）[F]</td><td>${d.countMarked || 0}</td></tr>
           <tr><td>Σ vᵢ (sum)</td><td>${d.sum}</td></tr>
           <tr><td>n = rated − ※ 計算項目 (items in calc)</td><td>${d.totalRated} − ${d.countMarked || 0} = ${d.totalForCalc}</td></tr>
-          <tr><td><strong>D = (Σ vᵢ / n) × 100</strong></td><td><strong>${dScoreDisp}</strong></td></tr>
+          <tr><td>Actual mark 實際得分 (Σ vᵢ / n × 100)</td><td>${rawDisp}</td></tr>
+          ${zeroByRule ? `<tr><td>Actual mark ${rawDisp}, adjusted to 0 per Guideline formula (1) — ${unmarkedCatI > 0 ? 'non-※ Class Ⅰ present (' + unmarkedCatI + ')' : 'Σ vᵢ &lt; 0'}<br><span class="zh">實際得分 ${rawDisp}，但根據指引調整為 0（${unmarkedCatI > 0 ? '存在非 ※ 第Ⅰ類風險 ' + unmarkedCatI + ' 項' : 'Σ vᵢ 少於 0'}，指引公式 (1)）</span></td><td><strong>${rawDisp} → 0</strong></td></tr>` : ''}
+          <tr><td><strong>D per Guideline 按指引</strong></td><td><strong>${dScoreDisp}</strong></td></tr>
           ${(d.hasMarkedCatI && d.D !== null && d.D >= 70) ? `<tr><td>※ Class Ⅰ present → Level 4<br><span class="zh">存在 ※ 第Ⅰ類風險 → 第四級（指引 §5.4.3.7 c）</span></td><td><strong>Level 4 第四級</strong></td></tr>` : ''}
         </table>
       </div>
