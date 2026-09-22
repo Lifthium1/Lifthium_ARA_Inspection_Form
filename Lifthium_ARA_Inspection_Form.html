@@ -4442,13 +4442,15 @@ function renderVerdict(om, omG, d) {
           <tr><td>Annex C — Management Records 管理記錄</td><td>${om.c} / 50</td></tr>
           <tr><td style="border-top:1px solid rgba(255,255,255,.2)"><strong>O&amp;M Subtotal · 小計</strong></td><td style="border-top:1px solid rgba(255,255,255,.2)"><strong>${om.total} / 150 — ${omG.en} ${omG.zh}</strong></td></tr>
           <tr><td style="padding-top:10px">Annex D — Items rated 已評項目</td><td style="padding-top:10px">${d.totalRated} / ${d.totalItems}</td></tr>
-          <tr><td>· Class Ⅰ items 第Ⅰ類</td><td>${d.countCatI}${d.hasMarkedCatI ? ' (incl. ※ marked)' : ''}</td></tr>
+          <tr><td>· Class Ⅰ items 第Ⅰ類</td><td>${d.countCatI}${d.countMarked ? '（其中 ※ ' + d.countMarked + ' · of which ※ ' + d.countMarked + '）' : ''}</td></tr>
           <tr><td>· Class Ⅱ items 第Ⅱ類</td><td>${d.countCatII}</td></tr>
           <tr><td>· Class Ⅲ items 第Ⅲ類</td><td>${d.countCatIII}</td></tr>
           <tr><td>· N/A items 不適用（已剔除）</td><td>${d.countNA || 0}</td></tr>
+          <tr><td>· ※ marked items 標記「※」項目（已剔除）[F]</td><td>${d.countMarked || 0}</td></tr>
           <tr><td>Σ vᵢ (sum)</td><td>${d.sum}</td></tr>
-          <tr><td>n (items in calc)</td><td>${d.totalForCalc}</td></tr>
+          <tr><td>n = rated − ※ 計算項目 (items in calc)</td><td>${d.totalRated} − ${d.countMarked || 0} = ${d.totalForCalc}</td></tr>
           <tr><td><strong>D = (Σ vᵢ / n) × 100</strong></td><td><strong>${dScoreDisp}</strong></td></tr>
+          ${(d.hasMarkedCatI && d.D !== null && d.D >= 70) ? `<tr><td>※ Class Ⅰ present → Level 4<br><span class="zh">存在 ※ 第Ⅰ類風險 → 第四級（指引 §5.4.3.7 c）</span></td><td><strong>Level 4 第四級</strong></td></tr>` : ''}
         </table>
       </div>
 
