@@ -916,7 +916,7 @@ const COMPANIES = {
     companyBil:'Lifthium Consultancy Limited 極樂公證行有限公司', companyShort:'Lifthium', fileTag:'Lifthium',
     css:{'--gold':'#D4AF37','--gold-dk':'#B8941F','--blue':'#4A90E2','--blue-dk':'#2E5F8F','--navy':'#1E3A5F','--navy-dp':'#142840','--text':'#1E3A5F','--muted':'#6B7A8F','--btn-fg':'#1E3A5F','--font-en':"'Century Gothic','CenturyGothic','AppleGothic',sans-serif",'--font-h':"'Poppins','Century Gothic',sans-serif",'--logo-pc-w':'17mm','--logo-pc-h':'17mm'},
     excel:{GOLD:'FFD4AF37',BLUE:'FF4A90E2',NAVY:'FF1E3A5F',YEL:'FFFFF8E1',EN:'Century Gothic'},
-    salt:'Lifthium-ARA-2026', ownerCode:'51220643',
+    salt:'Lifthium-ARA-2026',
     endpoint:'https://script.google.com/macros/s/AKfycbwg45FbtG3xyNSOarPN1zsu3dLibagYFf4-Hdz1Bk7hDCGxmvSs4RHvhwJ-mH5b_Vae/exec',
     marker:'LIFTHIUM_ARA_DATA_TEMPLATE|v1', ara:{nameEn:'WAN KAI MAN, RAYMOND',nameZh:'尹啟文',reg:'RA250028',company:'Lifthium Consultancy Limited 極樂公證行有限公司'},
     footLine1:'報告內容 Report content © 2026 Lifthium Consultancy Limited 極樂公證行有限公司',
@@ -942,7 +942,7 @@ const COMPANIES = {
     companyBil:'Graceful Engineering Company Ltd. 雋逸工程有限公司', companyShort:'Graceful', fileTag:'Graceful',
     css:{'--gold':'#2C618B','--gold-dk':'#214B6B','--blue':'#5B9BD5','--blue-dk':'#3E7FB0','--navy':'#1C3F5A','--navy-dp':'#0F2637','--text':'#1C3F5A','--muted':'#666666','--btn-fg':'#FFFFFF','--font-en':"'Arial','Helvetica Neue',Helvetica,sans-serif",'--font-h':"'Arial','Helvetica Neue',Helvetica,sans-serif"},
     excel:{GOLD:'FFDCE9F4',BLUE:'FF5B9BD5',NAVY:'FF1C3F5A',YEL:'FFEAF3FB',EN:'Arial'},
-    salt:'Lifthium-ARA-2026', ownerCode:'00000000', endpoint:'https://script.google.com/macros/s/AKfycbwg45FbtG3xyNSOarPN1zsu3dLibagYFf4-Hdz1Bk7hDCGxmvSs4RHvhwJ-mH5b_Vae/exec',
+    salt:'Lifthium-ARA-2026', endpoint:'https://script.google.com/macros/s/AKfycbwg45FbtG3xyNSOarPN1zsu3dLibagYFf4-Hdz1Bk7hDCGxmvSs4RHvhwJ-mH5b_Vae/exec',
     marker:'GRACEFUL_ARA_DATA_TEMPLATE|v1', ara:{nameEn:'',nameZh:'',reg:''},
     footLine1:'報告內容 Report content © 2026 Graceful Engineering Company Ltd. 雋逸工程有限公司',
     footLine2:'表格格式及工具 Form format & tool © 2026 Lifthium Consultancy Limited 極樂公證行有限公司 — 經授權使用 Used under licence',
@@ -965,7 +965,7 @@ const COMPANIES = {
        Orange on #3D0069 = 4.72:1, so it is the only legible accent there. */
     css:{'--gold':'#EE680F','--gold-dk':'#4A0080','--blue':'#6F00BF','--blue-dk':'#55008F','--navy':'#3D0069','--navy-dp':'#2A0049','--text':'#3D0069','--muted':'#6A5A85','--btn-fg':'#FFFFFF','--font-en':"'Arial','Helvetica Neue',Helvetica,sans-serif",'--font-h':"'Arial','Helvetica Neue',Helvetica,sans-serif",'--logo-rh-w':'34mm','--logo-rh-h':'9.6mm','--logo-pc-w':'60mm','--logo-pc-h':'17mm'},
     excel:{GOLD:'FFEE680F',BLUE:'FF6F00BF',NAVY:'FF3D0069',YEL:'FFFDF0E6',EN:'Arial'},
-    salt:'Lifthium-ARA-2026', ownerCode:'11111111', endpoint:'https://script.google.com/macros/s/AKfycbwg45FbtG3xyNSOarPN1zsu3dLibagYFf4-Hdz1Bk7hDCGxmvSs4RHvhwJ-mH5b_Vae/exec',
+    salt:'Lifthium-ARA-2026', endpoint:'https://script.google.com/macros/s/AKfycbwg45FbtG3xyNSOarPN1zsu3dLibagYFf4-Hdz1Bk7hDCGxmvSs4RHvhwJ-mH5b_Vae/exec',
     marker:'TKE_ARA_DATA_TEMPLATE|v1', ara:{nameEn:'',nameZh:'',reg:'',company:''},
     footLine1:'報告內容 Report content © 2026 TK Elevator Hong Kong Limited 蒂升電梯香港有限公司',
     footLine2:'表格格式及工具 Form format & tool © 2026 Lifthium Consultancy Limited 極樂公證行有限公司 — 經授權使用 Used under licence',
@@ -2287,10 +2287,12 @@ function cellStr(ws, r, c){ const v=ws.getCell(r,c).value; if(v==null) return ""
   /* ═══════════════════════════════════════════════════════════════════════════════ */
 
   const APP_VERSION = "P2.0";
-  const OWNER_CODE  = (window.BRAND&&BRAND.ownerCode) || "51220643";            // per-company admin
-  // Lifthium master owner — 老細 must be able to unlock EVERY white-label build,
-  // even one whose per-company ownerCode is a placeholder (e.g. Graceful 00000000).
-  const MASTER_OWNER_CODE = "51220643";
+  // Every code — owner included — lives ONLY in the Google Sheet "Users" tab
+  // (role "owner" = admin), so 老細 can change any code there at any time without
+  // touching this file. This public file holds no plaintext code. The one exception
+  // is a break-glass code kept as a SHA-256 hash: it lets 老細 in when the roster
+  // cannot be reached (brand-new device offline, or the Users tab is broken).
+  const EMERGENCY_HASH = "90d91fbb339dac6afbf2662a0e050e58e56e74bc92fccf423310a5322171dd28";
   const OWNER_NAME  = "Owner 老細";
 
   const ROSTER_KEY = "lifthium_ara_roster_v1";
@@ -2336,8 +2338,8 @@ function cellStr(ws, r, c){ const v=ws.getCell(r,c).value; if(v==null) return ""
   async function validateCode(code) {
     code = (code || "").trim();
     if (!code) return null;
-    if (code === OWNER_CODE || code === MASTER_OWNER_CODE) return { name: OWNER_NAME, role: "owner", hash: await sha256hex(code) };
     const hash = await sha256hex(code);
+    if (hash === EMERGENCY_HASH) return { name: OWNER_NAME + " · 緊急碼 emergency", role: "owner", hash: hash };
     let roster = getRoster();
     let hit = roster.users.find(u => u.hash === hash);
     if (!hit) {                              // unknown → try one fresh sync (if online) then recheck
@@ -2450,7 +2452,6 @@ const STORAGE_KEY = 'lifthium_ara_form_v1';
 //  PHASE 1 — Authorization gate + Draft manager (IndexedDB)
 // ═══════════════════════════════════════════════════════════
 // Owner Authorization Code (client-side gate; re-verified server-side in Phase 2)
-const OWNER_CODE = (window.BRAND&&BRAND.ownerCode) || '51220643';
 const AUTH_SESSION_KEY = 'lifthium_ara_authed';
 let AUTHED = sessionStorage.getItem(AUTH_SESSION_KEY) === '1';
 let CURRENT_USER = (function(){ try { const u = JSON.parse(sessionStorage.getItem('lifthium_ara_user')); if (u) window.CURRENT_USER = u; return u || null; } catch(e){ return null; } })();
