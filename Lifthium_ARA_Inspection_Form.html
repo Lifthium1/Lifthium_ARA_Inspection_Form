@@ -625,6 +625,7 @@ textarea{resize:none}
   #panel-D .d-print-summary{display:block!important;margin-top:5px!important;padding:6px 10px!important;border:1px solid #ccc!important;border-left-width:4px!important;border-radius:4px!important;font-size:8.4pt!important;line-height:1.4!important;font-family:var(--font-zh)!important}
   #panel-D .d-print-summary .dps-tag{font-family:var(--font-h)!important;font-weight:700!important;font-size:8.8pt!important}
   #panel-D .d-print-summary .dps-ref{display:block!important;margin-top:3px!important;font-family:var(--font-h)!important;font-weight:700!important;font-size:7.6pt!important;color:var(--blue-dk)!important}
+  #panel-D .d-print-summary .dps-notes{display:block!important;margin-top:2px!important;font-weight:400!important}
   #panel-D .dps-La{border-left-color:var(--success)!important}
   #panel-D .dps-La .dps-tag{color:var(--success)!important}
   #panel-D .dps-Lb{border-left-color:var(--warn)!important}
@@ -650,6 +651,20 @@ textarea{resize:none}
      so a lone row (e.g. Performance Level) never strands on its own page */
   .ex-table{page-break-inside:avoid!important;break-inside:avoid!important}
   .ex-sec{page-break-after:avoid!important;break-after:avoid!important}
+  /* Issue fix 2026-10-17: compact the Executive Summary in print so sections 1–3 fit on
+     ONE page — the content was previously only a single row over, so tightening
+     paddings/margins/type is enough without changing the design */
+  .ex-card .ex-id{margin:2px 0 8px!important;font-size:7.5pt!important}
+  .ex-card .ex-id td{padding:3px 7px!important}
+  .ex-conclusion{margin-top:8px!important;padding:10px 12px!important}
+  .ex-conc-label{margin-bottom:4px!important;font-size:8pt!important}
+  .ex-conc-level{font-size:15pt!important;margin-bottom:4px!important}
+  .ex-conc-rec{font-size:8.5pt!important;line-height:1.45!important}
+  .ex-conc-next{font-size:8.5pt!important;line-height:1.4!important;margin-top:5px!important;padding-top:5px!important}
+  .ex-sec{margin:8px 0 0!important;padding:4px 8px!important;font-size:8.5pt!important}
+  .ex-card .ex-table{font-size:8pt!important;margin-bottom:2px!important}
+  .ex-card .ex-table td{padding:3px 8px!important}
+  .ex-card .ex-dnote td{font-size:7pt!important;line-height:1.35!important;padding:2px 6px 4px!important}
 }
 </style>
 <style id="lifthium-lockscreen-css">
@@ -2778,7 +2793,7 @@ function prepPrintD() {
     const flagged = isMarkedD(it.id, st) ? '　<b>※</b>' : '';
     const ref = '探測 ' + (detMap[st.d]||st.d) + ' · 嚴重 ' + st.s + ' · 可能性 ' + st.l + ' · 風險類別 ' + (catMap[st.c]||st.c);
     out.innerHTML = '<span class="dps-tag">' + tagMap[ch] + '</span>' + flagged + '　' + esc(desc_zh) + ' / ' + esc(desc_en) +
-      '<span class="dps-ref">' + ref + (st.notes ? '　｜ 備註 Notes: ' + esc(st.notes) : '') + '</span>';
+      '<span class="dps-ref">' + ref + (st.notes ? '<span class="dps-notes">備註 Notes: ' + esc(st.notes) + '</span>' : '') + '</span>';
   }));
 }
 
