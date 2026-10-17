@@ -633,12 +633,23 @@ textarea{resize:none}
   #panel-D .dps-Lc .dps-tag{color:var(--danger)!important}
   #panel-D .dps-NA{border-left-color:#8a93a0!important}
   #panel-D .dps-NA .dps-tag{color:#555!important}
+  /* Issue fixes 2026-10-17: assessor-guidance notes (e.g. D.3.13 detectivity hints) and the
+     section-collapse glyph must not print into the client report */
+  #panel-D .item-note{display:none!important}
+  details.subsec summary::before{content:none!important}
+
+  /* Generic screen-only helper: tool instructions that must never reach the printed report */
+  .screen-only{display:none!important}
 
   /* Dashboard card is screen-only; Executive Summary is the report's formal representation */
   .verdict-card{display:none!important}
   /* Executive Summary starts on a fresh page; keep result cards from splitting */
   .ex-card{page-break-before:always!important;break-before:page!important}
   .verdict-rec,.ex-conclusion,.ex-sec,.rec-block{page-break-inside:avoid!important}
+  /* Issue fix 2026-10-17: keep each summary table whole and its section header attached,
+     so a lone row (e.g. Performance Level) never strands on its own page */
+  .ex-table{page-break-inside:avoid!important;break-inside:avoid!important}
+  .ex-sec{page-break-after:avoid!important;break-after:avoid!important}
 }
 </style>
 <style id="lifthium-lockscreen-css">
@@ -1226,8 +1237,8 @@ document.addEventListener('DOMContentLoaded',function(){ applyBrand(window.BRAND
     <div class="card">
       <div class="card-title">Project &amp; Lift Information <span class="card-title-zh">項目及升降機資料</span></div>
       <div class="info-grid-3" style="margin-bottom:10px">
-        <div class="field"><label>Report No. <span class="zh">報告編號</span></label><input type="text" id="f_reportno" placeholder="e.g. 2606LR115（年月LR序號）"></div>
-        <div class="field"><label>Inspection No. <span class="zh">檢驗編號</span></label><input type="text" id="f_inspno" placeholder="e.g. 26ARA0001"></div>
+        <div class="field"><label>Report No. <span class="zh">報告編號</span></label><textarea id="f_reportno" class="inp-line" rows="1" placeholder="e.g. 2606LR115（年月LR序號）"></textarea></div>
+        <div class="field"><label>Inspection No. <span class="zh">檢驗編號</span></label><textarea id="f_inspno" class="inp-line" rows="1" placeholder="e.g. 26ARA0001"></textarea></div>
       </div>
       <div class="info-grid">
         <div class="field"><label>Project / Site Name <span class="zh">項目／場地名稱</span></label><textarea id="f_site" class="inp-line" rows="1" placeholder="e.g. Mei Foo Sun Chuen Stage 8 Tower 12"></textarea></div>
@@ -1236,19 +1247,19 @@ document.addEventListener('DOMContentLoaded',function(){ applyBrand(window.BRAND
         <div class="field"><label>Maintenance Contractor <span class="zh">維修承辦商</span></label><textarea id="f_contractor" class="inp-line" rows="1" placeholder="Contractor name"></textarea></div>
       </div>
       <div class="info-grid-3" style="margin-top:10px">
-        <div class="field"><label>Lift No. / ID <span class="zh">升降機編號</span></label><input type="text" id="f_liftno" placeholder="e.g. L-01"></div>
-        <div class="field"><label>EMSD Location No. <span class="zh">機電署地點編號</span></label><input type="text" id="f_emsdno" placeholder="e.g. 1012838-001"></div>
+        <div class="field"><label>Lift No. / ID <span class="zh">升降機編號</span></label><textarea id="f_liftno" class="inp-line" rows="1" placeholder="e.g. L-01"></textarea></div>
+        <div class="field"><label>EMSD Location No. <span class="zh">機電署地點編號</span></label><textarea id="f_emsdno" class="inp-line" rows="1" placeholder="e.g. 1012838-001"></textarea></div>
         <div class="field"><label>Manufacturer <span class="zh">製造商</span></label><textarea id="f_mfr" class="inp-line" rows="1" placeholder="OEM"></textarea></div>
       </div>
       <div class="info-grid-3" style="margin-top:10px">
         <div class="field"><label>Lift Type <span class="zh">升降機類型</span></label>
           <select id="f_type"><option value="">Select…</option><option>Passenger</option><option>Service</option><option>Goods</option><option>Fireman's</option><option>Disabled</option></select></div>
-        <div class="field"><label>Rated Speed (m/s) <span class="zh">額定速度</span></label><input type="text" id="f_speed" placeholder="e.g. 1.75"></div>
-        <div class="field"><label>Rated Load (kg) <span class="zh">額定載重</span></label><input type="text" id="f_load" placeholder="e.g. 1000"></div>
+        <div class="field"><label>Rated Speed (m/s) <span class="zh">額定速度</span></label><textarea id="f_speed" class="inp-line" rows="1" placeholder="e.g. 1.75"></textarea></div>
+        <div class="field"><label>Rated Load (kg) <span class="zh">額定載重</span></label><textarea id="f_load" class="inp-line" rows="1" placeholder="e.g. 1000"></textarea></div>
       </div>
       <div class="info-grid-3" style="margin-top:10px">
-        <div class="field"><label>Year of Manufacture <span class="zh">出廠年份</span></label><input type="text" inputmode="numeric" id="f_year" placeholder="YYYY"></div>
-        <div class="field"><label>Year of Commissioning <span class="zh">投入服務年份</span></label><input type="text" inputmode="numeric" id="f_commyear" placeholder="YYYY"></div>
+        <div class="field"><label>Year of Manufacture <span class="zh">出廠年份</span></label><textarea id="f_year" class="inp-line" rows="1" placeholder="YYYY"></textarea></div>
+        <div class="field"><label>Year of Commissioning <span class="zh">投入服務年份</span></label><textarea id="f_commyear" class="inp-line" rows="1" placeholder="YYYY"></textarea></div>
         <div class="field"><label>No. of Floors Served <span class="zh">服務樓層數目</span></label><input type="number" id="f_floors" placeholder="e.g. 32"></div>
       </div>
     </div>
@@ -1256,14 +1267,14 @@ document.addEventListener('DOMContentLoaded',function(){ applyBrand(window.BRAND
     <div class="card">
       <div class="card-title">ARA (Accredited Risk Assessor) Details <span class="card-title-zh">認可風險評估員資料</span></div>
       <div class="info-grid">
-        <div class="field"><label>ARA Name <span class="zh">評估員姓名</span></label><input type="text" id="f_araname" placeholder="Risk Assessor name"></div>
-        <div class="field"><label>ARA Registration No. <span class="zh">註冊編號</span></label><input type="text" id="f_arareg" placeholder="EMSD ARA reg. no."></div>
-        <div class="field"><label>Assessment Organization <span class="zh">評估機構</span></label><input type="text" id="f_aracompany" value="Lifthium Consultancy Limited 極樂公證行有限公司"></div>
+        <div class="field"><label>ARA Name <span class="zh">評估員姓名</span></label><textarea id="f_araname" class="inp-line" rows="1" placeholder="Risk Assessor name"></textarea></div>
+        <div class="field"><label>ARA Registration No. <span class="zh">註冊編號</span></label><textarea id="f_arareg" class="inp-line" rows="1" placeholder="EMSD ARA reg. no."></textarea></div>
+        <div class="field"><label>Assessment Organization <span class="zh">評估機構</span></label><textarea id="f_aracompany" class="inp-line" rows="1">Lifthium Consultancy Limited 極樂公證行有限公司</textarea></div>
         <div class="field"><label>ARA Reg. Expiry Date <span class="zh">註冊屆滿日期</span></label><input type="date" id="f_araexpiry"></div>
       </div>
       <div class="info-grid-3" style="margin-top:10px">
         <div class="field"><label>Date of Inspection <span class="zh">檢查日期</span></label><input type="date" id="f_inspdate"></div>
-        <div class="field"><label>Time of Inspection <span class="zh">檢查時間</span></label><input type="text" id="f_insptime" placeholder="e.g. 0930–1230"></div>
+        <div class="field"><label>Time of Inspection <span class="zh">檢查時間</span></label><textarea id="f_insptime" class="inp-line" rows="1" placeholder="e.g. 0930–1230"></textarea></div>
         <div class="field"><label>Weather <span class="zh">天氣</span></label><textarea id="f_weather" class="inp-line" rows="1" placeholder="e.g. Cloudy 22°C"></textarea></div>
       </div>
       <div class="info-grid" style="margin-top:10px">
@@ -1323,11 +1334,11 @@ document.addEventListener('DOMContentLoaded',function(){ applyBrand(window.BRAND
     <div class="card">
       <div class="card-title">Annex C — Lift Management Records <span class="card-title-zh">附件 C · 升降機管理記錄</span></div>
       <p style="font-size:.8rem;color:var(--muted);margin-bottom:10px">Maximum 50 points. Tick each item that is satisfied. <span class="zh" style="font-family:var(--font-zh)">最高 50 分。逐項勾選符合者。</span></p>
-      <div style="margin:0 0 12px;padding:10px 12px;background:color-mix(in srgb, var(--blue) 8%, transparent);border:1px solid color-mix(in srgb, var(--blue) 28%, transparent);border-radius:8px;display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+      <div class="screen-only" style="margin:0 0 12px;padding:10px 12px;background:color-mix(in srgb, var(--blue) 8%, transparent);border:1px solid color-mix(in srgb, var(--blue) 28%, transparent);border-radius:8px;display:flex;align-items:center;gap:10px;flex-wrap:wrap">
         <button class="btn-secondary" id="reuseCBtn" style="white-space:nowrap">↺ Reuse Annex C 沿用管理記錄</button>
         <span style="font-size:.78rem;color:var(--muted)">Same building? Load Annex C + shared building info from another lift's file (JSON / Excel). <span class="zh" style="font-family:var(--font-zh)">同一大廈？由另一部升降機的檔案載入管理記錄及大廈共用資料，免除重複輸入。</span></span>
       </div>
-      <div style="margin:0 0 12px;padding:10px 12px;background:color-mix(in srgb, var(--gold) 10%, transparent);border:1px solid color-mix(in srgb, var(--gold) 35%, transparent);border-radius:8px;display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+      <div class="screen-only" style="margin:0 0 12px;padding:10px 12px;background:color-mix(in srgb, var(--gold) 10%, transparent);border:1px solid color-mix(in srgb, var(--gold) 35%, transparent);border-radius:8px;display:flex;align-items:center;gap:10px;flex-wrap:wrap">
         <button class="btn-secondary" id="clientCBtn" style="white-space:nowrap">⤓ Client Copy 客戶填寫版</button>
         <span style="font-size:.78rem;color:var(--muted)">Export a one-sheet Annex C checklist with this lift's identity pre-filled, for the Responsible Person to answer Yes/No and return. Bring it back with ⤒ Excel. <span class="zh" style="font-family:var(--font-zh)">匯出一頁附件C管理記錄核對表，已預填本升降機資料，交負責人填 Yes/No 後交回；用「⤒ Excel」匯入。</span></span>
       </div>
@@ -1347,8 +1358,10 @@ document.addEventListener('DOMContentLoaded',function(){ applyBrand(window.BRAND
     <div class="card">
       <div class="card-title">Annex D — Lift, Associated Equipment &amp; Machinery <span class="card-title-zh">附件 D · 升降機、相聯設備或機械</span></div>
       <p style="font-size:.8rem;color:var(--muted);margin-bottom:10px">
-        Select <strong style="color:var(--success)">La</strong> (good), <strong style="color:var(--warn)">Lb</strong> (fair) or <strong style="color:var(--danger)">Lc</strong> (failure) per item. EMSD default risk parameters auto-populate; adjust if site reality differs.
-        <span class="zh" style="font-family:var(--font-zh);display:block;margin-top:4px">每項選 La（良好）／Lb（不良）／Lc（嚴重）。EMSD 預設風險參數自動帶出，可按現場實況調整。</span>
+        Select <strong style="color:var(--success)">La</strong> (good), <strong style="color:var(--warn)">Lb</strong> (fair) or <strong style="color:var(--danger)">Lc</strong> (failure) per item.
+        <span class="screen-only"> EMSD default risk parameters auto-populate; adjust if site reality differs.
+        <span class="zh" style="font-family:var(--font-zh);display:block;margin-top:4px">EMSD 預設風險參數自動帶出，可按現場實況調整。</span></span>
+        <span class="zh" style="font-family:var(--font-zh);display:block;margin-top:4px">每項選 La（良好）／Lb（不良）／Lc（嚴重）。</span>
       </p>
       <div id="annexD-sections"></div>
       <div style="margin-top:14px;padding:12px;background:color-mix(in srgb, var(--gold) 8%, transparent);border-radius:6px;font-family:var(--font-h);font-weight:700;text-align:center">
@@ -5115,6 +5128,21 @@ window.addEventListener('beforeprint', prepAllPrintMirrors);
           '\n\n仍要列印嗎？ Print anyway?\n（按「取消」返回補相 · Cancel to go back and add photos）'
         );
         if (!go) { goTab('photos'); return; }
+      }
+    } catch (e) {}
+    // Warn about photo captions still carrying the "[?]" uncertain-caption marker —
+    // they print verbatim into the client report, so confirm or clean them up first
+    try {
+      const q = (STATE.photos || []).filter(p => (p.desc || '').indexOf('[?]') !== -1);
+      if (q.length) {
+        const lines = q.slice(0, 12).map(p => '　• ' + (p.name || p.id) + '：' + (p.desc || '').slice(0, 60)).join('\n');
+        const more = q.length > 12 ? '\n　…（其餘 ' + (q.length - 12) + ' 張 and ' + (q.length - 12) + ' more）' : '';
+        const goQ = confirm(
+          q.length + ' 張相片說明仍有 [?] 待確認標記：\n' + q.length + ' photo caption(s) still carry the [?] marker:\n\n' +
+          lines + more +
+          '\n\n[?] 會原樣印進正式報告。仍要列印嗎？ The [?] marker prints verbatim into the report. Print anyway?\n（按「取消」返回修改說明 · Cancel to go back and fix captions）'
+        );
+        if (!goQ) { goTab('photos'); return; }
       }
     } catch (e) {}
     populatePrintCover();
